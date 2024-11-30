@@ -1,9 +1,38 @@
+"use client"
 import { Logo } from "./Logo"
+import { motion, useMotionValueEvent, useScroll } from "motion/react"
+import { Navigation } from "./Navigation"
+import { useState } from "react"
+export const Navbar = () => {
+    const [isTop, setIsTop] = useState(false)
+    const { scrollY } = useScroll()
 
-export const Navbar = ({ Navigation }: { Navigation: () => JSX.Element }) => {
-    return (<div className="flex justify-between items-center p-5 md:px-10 md:py-5">
-        <Logo showText />
-        <Navigation />
-    </div>)
+    useMotionValueEvent(scrollY, "change", (y) => {
+        setIsTop(y < 10)
+    })
+    return (
+        <div
+            className="fixed flex justify-center w-full z-10">
+            <motion.div
+                animate={isTop ? "top" : "notTop"}
+                variants={
+                    {
+                        top: {
+                            width: "100%",
+                            filter: "drop-shadow(0px 0px 0px rgba(0,0,0,0))"
+                        },
+                        notTop: {
+                            width: "100%",
+                            filter: "drop-shadow(0px 5px 10px rgba(0,0,0,0.2))"
+                        }
+                    }
+                }>
+                <div className="flex justify-between w-full items-center p-5 md:px-10 md:py-5 bg-white">
+                    <Logo showText />
+                    <Navigation />
+                </div>
+            </motion.div>
+        </div>
+    )
 
 }
