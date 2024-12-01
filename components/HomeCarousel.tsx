@@ -13,7 +13,7 @@ import Autoplay from "embla-carousel-autoplay";
 const HomeCarousel = () => {
   const banners = [
     {
-      bannerId: 1,
+      bannerId: 3,
       imgUrl:
         "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
     },
@@ -23,7 +23,7 @@ const HomeCarousel = () => {
         "https://www.tamilnadutourism.tn.gov.in/img/pages/medium-desktop/ooty-1653923879_ee32f7707d19c1d542af.webp",
     },
     {
-      bannerId: 3,
+      bannerId: 1,
       imgUrl:
         "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
     },
@@ -43,13 +43,14 @@ const HomeCarousel = () => {
       >
         <CarouselContent>
           {banners.map((banner, index) => (
-            <CarouselItem key={index}>
-              <div className="p-1 lg:h-[640px] md:[]">
+            <CarouselItem className="lg:h-[calc(100vh-200px)] relative" key={index}>
+              <div className="p-1 w-full aspect-[16/9] lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2">
                 <Image
+                  className="object-center"
                   src={banner.imgUrl}
                   alt={`Banner ${index}`}
                   fill={true}
-                  style={{ objectFit: "fill" }}
+                  style={{ objectFit: "cover" }}
                   //   loading="lazy"
                   priority={true}
                   quality={100}
