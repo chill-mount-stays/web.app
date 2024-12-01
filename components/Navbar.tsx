@@ -18,6 +18,7 @@ export const Navbar = () => {
     useMotionValueEvent(scrollY, "change", (y) => {
         setIsTop(y < 10)
     })
+    
     return (
         <div
             className="fixed flex justify-center w-full z-10">
