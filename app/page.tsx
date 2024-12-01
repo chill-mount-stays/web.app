@@ -7,8 +7,12 @@ export default function Home() {
   return (
     <div className="">
       <HomeCarousel />
-      <PlacesToVisit />
-      <AboutUs />
+      <div className="lg:mb-36">
+        <PlacesToVisit />
+      </div>
+      <div className="lg:mb-36">
+        <AboutUs />
+      </div>
       <ContactUs />
     </div>
   );
