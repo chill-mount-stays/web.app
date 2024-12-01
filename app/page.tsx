@@ -1,8 +1,9 @@
-import { Navbar } from "@/components/Navbar";
+import { PlacesToVisit } from "@/components/PlacesToVisit";
 
 export default function Home() {
   return (
     <div className="h-[200vh]">
+      <PlacesToVisit />
     </div>
   );
 }
