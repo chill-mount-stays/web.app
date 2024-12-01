@@ -1,4 +1,4 @@
-export const Logo = ({ showText }: { showText?: boolean }) => {
+export const Logo = ({ showText, textProperties }: { showText?: boolean; textProperties?: string[] }) => {
   return (
     <div>
       <div className="flex items-center gap-3">
@@ -18,7 +18,7 @@ export const Logo = ({ showText }: { showText?: boolean }) => {
           </svg>
         </div>
         {showText ? (
-          <span className="font-scottel text-base lg:text-2xl text-cms">
+          <span className={`font-scottel text-base lg:text-2xl text-cms ${textProperties?.join(" ")}`}>
             Chill Mount Stays
           </span>
         ) : (
