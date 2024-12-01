@@ -13,7 +13,9 @@ export default function Home() {
       <div className="lg:mb-36">
         <AboutUs />
       </div>
-      <ContactUs />
+      <div className="lg:mb-36">
+        <ContactUs />
+      </div>
     </div>
   );
 }
