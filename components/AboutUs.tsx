@@ -14,7 +14,7 @@ export const AboutUs = () => {
           src={"/assets/about-separator.png"}
         />
       </div>
-      <div className="flex flex-col-reverse md:flex-row items-center  justify-center mt-16 lg:mt-20 mb-14 md:px-16 px-2">
+      <div className="flex flex-col-reverse md:flex-row items-center  justify-center mt-16 lg:mt-20 mb-14 md:px-16 px-2 lg:space-x-20">
         <div className="relative flex items-center w-full max-w-md h-96">
           <motion.div
             initial={{ opacity: 0 }}

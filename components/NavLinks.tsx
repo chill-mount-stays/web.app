@@ -17,7 +17,7 @@ export const NavLinks = () => {
       {navLinks.map((link, idx) => (
         <Link
           key={"link__" + idx}
-          className={`text-xl lg:text-xl md:text-md hover:underline hover:text-cms underline-offset-4  ${
+          className={`text-xs lg:text-base md:text-sm hover:underline hover:text-cms underline-offset-4  ${
             pathname === link.url ? "text-cms font-bold" : "text-black"
           }`}
           href={link.url}
