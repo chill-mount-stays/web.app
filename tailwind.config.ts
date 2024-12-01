@@ -59,6 +59,7 @@ export default {
 			},
 			fontFamily: {
 				scottel: ["scottel", "sans-serif"],
+				poppins: ["poppins", "sans-serif"],
 			}
 		}
 	},
