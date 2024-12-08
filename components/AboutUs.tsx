@@ -1,5 +1,5 @@
 "use client";
-import { AboutUsContent, WhyUsContent } from "@/lib/context";
+import { AboutUsContent, WhyUsContent } from "@/lib/content";
 import { motion } from "motion/react";
 import Image from "next/image";
 

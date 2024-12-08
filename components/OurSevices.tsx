@@ -1,5 +1,5 @@
 "use client";
-import { OurServicesContent, OurSevicesIcons } from "@/lib/context";
+import { OurServicesContent, OurSevicesIcons } from "@/lib/content";
 import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 

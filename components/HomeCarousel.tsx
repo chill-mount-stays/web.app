@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
-import { banners } from "@/lib/context";
+import { banners } from "@/lib/content";
 
 const HomeCarousel = () => {
   return (
