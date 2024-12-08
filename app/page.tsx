@@ -6,20 +6,24 @@ import { PlacesToVisit } from "@/components/PlacesToVisit";
 
 export default function Home() {
   return (
-    <div className="">
-      <HomeCarousel />
-      <div className="lg:mb-20">
-        <OurServices />
+    <main className="min-h-screen">
+      <div className="flex-grow">
+        <HomeCarousel />
       </div>
-      <div className="lg:mb-36">
-        <PlacesToVisit />
+      <div className="container mx-auto">
+        <section className="py-12 lg:py-20">
+          <OurServices />
+        </section>
+        <section className="py-12 lg:py-24">
+          <PlacesToVisit />
+        </section>
+        <section className="py-12 lg:py-24">
+          <AboutUs />
+        </section>
+        <section className="py-12 lg:pb-24">
+          <ContactUs />
+        </section>
       </div>
-      <div className="lg:mb-36">
-        <AboutUs />
-      </div>
-      <div className="lg:mb-36">
-        <ContactUs />
-      </div>
-    </div>
+    </main>
   );
 }

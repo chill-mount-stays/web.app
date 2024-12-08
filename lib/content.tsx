@@ -52,29 +52,33 @@ export const OurServicesContent = () => {
 export const banners = [
   {
     bannerId: 1,
+    title: "Top-Class Rooms for Your Stay",
     imgUrl:
       "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
-    overlayText:
-      "Chillmount Stays offers top-class rooms for a pleasant stay with your family, friends, and loved ones. Our rooms are clean, well-maintained, and supported by exceptional customer service. Trust us, and once you experience our hospitality, you'll have a truly memorable journey.",
+    description:
+      "Enjoy a memorable stay with exceptional service at Chillmount Stays. Perfect for families and loved ones.",
+    buttonText: "Book Now",
+    buttonLink: "/stays",
   },
   {
     bannerId: 2,
+    title: "Your Custom Travel Experience",
     imgUrl:
-      "https://www.tamilnadutourism.tn.gov.in/img/pages/medium-desktop/ooty-1653923879_ee32f7707d19c1d542af.webp",
-    overlayText:
-      "Chillmount Stays offers customized, cost-effective travel experiences with well-trained drivers. We provide a variety of vehicles to ensure a comfortable journey. Our day trips are priced reasonably, and once you book with us, you won’t have to pay any hidden charges. Trust us with your travel plans, and we'll make your trip both memorable and enjoyable.",
+      "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
+    description:
+      "Affordable travel with well-trained drivers and comfortable vehicles. No hidden charges—just a memorable journey.",
+    buttonText: "Make Your Trip",
+    buttonLink: "/travels",
   },
   {
     bannerId: 3,
+    title: "Authentic Homemade Meals",
     imgUrl:
       "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
-    overlayText:
-      "We care for your family, including children and grandparents, by serving authentic homemade meals. We use fresh, homemade masalas to bring out the true flavors of the food. Understanding that it's often difficult to find quality food in tourist areas, we bring the best homemade meals right to your doorstep. We prioritize sustainability and do not encourage plastic packaging. Instead, we serve food in silver vessels and on banana leaves. After your meal, we will collect all the items we provided, leaving no waste behind.",
-  },
-  {
-    bannerId: 4,
-    imgUrl:
-      "https://www.tamilnadutourism.tn.gov.in/img/pages/medium-desktop/ooty-1653923879_ee32f7707d19c1d542af.webp",
+    description:
+      "Enjoy fresh, sustainable meals delivered to your doorstep. No waste, just pure homemade goodness.",
+    buttonText: "Check Now",
+    buttonLink: "/foods",
   },
 ];
 
