@@ -4,13 +4,14 @@ import { usePathname } from "next/navigation";
 
 export const NavLinks = () => {
   const pathname = usePathname();
+
   // TODO: Move navLinks to DB
   const navLinks = [
     { text: "Home", url: "/" },
-    { text: "Stay", url: "/stay" },
-    { text: "Travels", url: "/travel" },
+    { text: "Stay", url: "/stays" },
+    { text: "Travels", url: "/travels" },
     { text: "Food", url: "/food" },
-    { text: "Contact Us", url: "/contact-us" },
+    { text: "Contact Us", url: "/#contact-us" },
   ];
   return (
     <div className="flex gap-5 lg:gap-9 md:flex-row items-end flex-col mt-3">

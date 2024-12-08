@@ -6,7 +6,7 @@ import { faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
 
 const ContactUs = () => {
   return (
-    <div className=" mb-12 mx-12 lg:mx-32 md:mx-24">
+    <div id="contact-us" className=" mb-12 mx-12 lg:mx-32 md:mx-24">
       <div className="lg:mb-20 mb-8">
         <p className="text-center lg:text-4xl font-medium text-base">
           Connect with Us

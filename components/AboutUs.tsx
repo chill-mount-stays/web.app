@@ -1,4 +1,5 @@
 "use client";
+import { AboutUsContent, WhyUsContent } from "@/lib/context";
 import { motion } from "motion/react";
 import Image from "next/image";
 
@@ -48,19 +49,11 @@ export const AboutUs = () => {
         <div className="flex flex-col gap-10">
           <div className="w-sm max-w-md">
             <h3 className="text-xl font-semibold">About Us</h3>
-            <p>
-              The dummy format is an example format that does nothing. It will
-              never indicate that it can read or write a file. When explicitly
-              asked to read, it will simply read the bytes.
-            </p>
+            <AboutUsContent />
           </div>
           <div className="w-sm max-w-md">
             <h3 className="text-xl font-semibold">Why us?</h3>
-            <p>
-              The dummy format is an example format that does nothing. It will
-              never indicate that it can read or write a file. When explicitly
-              asked to read, it will simply read the bytes.
-            </p>
+            <WhyUsContent />
           </div>
         </div>
       </div>
