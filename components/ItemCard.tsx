@@ -63,6 +63,21 @@ export function ItemCard({
                     </p>
                   </div>
                 )}
+                {isTravelVendor(item) && (
+                  <p className="text-lg font-bold">₹{item.costPerDay}</p>
+                )}
+                {isFood(item) && (
+                  <p className="text-lg font-bold">₹{item.price}</p>
+                )}
+                {(isTravelVendor(item) || isFood(item)) && (
+                  <div className="text-sm text-gray-600">
+                    {item.availability ? (
+                      <p className="text-green-600">Available</p>
+                    ) : (
+                      <p>Next available: {item.nextAvailability}</p>
+                    )}
+                  </div>
+                )}
                 <Button variant="outline">View Details</Button>
               </div>
             </div>

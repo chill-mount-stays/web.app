@@ -9,7 +9,9 @@ interface PageBannerProps {
 
 export function PageBanner({ title, subtitle, imageUrl }: PageBannerProps) {
   return (
-    <div className={`relative w-full overflow-hidden h-48 md:h-64 mb-5`}>
+    <div
+      className={`relative w-full overflow-hidden h-48 md:h-64 mb-5 rounded-2xl`}
+    >
       <Image
         src={imageUrl}
         alt={title}

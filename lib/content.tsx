@@ -2,6 +2,24 @@ import { FoodSvg } from "@/components/SVGIcons/food";
 import { StaysSVG } from "@/components/SVGIcons/stays";
 import { TravelSVG } from "@/components/SVGIcons/travel";
 
+export const Sections = [
+  {
+    page: "stays",
+    title: "Stays That Suit You",
+    description: "Find accommodations that match your style and comfort.",
+  },
+  {
+    page: "travels",
+    title: "Travel Made Simple",
+    description: "Discover seamless options to get you where you want to go.",
+  },
+  {
+    page: "food",
+    title: "Savor Every Bite",
+    description: "Explore culinary delights to satisfy every craving.",
+  },
+];
+
 export const AboutUsContent = () => {
   return (
     <div className="flex flex-col gap-5">
@@ -38,7 +56,7 @@ export const WhyUsContent = () => {
 
 export const OurServicesContent = () => {
   return (
-    <div className="max-w-lg  ">
+    <div className="max-w-lg">
       <p className="text-center md:text-xl">
         Chillmountstays offers everything you need in one place
         accommodation,travel, and food services. Our goal is to satisfy all your

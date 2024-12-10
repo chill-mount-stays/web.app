@@ -46,7 +46,7 @@ export const AboutUs = () => {
             />
           </motion.div>
         </div>
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-10 mx-4">
           <div className="w-sm max-w-md">
             <h3 className="text-xl font-semibold">About Us</h3>
             <AboutUsContent />
