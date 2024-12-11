@@ -4,15 +4,17 @@ import { ItemCard } from "@/components/ItemCard";
 import NoResultFound from "@/components/NoResultFound";
 import { PageBanner } from "@/components/PageBanner";
 import SubHeading from "@/components/SubHeading";
+import PageHeader from "@/components/PageHeader";
 
 const StaysPage = async () => {
   const vendorsData: any = await getData("Stays");
   return (
     <div>
       <div className="lg:mx-32 mx-2">
-        <PageBanner title={"Stays"} imageUrl={"/assets/BPTV/boatHouse.jpg"} />
+        {/* <PageBanner title={"Stays"} imageUrl={"/assets/BPTV/boatHouse.jpg"} /> */}
+        <PageHeader service="stays" />
       </div>
-      <div className="my-20">
+      <div className="lg:my-20 my-10 lg:px-0 px-4">
         <SubHeading page="stays" />
       </div>
       <div className="container mx-auto">
