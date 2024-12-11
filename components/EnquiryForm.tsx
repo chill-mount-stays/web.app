@@ -45,7 +45,7 @@ export function EnquiryForm({
           {children}
         </div>
         <div className="mt-4 flex space-x-4 items-center w-full justify-between text-sm text-muted-foreground">
-          <p className="">Simplify Your Plans with Pre-Booked Stays</p>
+          <p className="">Simplify Your Plans with Pre-Booked Services</p>
           <Button type="submit" className="max-w-full">
             {buttonText}
           </Button>

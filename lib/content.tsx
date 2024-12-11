@@ -20,6 +20,27 @@ export const Sections = [
   },
 ];
 
+export const Headers = [
+  {
+    page: "stays",
+    imgUrl: "/assets/stays-header-bg.jpg",
+    title: "Stays Simplified",
+    description: "Pre-Book Your Perfect Stay",
+  },
+  {
+    page: "travels",
+    imgUrl: "/assets/travels-header-bg.jpg",
+    title: "Travel Made Easy",
+    description: "Reserve Your Journey in Advance",
+  },
+  {
+    page: "food",
+    imgUrl: "/assets/foods-header-bg.jpg",
+    title: "Savor the Journey",
+    description: "Pre-Plan Your Dining Experience",
+  },
+];
+
 export const AboutUsContent = () => {
   return (
     <div className="flex flex-col gap-5">

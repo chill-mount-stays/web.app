@@ -1,14 +1,14 @@
 "use client";
+
+import { PhoneCall, CalendarIcon, UsersIcon, MapPinIcon } from "lucide-react";
 import React from "react";
 import { EnquiryForm } from "./EnquiryForm";
-import { CalendarIcon, MapPinIcon, UsersIcon, PhoneCall } from "lucide-react";
 
-export function StaysEnquiry() {
+export function TravelsEnquiry() {
   const handleSubmit = (data: Record<string, string>) => {
     console.log("Stays search:", data);
     // Handle stays search logic here
   };
-
   return (
     <EnquiryForm buttonText="Pre Book" onSubmit={handleSubmit}>
       <EnquiryForm.Field
@@ -18,23 +18,23 @@ export function StaysEnquiry() {
         icon={<PhoneCall className="h-5 w-5" />}
       />
       <EnquiryForm.Field
-        name="checkIn"
-        label="Check-in Date"
+        name="pickUp"
+        label="Pick-up Date"
         type="date"
         icon={<CalendarIcon className="h-5 w-5" />}
       />
       <EnquiryForm.Field
-        name="checkOut"
-        label="Check-out Date"
+        name="dropDown"
+        label="Drop-down Date"
         type="date"
         icon={<CalendarIcon className="h-5 w-5" />}
       />
       <EnquiryForm.Field
-        name="guests"
-        label="Number of Guests"
-        type="number"
-        placeholder="Guests"
-        icon={<UsersIcon className="h-5 w-5" />}
+        name="destination"
+        label="Destination"
+        type="text"
+        placeholder="Destination"
+        icon={<MapPinIcon className="h-5 w-5" />}
       />
     </EnquiryForm>
   );

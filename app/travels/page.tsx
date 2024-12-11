@@ -4,13 +4,15 @@ import { PageBanner } from "@/components/PageBanner";
 import SubHeading from "@/components/SubHeading";
 import { Stay, Travel } from "@/types";
 import { getData } from "../actions";
+import PageHeader from "@/components/PageHeader";
 
 const TravelsPage = async () => {
   const vendorsData: any = await getData("Travels");
   return (
     <div>
       <div className="lg:mx-32 mx-2">
-        <PageBanner title={"Stays"} imageUrl={"/assets/BPTV/boatHouse.jpg"} />
+        {/* <PageBanner title={"Stays"} imageUrl={"/assets/BPTV/boatHouse.jpg"} /> */}
+        <PageHeader service="travels" />
       </div>
       <div className="my-20">
         <SubHeading page="travels" />
