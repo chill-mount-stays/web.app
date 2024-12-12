@@ -23,19 +23,19 @@ export const Sections = [
 export const Headers = [
   {
     page: "stays",
-    imgUrl: "/assets/stays-header-bg.jpg",
+    imgUrl: "/assets/stays-header-bg.webp",
     title: "Stays Simplified",
     description: "Pre-Book Your Perfect Stay",
   },
   {
     page: "travels",
-    imgUrl: "/assets/travels-header-bg.jpg",
+    imgUrl: "/assets/travels-header-bg.webp",
     title: "Travel Made Easy",
     description: "Reserve Your Journey in Advance",
   },
   {
     page: "food",
-    imgUrl: "/assets/foods-header-bg.jpg",
+    imgUrl: "/assets/foods-header-bg.webp",
     title: "Savor the Journey",
     description: "Pre-Plan Your Dining Experience",
   },

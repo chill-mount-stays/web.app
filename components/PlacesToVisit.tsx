@@ -19,8 +19,8 @@ export const PlacesToVisit = () => {
     },
   ];
   return (
-    <div className="p-5 flex flex-col items-center lg:gap-14 font-poppins lg:mt-20">
-      <p className="text-center text-2xl md:text-3xl font-semibold mb-4">
+    <div className="flex flex-col items-center lg:gap-14 font-poppins">
+      <p className="text-center lg:text-4xl font-medium text-base mb-4">
         Best Places to Visit
       </p>
       <div className="flex flex-col gap-5 justify-around lg:flex-row xl:gap-10">
@@ -49,7 +49,7 @@ export const PlacesToVisit = () => {
           );
         })}
       </div>
-      <Button className="mt-4 bg-cms">View More</Button>
+      <Button className="mt-4 bg-cms hover:bg-green-600">View More</Button>
     </div>
   );
 };

@@ -44,13 +44,16 @@ const HomeCarousel = () => {
                   />
                   <div className="absolute inset-0 bg-black/60" />
                   <div className="relative z-10 max-w-xl">
-                    <h2 className="md:text-3xl text-sm font-bold text-white mb-2">
+                    <h2 className="md:text-4xl text-sm font-bold text-white mb-2">
                       {banner.title}
                     </h2>
                     <p className="text-white/90 mb-4 md:text-base text-xs">
                       {banner.description}
                     </p>
-                    <Button onClick={() => router.push(`${banner.buttonLink}`)}>
+                    <Button
+                      className="bg-cms hover:bg-green-600"
+                      onClick={() => router.push(`${banner.buttonLink}`)}
+                    >
                       {banner.buttonText}
                     </Button>
                   </div>

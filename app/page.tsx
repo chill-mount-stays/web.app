@@ -20,7 +20,7 @@ export default function Home() {
         <section className="py-12 lg:py-24">
           <AboutUs />
         </section>
-        <section className="py-12 lg:pb-24">
+        <section className="py-12 lg:py-24">
           <ContactUs />
         </section>
       </div>

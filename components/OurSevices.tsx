@@ -7,7 +7,9 @@ export const OurServices = () => {
   const router = useRouter();
   return (
     <div className="flex flex-col items-center gap-10">
-      <span className="font-semibold text-2xl mt-5">Our Sevices</span>
+      <span className="lg:text-4xl font-medium text-base mt-5">
+        Our Sevices
+      </span>
       <div className="mx-4">
         <OurServicesContent />
       </div>
@@ -15,12 +17,12 @@ export const OurServices = () => {
         {OurSevicesIcons.map((services, __idx) => (
           <motion.div
             whileHover={{
-              border: "dotted 1px rgba(0,0,0.0.5)",
+              border: "dotted 1px rgba(36, 133, 18, 1)",
               borderRadius: "5px",
               scale: 1.1,
             }}
             whileTap={{
-              border: "dotted 1px rgba(0,0,0.0.5)",
+              border: "dotted 1px rgba(36, 133, 18, 1)",
               borderRadius: "5px",
             }}
             key={__idx}
