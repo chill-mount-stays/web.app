@@ -10,7 +10,7 @@ const StaysPage = async () => {
   const vendorsData: any = await getData("Stays");
   return (
     <div>
-      <div className="lg:mx-32 mx-2">
+      <div className="lg:mx-32">
         {/* <PageBanner title={"Stays"} imageUrl={"/assets/BPTV/boatHouse.jpg"} /> */}
         <PageHeader service="stays" />
       </div>

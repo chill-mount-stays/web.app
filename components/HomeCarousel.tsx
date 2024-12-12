@@ -33,8 +33,8 @@ const HomeCarousel = () => {
         {banners.map((banner, index) => (
           <CarouselItem key={index}>
             <div>
-              <Card className="overflow-hidden h-full">
-                <CardContent className="h-full relative lg:aspect-[2.39/1] aspect-[16/9] flex items-center justify-center  text-center">
+              <Card>
+                <CardContent className="relative lg:aspect-[2.39/1] aspect-[16/9] flex items-center justify-center  text-center">
                   <Image
                     src={banner.imgUrl}
                     alt=""

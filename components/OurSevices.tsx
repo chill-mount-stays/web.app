@@ -6,10 +6,8 @@ import { useRouter } from "next/navigation";
 export const OurServices = () => {
   const router = useRouter();
   return (
-    <div className="flex flex-col items-center gap-10">
-      <span className="lg:text-4xl font-medium text-base mt-5">
-        Our Sevices
-      </span>
+    <div className="flex flex-col items-center md:gap-10 gap-6">
+      <span className="lg:text-4xl font-medium text-xl mt-5">Our Sevices</span>
       <div className="mx-4">
         <OurServicesContent />
       </div>

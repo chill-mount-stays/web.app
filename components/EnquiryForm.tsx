@@ -44,9 +44,12 @@ export function EnquiryForm({
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-full">
           {children}
         </div>
-        <div className="mt-4 flex space-x-4 items-center w-full justify-between text-sm text-muted-foreground">
-          <p className="">Simplify Your Plans with Pre-Booked Services</p>
-          <Button type="submit" className="max-w-full">
+        <div className="mt-4 flex space-x-4 items-center w-full justify-between lg:text-sm text-xs text-muted-foreground">
+          <p>Simplify Your Plans with Pre-Booked Services</p>
+          <Button
+            type="submit"
+            className="max-w-full bg-cms hover:bg-green-700"
+          >
             {buttonText}
           </Button>
         </div>

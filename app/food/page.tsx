@@ -10,8 +10,7 @@ const FoodPage = async () => {
   const vendorsData: any = await getData("Foods");
   return (
     <div>
-      <div className="lg:mx-32 mx-2">
-        {/* <PageBanner title={"Stays"} imageUrl={"/assets/BPTV/boatHouse.jpg"} /> */}
+      <div className="lg:mx-32">
         <PageHeader service="food" />
       </div>
       <div className="my-20">

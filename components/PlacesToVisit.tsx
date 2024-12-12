@@ -20,7 +20,7 @@ export const PlacesToVisit = () => {
   ];
   return (
     <div className="flex flex-col items-center lg:gap-14 font-poppins">
-      <p className="text-center lg:text-4xl font-medium text-base mb-4">
+      <p className="text-center lg:text-4xl font-medium text-xl mb-4">
         Best Places to Visit
       </p>
       <div className="flex flex-col gap-5 justify-around lg:flex-row xl:gap-10">

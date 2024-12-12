@@ -10,7 +10,7 @@ export const Logo = ({
       <div className="flex items-center gap-3">
         <div>
           <svg
-            className="h-8 lg:h-12"
+            className="h-10 lg:h-12"
             viewBox="0 0 79 79"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +25,7 @@ export const Logo = ({
         </div>
         {showText ? (
           <span
-            className={`font-scottel text-base lg:text-2xl text-cms ${textProperties?.join(
+            className={`font-scottel text-lg lg:text-2xl text-cms ${textProperties?.join(
               " "
             )}`}
           >

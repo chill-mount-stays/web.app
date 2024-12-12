@@ -26,7 +26,7 @@ export const Navbar = () => {
         animate={isTop ? "dropShadow" : "noDropShadow"}
         variants={navAnimations}
       >
-        <div className="flex justify-between w-full items-center p-3 md:px-10 md:py-5 bg-white">
+        <div className="flex justify-between w-full items-center  md:px-10 px-4 md:h-20 h-16 bg-white">
           <Logo showText />
           <Navigation />
         </div>

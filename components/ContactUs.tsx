@@ -8,7 +8,7 @@ const ContactUs = () => {
   return (
     <div id="contact-us">
       <div className="lg:mb-20 mb-8">
-        <p className="text-center lg:text-4xl font-medium text-base">
+        <p className="text-center lg:text-4xl font-medium text-xl">
           Connect with Us
         </p>
         <p className="text-center lg:text-lg lg:mt-4 mt-1 text-sm">

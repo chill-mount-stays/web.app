@@ -6,7 +6,7 @@ import Image from "next/image";
 export const AboutUs = () => {
   return (
     <div>
-      <div className="flex flex-col-reverse md:flex-row items-center  justify-center  md:px-16 px-2 lg:space-x-20">
+      <div className="flex flex-col-reverse md:flex-row items-center  justify-center  lg:px-16 md:px-2 lg:space-x-20">
         <div className="relative flex items-center w-full max-w-md h-96">
           <motion.div
             initial={{ opacity: 0 }}
@@ -37,18 +37,17 @@ export const AboutUs = () => {
             />
           </motion.div>
         </div>
-        <div className="flex flex-col gap-10 mx-4">
+        <div className="flex flex-col gap-10 px-6">
           <div className="w-sm max-w-md">
-            <h3 className="text-xl font-semibold">About Us</h3>
+            <h3 className="lg:text-4xl font-medium text-xl mb-2">About Us</h3>
             <AboutUsContent />
           </div>
           <div className="w-sm max-w-md">
-            <h3 className="text-xl font-semibold">Why us?</h3>
+            <h3 className="lg:text-4xl font-medium text-xl mb-2">Why us?</h3>
             <WhyUsContent />
           </div>
         </div>
       </div>
-      <div className="h-10"></div>
     </div>
   );
 };

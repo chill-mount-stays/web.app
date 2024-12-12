@@ -3,7 +3,7 @@ import { Logo } from "./Logo";
 import { Instagram, Facebook, Twitter } from "lucide-react";
 export const Footer = () => {
   return (
-    <div className="border border-t py-4 lg:py-12 lg:px-24 px-4 flex lg:flex-row lg:items-end lg:justify-between flex-col bg-gray-100">
+    <div className="border border-t py-4 lg:py-12 lg:px-24 px-6 flex lg:flex-row lg:items-end lg:justify-between flex-col bg-gray-100">
       <div>
         <div className="max-w-lg">
           <Logo showText textProperties={["text-csm"]} />

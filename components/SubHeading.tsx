@@ -9,10 +9,10 @@ const SubHeading = ({ page }: SubHeadingProps) => {
   const content = Sections.find((section) => section.page === page);
   return (
     <div>
-      <p className="font-medium lg:text-4xl text-center text-base">
+      <p className="font-medium lg:text-4xl text-center text-xl">
         {content?.title}
       </p>
-      <p className="text-center lg:text-lg lg:mt-4 mt-1 text-sm">
+      <p className="text-center lg:text-lg lg:mt-4 text-sm mt-1">
         {content?.description}
       </p>
     </div>

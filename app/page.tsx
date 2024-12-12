@@ -7,7 +7,7 @@ import { PlacesToVisit } from "@/components/PlacesToVisit";
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <div className="flex-grow">
+      <div>
         <HomeCarousel />
       </div>
       <div className="container mx-auto">
@@ -17,10 +17,10 @@ export default function Home() {
         <section className="py-12 lg:py-24">
           <PlacesToVisit />
         </section>
-        <section className="py-12 lg:py-24">
+        <section className="pt-12 lg:py-24">
           <AboutUs />
         </section>
-        <section className="py-12 lg:py-24">
+        <section className="py-12 lg:py-24 md:px-0 px-6">
           <ContactUs />
         </section>
       </div>
