@@ -45,16 +45,46 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
             <p className="text-gray-600">{vendor.description}</p>
             {isStayVendor(vendor) && <p className="text-sm text-gray-600">{vendor.availability ? `${vendor.roomsAvailable} rooms available` : `Next available: ${vendor.nextAvailability}`}</p>}
           </div>
-          {isStayVendor(vendor) && (
-            <Button className="w-full" onClick={() => router.push(`/stays/${vendor.vendorId}`)}>
-              Edit
-            </Button>
-          )}
-          {isTravelVendor(vendor) && (
-            <Button className="w-full" onClick={() => router.push(`/travels/${vendor.vendorId}`)}>
-              Edit
-            </Button>
-          )}
+          {isStayVendor(vendor) &&
+            (((item = cartContext.stayItem.find((item) => item.id === vendor.vendorId)) || true) && !item ? (
+              <Button
+                className="w-full"
+                onClick={() => {
+                  cartContext.events.addItemsToCart({ catergory: "stayItem", items: [{ category: "stay", id: vendor.vendorId, name: vendor.name }] });
+                }}
+              >
+                Add
+              </Button>
+            ) : (
+              <Button
+                className="w-full"
+                onClick={() => {
+                  cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "stayItem", itemIds: [vendor.vendorId] }] });
+                }}
+              >
+                Remove
+              </Button>
+            ))}
+          {isTravelVendor(vendor) &&
+            (((item = cartContext.travelItem.find((item) => item.id === vendor.vendorId)) || true) && !item ? (
+              <Button
+                className="w-full"
+                onClick={() => {
+                  cartContext.events.addItemsToCart({ catergory: "travelItem", items: [{ category: "travel", id: vendor.vendorId, name: vendor.name }] });
+                }}
+              >
+                Add
+              </Button>
+            ) : (
+              <Button
+                className="w-full"
+                onClick={() => {
+                  cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "stayItem", itemIds: [vendor.vendorId] }] });
+                }}
+              >
+                Remove
+              </Button>
+            ))}
           {isFood(vendor) &&
             (((item = cartContext.foodItems.find((item) => item.id === vendor.foodId)) || true) && !item ? (
               <Button
@@ -78,15 +108,15 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
                 <div className="flex gap-3 items-center justify-center">
                   <Button
                     onClick={() => {
-                      cartContext?.events?.updateCount({ itemId: vendor?.foodId, count: Number(item?.itemCount ?? 0) + 1 });
+                      cartContext?.events?.updateCount({ itemId: vendor?.foodId, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) + 1 });
                     }}
                   >
                     +
                   </Button>
-                  <span className="w-full text-center">{`${item?.itemCount} qty`}</span>
+                  <span className="w-full text-center">{`${item?.category === "food" && item?.itemCount} qty`}</span>
                   <Button
                     onClick={() => {
-                      item?.itemCount - 1 ? cartContext?.events?.updateCount({ itemId: vendor?.foodId, count: Number(item?.itemCount ?? 0) - 1 }) : cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [vendor.foodId] }] });
+                      item?.category === "food" && item?.itemCount - 1 ? cartContext?.events?.updateCount({ itemId: vendor?.foodId, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) - 1 }) : cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [vendor.foodId] }] });
                     }}
                   >
                     -

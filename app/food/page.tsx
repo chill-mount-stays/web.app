@@ -28,9 +28,6 @@ const FoodPage = async () => {
           <NoResultFound />
         )}
       </div>
-      <div className="fixed bottom-[16px] right-5">
-        <CartFlyout />
-      </div>
     </div>
   );
 };

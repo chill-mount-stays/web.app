@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { CartContextProvider } from "@/context/CartContext";
+import { CartFlyout } from "@/components/CartFlyout";
 
 export const metadata: Metadata = {
   title: "Chill Mount Stays",
@@ -25,6 +26,9 @@ export default function RootLayout({
             <Footer />
           </div>
           <Toaster />
+          <div className="fixed bottom-[16px] right-5">
+            <CartFlyout />
+          </div>
         </CartContextProvider>
       </body>
     </html>
