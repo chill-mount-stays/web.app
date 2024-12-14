@@ -2,7 +2,6 @@ import { Stay } from "@/types";
 import { getData } from "../actions";
 import { ItemCard } from "@/components/ItemCard";
 import NoResultFound from "@/components/NoResultFound";
-import { PageBanner } from "@/components/PageBanner";
 import SubHeading from "@/components/SubHeading";
 import PageHeader from "@/components/PageHeader";
 
