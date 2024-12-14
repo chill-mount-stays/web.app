@@ -38,3 +38,8 @@ export interface DBImageFile {
   firebaseUrl: string;
   imageId: string;
 }
+
+export interface FoodItem {
+  name: string;
+  quantity: number;
+}

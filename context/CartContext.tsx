@@ -37,7 +37,7 @@ export type CartItem = {
   itemCount: number;
 };
 
-type cartContextAction = { itemType: keyof CartContextInterface } & ({ items: CartItem[]; type: "ADD" } | { type: "REMOVE"; itemIds: string[] } | { type: "PHONE_UPDATE"; field: string; value: string } | { type: "UPDATE_COUNT"; itemId: string });
+type cartContextAction = { itemType: keyof CartContextInterface } & ({ items: CartItem[]; type: "ADD" } | { type: "REMOVE"; itemIds: string[] } | { type: "PHONE_UPDATE"; field: string; value: string } | { type: "UPDATE_COUNT"; itemId: string; field: string; value: string });
 
 const initalCartContext: CartContextInterface = {
   customerInfo: {
@@ -106,8 +106,8 @@ export const CartContextProvider: React.FC<{ children?: ReactNode }> = (props) =
         const cartData = { ...state, [action.itemType]: { ...state[action.itemType], [action.field]: action.value } };
         setContextData(cartData);
         return cartData;
-      } else(action.type === "UPDATE_COUNT"){
-        const cartData = { ...state, ["foodItems"]: { ...state["foodItems"].filter((item)=>item.id !== action.itemId), [action.field]: action.value } };
+      } else if (action.type === "UPDATE_COUNT") {
+        const cartData = { ...state, ["foodItems"]: { ...state["foodItems"].filter((item) => item.id !== action.itemId), [action.field]: action.value } };
       }
     }
     return state;
@@ -120,8 +120,8 @@ export const CartContextProvider: React.FC<{ children?: ReactNode }> = (props) =
   const updateCustomerInfo = ({ field, value }: { field: string; value: string }) => {
     dispatch({ type: "PHONE_UPDATE", field: field, value: value, itemType: "customerInfo" });
   };
-  const updateCount = ({ itemId }: { itemId: string }) => {
-    dispatch({ type: "UPDATE_COUNT", itemId: itemId, itemType: "customerInfo" });
+  const updateCount = ({ itemId, field, value }: { itemId: string; field: string; value: string }) => {
+    dispatch({ type: "UPDATE_COUNT", itemId: itemId, field: field, value: value, itemType: "customerInfo" });
   };
   const removeItemsFromCart = ({
     removeItemPayload,

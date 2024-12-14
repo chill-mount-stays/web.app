@@ -37,35 +37,47 @@ const ContactUs = () => {
         </div>
         <div className="flex flex-col gap-8">
           <div className="flex">
-            <div className="border max-w-fit p-2 rounded-md max-h-fit">
+            <Link
+              href="mailto:support@chillmountstays.com"
+              className="border max-w-fit p-2 rounded-md max-h-fit"
+            >
               <FontAwesomeIcon
                 icon={faEnvelope}
                 className="lg:w-8 md:w-6 w-4"
               />
-            </div>
+            </Link>
             <div className="lg:ml-6 ml-3">
               <p className="font-medium lg:text-xl text-sm">Chat to us</p>
               <p className="text-gray-500 text-xs lg:text-base">
                 Our friendly team is here to help
               </p>
-              <p className="font-medium text-xs lg:text-base">
+              <Link
+                href="mailto:support@chillmountstays.com"
+                className="font-medium text-xs lg:text-base"
+              >
                 support@chillmountstays.com
-              </p>
+              </Link>
             </div>
           </div>
           <div>
             <div className="flex">
-              <div className="border max-w-fit p-2 rounded-md max-h-fit">
+              <Link
+                href="tel:+919842083815"
+                className="border max-w-fit p-2 rounded-md max-h-fit"
+              >
                 <FontAwesomeIcon icon={faPhone} className="lg:w-8 md:w-6 w-4" />
-              </div>
+              </Link>
               <div className="lg:ml-6 ml-3">
                 <p className="font-medium lg:text-xl text-sm">Call us</p>
                 <p className="text-gray-500 text-xs lg:text-base">
                   From day - To day, 8am to 10pm
                 </p>
-                <p className="font-medium text-xs lg:text-base">
+                <Link
+                  href="tel:9842083815"
+                  className="font-medium text-xs lg:text-base"
+                >
                   +91 9842083815
-                </p>
+                </Link>
               </div>
             </div>
           </div>

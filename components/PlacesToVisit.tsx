@@ -19,8 +19,8 @@ export const PlacesToVisit = () => {
     },
   ];
   return (
-    <div className="flex flex-col items-center lg:gap-14 font-poppins">
-      <p className="text-center lg:text-4xl font-medium text-xl mb-4">
+    <div className="flex flex-col items-center lg:gap-20 gap-10 font-poppins">
+      <p className="text-center lg:text-4xl font-medium text-xl ">
         Best Places to Visit
       </p>
       <div className="flex flex-col gap-5 justify-around lg:flex-row xl:gap-10">
@@ -44,12 +44,12 @@ export const PlacesToVisit = () => {
                   src={image.url}
                 />
               </motion.div>
-              <p className="font-bold font-poppins">{image.name}</p>
+              <p className="font-medium font-poppins mt-1">{image.name}</p>
             </motion.div>
           );
         })}
       </div>
-      <Button className="mt-4 bg-cms hover:bg-green-600">View More</Button>
+      <Button className=" bg-cms hover:bg-green-600">View More</Button>
     </div>
   );
 };

@@ -8,7 +8,7 @@ export const Footer = () => {
         <div className="max-w-lg">
           <Logo showText textProperties={["text-csm"]} />
         </div>
-        <div className="flex space-x-6 lg:mt-6 mt-4 lg:text-sm text-xs">
+        <div className="flex space-x-6 lg:mt-6 mt-4 lg:text-sm text-xs text-gray-600">
           <p>@ 2024 Chill Mount Stays. All rights reserved.</p>
           <Link href={"/policy"}>Privacy Policy</Link>
           <Link href={"/terms"}>Terms and Conditions</Link>
