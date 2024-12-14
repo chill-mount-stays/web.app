@@ -8,7 +8,6 @@ import { ImageCarousel } from "./ImageCarousel";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { CartContext, CartItem } from "@/context/CartContext";
-import { Input } from "./ui/input";
 
 interface ItemCardModalProps {
   type: string;
