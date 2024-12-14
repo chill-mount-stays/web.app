@@ -50,7 +50,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
               <Button
                 className="w-full"
                 onClick={() => {
-                  cartContext.events.addItemsToCart({ catergory: "stayItem", items: [{ category: "stay", id: vendor.vendorId, name: vendor.name }] });
+                  cartContext.events.addItemsToCart({ catergory: "stayItem", items: [{ category: "stay", id: vendor.vendorId, name: vendor.name, price: vendor.price }] });
                 }}
               >
                 Add
@@ -70,7 +70,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
               <Button
                 className="w-full"
                 onClick={() => {
-                  cartContext.events.addItemsToCart({ catergory: "travelItem", items: [{ category: "travel", id: vendor.vendorId, name: vendor.name }] });
+                  cartContext.events.addItemsToCart({ catergory: "travelItem", items: [{ category: "travel", id: vendor.vendorId, name: vendor.name, price: vendor.costPerDay }] });
                 }}
               >
                 Add
@@ -90,7 +90,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
               <Button
                 className="w-full"
                 onClick={() => {
-                  cartContext.events.addItemsToCart({ catergory: "foodItems", items: [{ category: "food", id: vendor.foodId, name: vendor.name, itemCount: 1 }] });
+                  cartContext.events.addItemsToCart({ catergory: "foodItems", items: [{ category: "food", id: vendor.foodId, name: vendor.name, itemCount: 1, price: vendor.price }] });
                 }}
               >
                 Add

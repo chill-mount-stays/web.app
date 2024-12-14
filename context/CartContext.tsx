@@ -16,6 +16,10 @@ export interface CartContextInterface {
   foodItems: CartItem[];
   stayItem: CartItem[];
   travelItem: CartItem[];
+  apprxTotal: 0;
+  staysTotal: 0;
+  travelsTotal: 0;
+  foodTotal: 0;
   events: {
     updateCount: ({ itemId, count }: { itemId: string; count: number }) => void;
     updateCustomerInfo: ({ field, value }: { field: string; value: string }) => void;
@@ -34,6 +38,7 @@ export interface CartContextInterface {
 export type CartItem = {
   id: string;
   name: string;
+  price: number;
 } & (
   | {
       category: "food";
@@ -60,6 +65,7 @@ const initalCartContext: CartContextInterface = {
   foodItems: [],
   stayItem: [],
   travelItem: [],
+  apprxTotal: 0,
   events: {
     updateCustomerInfo: function ({ field, value }: { field: string; value: string }): void {
       throw new Error("Function not implemented.");
@@ -81,6 +87,9 @@ const initalCartContext: CartContextInterface = {
       throw new Error("Function not implemented.");
     },
   },
+  staysTotal: 0,
+  travelsTotal: 0,
+  foodTotal: 0,
 };
 
 export const CartContext = createContext<CartContextInterface>(initalCartContext);
@@ -129,7 +138,6 @@ export const CartContextProvider: React.FC<{ children?: ReactNode }> = (props) =
         setContextData(cartData);
         return cartData;
       } else if (action.type === "UPDATE_COUNT") {
-        console.log("~~> hits");
         const updateItem = state["foodItems"].find((item) => item.id === action.itemId);
         if (updateItem) {
           const remainingItems = state["foodItems"].filter((item) => item.id !== action.itemId);
