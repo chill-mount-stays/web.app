@@ -7,7 +7,8 @@ import { Food, Stay, Travel } from "@/types";
 import { ImageCarousel } from "./ImageCarousel";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
-import { CartContext } from "@/context/CartContext";
+import { CartContext, CartItem } from "@/context/CartContext";
+import { Input } from "./ui/input";
 
 interface ItemCardModalProps {
   type: string;
@@ -23,6 +24,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
   const isTravelVendor = (vendor: any): vendor is Travel => type === "travel";
   const isFood = (vendor: any): vendor is Food => type === "food";
   const cartContext = useContext(CartContext);
+  let item: CartItem | undefined;
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl">
@@ -54,16 +56,45 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
               Edit
             </Button>
           )}
-          {isFood(vendor) && (
-            <Button
-              className="w-full"
-              onClick={() => {
-                cartContext.events.addItemsToCart({ catergory: "foodItems", items: [{ category: "food", id: vendor.foodId, name: vendor.name, itemCount: 1 }] });
-              }}
-            >
-              Add
-            </Button>
-          )}
+          {isFood(vendor) &&
+            (((item = cartContext.foodItems.find((item) => item.id === vendor.foodId)) || true) && !item ? (
+              <Button
+                className="w-full"
+                onClick={() => {
+                  cartContext.events.addItemsToCart({ catergory: "foodItems", items: [{ category: "food", id: vendor.foodId, name: vendor.name, itemCount: 1 }] });
+                }}
+              >
+                Add
+              </Button>
+            ) : (
+              <div className="flex flex-col md:grid grid-cols-3 gap-5">
+                <Button
+                  className="w-full col-span-2 bg-red-600"
+                  onClick={() => {
+                    cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [vendor.foodId] }] });
+                  }}
+                >
+                  Remove
+                </Button>
+                <div className="flex gap-3 items-center justify-center">
+                  <Button
+                    onClick={() => {
+                      cartContext?.events?.updateCount({ itemId: vendor?.foodId, count: Number(item?.itemCount ?? 0) + 1 });
+                    }}
+                  >
+                    +
+                  </Button>
+                  <span className="w-full text-center">{`${item?.itemCount} qty`}</span>
+                  <Button
+                    onClick={() => {
+                      item?.itemCount - 1 ? cartContext?.events?.updateCount({ itemId: vendor?.foodId, count: Number(item?.itemCount ?? 0) - 1 }) : cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [vendor.foodId] }] });
+                    }}
+                  >
+                    -
+                  </Button>
+                </div>
+              </div>
+            ))}
         </div>
       </DialogContent>
     </Dialog>

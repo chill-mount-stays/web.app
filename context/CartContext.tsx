@@ -15,6 +15,7 @@ export interface CartContextInterface {
   customerInfo: customerInfo;
   foodItems: CartItem[];
   events: {
+    updateCount: ({ itemId, count }: { itemId: string; count: number }) => void;
     updateCustomerInfo: ({ field, value }: { field: string; value: string }) => void;
     addItemsToCart: ({ catergory, items }: { catergory: keyof CartContextInterface; items: CartItem[] }) => void;
     removeItemsFromCart: ({
@@ -37,7 +38,7 @@ export type CartItem = {
   itemCount: number;
 };
 
-type cartContextAction = { itemType: keyof CartContextInterface } & ({ items: CartItem[]; type: "ADD" } | { type: "REMOVE"; itemIds: string[] } | { type: "PHONE_UPDATE"; field: string; value: string } | { type: "UPDATE_COUNT"; itemId: string; field: string; value: string });
+type cartContextAction = { itemType: keyof CartContextInterface } & ({ items: CartItem[]; type: "ADD" } | { type: "REMOVE"; itemIds: string[] } | { type: "PHONE_UPDATE"; field: string; value: string } | { type: "UPDATE_COUNT"; itemId: string; count: number });
 
 const initalCartContext: CartContextInterface = {
   customerInfo: {
@@ -66,6 +67,9 @@ const initalCartContext: CartContextInterface = {
         itemIds: string[];
       }[];
     }): void {
+      throw new Error("Function not implemented.");
+    },
+    updateCount: function ({ itemId, count }: { itemId: string; count: number }): void {
       throw new Error("Function not implemented.");
     },
   },
@@ -107,7 +111,15 @@ export const CartContextProvider: React.FC<{ children?: ReactNode }> = (props) =
         setContextData(cartData);
         return cartData;
       } else if (action.type === "UPDATE_COUNT") {
-        const cartData = { ...state, ["foodItems"]: { ...state["foodItems"].filter((item) => item.id !== action.itemId), [action.field]: action.value } };
+        console.log("~~> hits");
+        const updateItem = state["foodItems"].find((item) => item.id === action.itemId);
+        if (updateItem) {
+          const remainingItems = state["foodItems"].filter((item) => item.id !== action.itemId);
+          updateItem?.itemCount && (updateItem.itemCount = action.count);
+          const cartData = { ...state, foodItems: [...remainingItems, updateItem] };
+          return cartData;
+        }
+        return state;
       }
     }
     return state;
@@ -120,8 +132,8 @@ export const CartContextProvider: React.FC<{ children?: ReactNode }> = (props) =
   const updateCustomerInfo = ({ field, value }: { field: string; value: string }) => {
     dispatch({ type: "PHONE_UPDATE", field: field, value: value, itemType: "customerInfo" });
   };
-  const updateCount = ({ itemId, field, value }: { itemId: string; field: string; value: string }) => {
-    dispatch({ type: "UPDATE_COUNT", itemId: itemId, field: field, value: value, itemType: "customerInfo" });
+  const updateCount = ({ itemId, count }: { itemId: string; count: number }) => {
+    dispatch({ type: "UPDATE_COUNT", itemId: itemId, count: count, itemType: "customerInfo" });
   };
   const removeItemsFromCart = ({
     removeItemPayload,
@@ -141,6 +153,7 @@ export const CartContextProvider: React.FC<{ children?: ReactNode }> = (props) =
       addItemsToCart,
       removeItemsFromCart,
       updateCustomerInfo,
+      updateCount,
     },
   };
 
