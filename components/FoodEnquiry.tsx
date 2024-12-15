@@ -6,7 +6,6 @@ import { EnquiryForm } from "./EnquiryForm";
 
 export function FoodEnquiry() {
   const handleSubmit = (data: Record<string, string>) => {
-    console.log("Stays search:", data);
     // Handle stays search logic here
   };
   return (

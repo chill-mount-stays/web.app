@@ -5,7 +5,6 @@ import { CalendarIcon, MapPinIcon, UsersIcon, PhoneCall } from "lucide-react";
 
 export function StaysEnquiry() {
   const handleSubmit = (data: Record<string, string>) => {
-    console.log("Stays search:", data);
     // Handle stays search logic here
   };
 

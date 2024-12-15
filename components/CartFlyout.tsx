@@ -42,11 +42,9 @@ export function CartFlyout() {
     alert = showAlert();
     setNoItemsInCart(!(!!foodItems.length || !!stayItem.length || !!travelItem.length));
   }, [cartContext]);
-  console.log(customerInfo);
 
   const handleEnquireNow = () => {
     const formattedMessage = formatDetailsForWhatsApp(customerInfo, stayItem, travelItem, foodItems);
-    console.log(formattedMessage);
     const whatsappUrl = `https://api.whatsapp.com/send/?phone=%2B919842083815&text=${formattedMessage}&app_absent=0&lang=en`;
     window.open(whatsappUrl, "_blank");
   };
