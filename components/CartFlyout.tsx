@@ -4,13 +4,14 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
-import { AlertCircle, BookCheck, BookImageIcon, Car, Edit3, Home, Minus, PhoneCall, Plus, ShoppingBagIcon, ShoppingCart, Utensils } from "lucide-react";
+import { AlertCircle, Car, Edit3, Home, Minus, PhoneCall, Plus, ShoppingCart, Utensils } from "lucide-react";
 import { CartContext } from "@/context/CartContext";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { ScrollArea } from "./ui/scroll-area";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons/faWhatsapp";
+import { formatDetailsForWhatsApp } from "@/app/actions";
 
 export function CartFlyout() {
   const cartContext = React.useContext(CartContext);
@@ -37,6 +38,14 @@ export function CartFlyout() {
     alert = showAlert();
   }, [cartContext]);
   console.log(customerInfo);
+
+  const handleEnquireNow = () => {
+    const formattedMessage = formatDetailsForWhatsApp(customerInfo, stayItem, travelItem, foodItems);
+    console.log(formattedMessage);
+    const whatsappUrl = `https://api.whatsapp.com/send/?phone=%2B919842083815&text=${formattedMessage}&app_absent=0&lang=en`;
+    window.open(whatsappUrl, "_blank");
+  };
+
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -253,10 +262,10 @@ export function CartFlyout() {
               <DrawerClose asChild>
                 <Button variant="outline">Close</Button>
               </DrawerClose>
-              <Link className="bg-green-500 space-x-2 py-2 px-4 lg:px-6 flex items-center rounded-full max-w-fit" href={`${process.env.NEXT_PUBLIC_WHATSAPP_LINK}`}>
+              <div className="bg-green-500 space-x-2 py-2 px-4 lg:px-6 flex items-center rounded-full max-w-fit" onClick={handleEnquireNow}>
                 <FontAwesomeIcon icon={faWhatsapp} className="text-white lg:w-8 w-6 h-full" />
-                <p className=" text-white font-semibold">Enquire Now</p>
-              </Link>
+                <p className=" text-white">WhatsApp us</p>
+              </div>
             </div>
           </DrawerFooter>
         </div>
