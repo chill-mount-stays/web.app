@@ -3,10 +3,10 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { StarIcon } from "lucide-react";
-import { Food, Stay, Travel } from "@/types";
+import { CartItem, Food, Stay, Travel } from "@/types";
 import { ImageCarousel } from "./ImageCarousel";
 import { useContext, useEffect } from "react";
-import { CartContext, CartItem } from "@/context/CartContext";
+import { CartContext } from "@/context/CartContext";
 
 interface ItemCardModalProps {
   type: string;

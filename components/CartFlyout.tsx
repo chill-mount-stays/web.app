@@ -127,7 +127,7 @@ export function CartFlyout() {
             ) : (
               <></>
             )}
-            <ScrollArea className="mx-auto w-full max-w-xl h-[520px] lg:h-[624px]">
+            <ScrollArea className="mx-auto w-full max-w-xl h-[520px] lg:h-[450px]">
               <div className="flex flex-col space-y-5 lg:space-y-8">
                 <DrawerHeader>
                   <DrawerTitle className="text-center">Your Details & Bookings</DrawerTitle>
@@ -354,9 +354,11 @@ export function CartFlyout() {
               </div>
             </ScrollArea>
             <DrawerFooter>
-              <div className="w-full flex justify-between">
+              <div className="w-full flex justify-between mx-auto max-w-xl items-center">
                 <DrawerClose asChild>
-                  <Button variant="outline">Close</Button>
+                  <Button>
+                    <p className=" text-white">Close</p>
+                  </Button>
                 </DrawerClose>
                 <button disabled={alert.showAlert} className={cn(`${!alert.showAlert ? "bg-green-500 cursor-pointer" : "bg-green-300 cursor-not-allowed"} hover:bg-green-300 space-x-2 py-2 px-4 lg:px-6 flex items-center rounded-full max-w-fit`)} onClick={handleEnquireNow}>
                   <FontAwesomeIcon icon={faWhatsapp} className="text-white lg:w-8 w-6 h-full" />

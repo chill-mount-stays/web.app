@@ -16,7 +16,6 @@ const initalCartContext: CartContextInterface = {
   foodItems: [],
   stayItem: [],
   travelItem: [],
-  apprxTotal: 0,
   events: {
     updateCustomerInfo: function ({ field, value }: { field: string; value: string }): void {
       throw new Error("Function not implemented.");
@@ -41,6 +40,7 @@ const initalCartContext: CartContextInterface = {
       throw new Error("Function not implemented.");
     },
   },
+  apprxTotal: 0,
   staysTotal: 0,
   travelsTotal: 0,
   foodTotal: 0,
