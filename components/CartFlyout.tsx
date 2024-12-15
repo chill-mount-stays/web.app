@@ -262,10 +262,10 @@ export function CartFlyout() {
               <DrawerClose asChild>
                 <Button variant="outline">Close</Button>
               </DrawerClose>
-              <div className="bg-green-500 space-x-2 py-2 px-4 lg:px-6 flex items-center rounded-full max-w-fit" onClick={handleEnquireNow}>
+              <button disabled={alert.showAlert} className="bg-green-500 hover:bg-green-300 space-x-2 py-2 px-4 lg:px-6 flex items-center rounded-full max-w-fit cursor-pointer" onClick={handleEnquireNow}>
                 <FontAwesomeIcon icon={faWhatsapp} className="text-white lg:w-8 w-6 h-full" />
                 <p className=" text-white">WhatsApp us</p>
-              </div>
+              </button>
             </div>
           </DrawerFooter>
         </div>
