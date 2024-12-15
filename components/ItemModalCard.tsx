@@ -6,7 +6,7 @@ import { StarIcon } from "lucide-react";
 import { Food, Stay, Travel } from "@/types";
 import { ImageCarousel } from "./ImageCarousel";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CartContext, CartItem } from "@/context/CartContext";
 
 interface ItemCardModalProps {
@@ -17,15 +17,38 @@ interface ItemCardModalProps {
 }
 
 export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalProps) {
-  const router = useRouter();
-
   const isStayVendor = (vendor: any): vendor is Stay => type === "stay";
   const isTravelVendor = (vendor: any): vendor is Travel => type === "travel";
   const isFood = (vendor: any): vendor is Food => type === "food";
   const cartContext = useContext(CartContext);
   let item: CartItem | undefined;
+
+  useEffect(() => {
+    if (isOpen) {
+      window.history.pushState({ isModalOpen: true }, "Modal Open");
+    }
+    const handlePopState = (event: any) => {
+      if (event.state && event.state.isModalOpen) {
+        onClose();
+      } else {
+        onClose();
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isOpen]);
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={() => {
+        onClose();
+        window.history.back();
+      }}
+    >
       <DialogContent className="max-w-3xl">
         <DialogHeader>
           <DialogTitle>{vendor.name}</DialogTitle>
@@ -58,6 +81,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
             ) : (
               <Button
                 className="w-full"
+                variant={"destructive"}
                 onClick={() => {
                   cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "stayItem", itemIds: [vendor.vendorId] }] });
                 }}
@@ -78,8 +102,9 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
             ) : (
               <Button
                 className="w-full"
+                variant={"destructive"}
                 onClick={() => {
-                  cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "stayItem", itemIds: [vendor.vendorId] }] });
+                  cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "travelItem", itemIds: [vendor.vendorId] }] });
                 }}
               >
                 Remove
@@ -98,7 +123,8 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
             ) : (
               <div className="flex flex-col md:grid grid-cols-3 gap-5">
                 <Button
-                  className="w-full col-span-2 bg-red-600"
+                  variant={"destructive"}
+                  className="w-full col-span-2"
                   onClick={() => {
                     cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [vendor.foodId] }] });
                   }}
@@ -108,18 +134,18 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
                 <div className="flex gap-3 items-center justify-center">
                   <Button
                     onClick={() => {
-                      cartContext?.events?.updateCount({ itemId: vendor?.foodId, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) + 1 });
-                    }}
-                  >
-                    +
-                  </Button>
-                  <span className="w-full text-center">{`${item?.category === "food" && item?.itemCount} qty`}</span>
-                  <Button
-                    onClick={() => {
                       item?.category === "food" && item?.itemCount - 1 ? cartContext?.events?.updateCount({ itemId: vendor?.foodId, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) - 1 }) : cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [vendor.foodId] }] });
                     }}
                   >
                     -
+                  </Button>
+                  <span className="w-full text-center">{`${item?.category === "food" && item?.itemCount} qty`}</span>
+                  <Button
+                    onClick={() => {
+                      cartContext?.events?.updateCount({ itemId: vendor?.foodId, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) + 1 });
+                    }}
+                  >
+                    +
                   </Button>
                 </div>
               </div>

@@ -44,15 +44,8 @@ export const Headers = [
 export const AboutUsContent = () => {
   return (
     <div className="flex flex-col gap-5">
-      <p>
-        Chillmountstays offers a pleasant stay, homemade food, and travel
-        experiences for you, your family, friends, and loved ones. Here, you'll
-        find everything you need in one place.
-      </p>
-      <p>
-        We provide the best customer support and guidance to ensure a seamless
-        experience.
-      </p>
+      <p>Chillmountstays offers a pleasant stay, homemade food, and travel experiences for you, your family, friends, and loved ones. Here, you'll find everything you need in one place.</p>
+      <p>We provide the best customer support and guidance to ensure a seamless experience.</p>
     </div>
   );
 };
@@ -60,16 +53,8 @@ export const AboutUsContent = () => {
 export const WhyUsContent = () => {
   return (
     <div className="flex flex-col gap-5">
-      <p>
-        Chillmountstays offers comfort, pleasant stays, homemade food, and
-        travel services—all in one place. We are committed to ensuring your
-        safety and a joyful journey.
-      </p>
-      <p>
-        Our team provides the best customer support throughout your entire
-        experience. At Chillmountstays, we are always with you, making sure your
-        needs are met every step of the way.
-      </p>
+      <p>Chillmountstays offers comfort, pleasant stays, homemade food, and travel services—all in one place. We are committed to ensuring your safety and a joyful journey.</p>
+      <p>Our team provides the best customer support throughout your entire experience. At Chillmountstays, we are always with you, making sure your needs are met every step of the way.</p>
       <p>Thank you for visiting our page!</p>
     </div>
   );
@@ -78,12 +63,7 @@ export const WhyUsContent = () => {
 export const OurServicesContent = () => {
   return (
     <div className="max-w-lg">
-      <p className="text-center md:text-xl">
-        Chillmountstays offers everything you need in one place
-        accommodation,travel, and food services. Our goal is to satisfy all your
-        needs, ensuring a seamless and enjoyable experience from start to
-        finish.
-      </p>
+      <p className="text-center md:text-xl">Chillmountstays offers everything you need in one place accommodation,travel, and food services. Our goal is to satisfy all your needs, ensuring a seamless and enjoyable experience from start to finish.</p>
     </div>
   );
 };
@@ -92,32 +72,26 @@ export const banners = [
   {
     bannerId: 1,
     title: "Top-Class Rooms for Your Stay",
-    imgUrl:
-      "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
-    description:
-      "Enjoy a memorable stay with exceptional service at Chillmount Stays. Perfect for families and loved ones.",
+    imgUrl: "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
+    description: "Enjoy a memorable stay with exceptional service at Chillmount Stays. Perfect for families and loved ones.",
     buttonText: "Book Now",
     buttonLink: "/stays",
   },
   {
     bannerId: 2,
     title: "Your Custom Travel Experience",
-    imgUrl:
-      "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
-    description:
-      "Affordable travel with well-trained drivers and comfortable vehicles. No hidden charges—just a memorable journey.",
+    imgUrl: "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
+    description: "Affordable travel with well-trained drivers and comfortable vehicles. No hidden charges—just a memorable journey.",
     buttonText: "Make Your Trip",
     buttonLink: "/travels",
   },
   {
     bannerId: 3,
     title: "Authentic Homemade Meals",
-    imgUrl:
-      "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
-    description:
-      "Enjoy fresh, sustainable meals delivered to your doorstep. No waste, just pure homemade goodness.",
+    imgUrl: "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
+    description: "Enjoy fresh, sustainable meals delivered to your doorstep. No waste, just pure homemade goodness.",
     buttonText: "Check Now",
-    buttonLink: "/foods",
+    buttonLink: "/food",
   },
 ];
 
