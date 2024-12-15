@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { StarIcon } from "lucide-react";
 import { Food, Stay, Travel } from "@/types";
 import { ImageCarousel } from "./ImageCarousel";
-import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import { CartContext, CartItem } from "@/context/CartContext";
 

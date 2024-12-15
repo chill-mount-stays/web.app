@@ -18,7 +18,12 @@ export function ItemCard({ item, type }: { item: Stay | Travel | Food; type: str
   let foodItem;
   return (
     <>
-      <Card className="overflow-hidden cursor-pointer transition-shadow hover:shadow-lg w-full max-w-2xl mx-auto">
+      <Card
+        className="overflow-hidden cursor-pointer transition-shadow hover:shadow-lg w-full max-w-2xl mx-auto"
+        onClick={() => {
+          !isFood(item) && setIsModalOpen(true);
+        }}
+      >
         <CardContent className="p-0">
           <div className="flex flex-col md:flex-row h-full">
             <div className="relative w-full md:w-2/5 h-48 md:h-auto">
@@ -44,7 +49,6 @@ export function ItemCard({ item, type }: { item: Stay | Travel | Food; type: str
                 )}
                 {isTravelVendor(item) && <p className="text-lg font-bold">₹{item.costPerDay}</p>}
                 {isFood(item) && <p className="text-lg font-bold">₹{item.price}</p>}
-                {/* {(isTravelVendor(item) || isFood(item)) && <div className="text-sm text-gray-600">{item.availability ? <p className="text-green-600">Available</p> : <p>Next available: {item.nextAvailability}</p>}</div>} */}
                 <div>
                   {isFood(item) &&
                     (((foodItem = cartContext.foodItems.find((food) => food.id === item.foodId)) || true) && !foodItem ? (
@@ -87,6 +91,7 @@ export function ItemCard({ item, type }: { item: Stay | Travel | Food; type: str
                       </div>
                     ))}
                 </div>
+                {!isFood(item) && <Button variant={"outline"}>View Details</Button>}
               </div>
             </div>
           </div>

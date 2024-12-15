@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export function CartFlyout() {
+  const [orderSubmitted, setOrderSubmitted] = useState(false);
   const [isFlyoutOpen, setIsFlyoutOpen] = useState(false);
   const [noItemsInCart, setNoItemsInCart] = useState(true);
   const cartContext = React.useContext(CartContext);

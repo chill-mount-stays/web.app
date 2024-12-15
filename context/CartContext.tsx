@@ -1,55 +1,6 @@
 "use client";
+import { CartContextInterface, CartItem, cartContextAction } from "@/types";
 import { createContext, ReactNode, useReducer } from "react";
-
-type customerInfo = {
-  phone: string;
-  checkIn: string;
-  checkOut: string;
-  guests: string;
-  foodDate: string;
-  destination: string;
-  pickUp: string;
-  dropDown: string;
-};
-export interface CartContextInterface {
-  customerInfo: customerInfo;
-  foodItems: CartItem[];
-  stayItem: CartItem[];
-  travelItem: CartItem[];
-  apprxTotal: 0;
-  staysTotal: 0;
-  travelsTotal: 0;
-  foodTotal: 0;
-  events: {
-    updateCount: ({ itemId, count }: { itemId: string; count: number }) => void;
-    updateCustomerInfo: ({ field, value }: { field: string; value: string }) => void;
-    addItemsToCart: ({ catergory, items }: { catergory: keyof CartContextInterface; items: CartItem[] }) => void;
-    removeItemsFromCart: ({
-      removeItemPayload,
-    }: {
-      removeItemPayload: {
-        itemType: keyof CartContextInterface;
-        itemIds: string[];
-      }[];
-    }) => void;
-  };
-}
-
-export type CartItem = {
-  id: string;
-  name: string;
-  price: number;
-} & (
-  | {
-      category: "food";
-      itemCount: number;
-    }
-  | {
-      category: "travel" | "stay";
-    }
-);
-
-type cartContextAction = { itemType: keyof CartContextInterface } & ({ items: CartItem[]; type: "ADD" } | { type: "REMOVE"; itemIds: string[] } | { type: "PHONE_UPDATE"; field: string; value: string } | { type: "UPDATE_COUNT"; itemId: string; count: number });
 
 const initalCartContext: CartContextInterface = {
   customerInfo: {
