@@ -110,46 +110,6 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
                 Remove
               </Button>
             ))}
-          {isFood(vendor) &&
-            (((item = cartContext.foodItems.find((item) => item.id === vendor.foodId)) || true) && !item ? (
-              <Button
-                className="w-full"
-                onClick={() => {
-                  cartContext.events.addItemsToCart({ catergory: "foodItems", items: [{ category: "food", id: vendor.foodId, name: vendor.name, itemCount: 1, price: vendor.price }] });
-                }}
-              >
-                Add
-              </Button>
-            ) : (
-              <div className="flex flex-col md:grid grid-cols-3 gap-5">
-                <Button
-                  variant={"destructive"}
-                  className="w-full col-span-2"
-                  onClick={() => {
-                    cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [vendor.foodId] }] });
-                  }}
-                >
-                  Remove
-                </Button>
-                <div className="flex gap-3 items-center justify-center">
-                  <Button
-                    onClick={() => {
-                      item?.category === "food" && item?.itemCount - 1 ? cartContext?.events?.updateCount({ itemId: vendor?.foodId, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) - 1 }) : cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [vendor.foodId] }] });
-                    }}
-                  >
-                    -
-                  </Button>
-                  <span className="w-full text-center">{`${item?.category === "food" && item?.itemCount} qty`}</span>
-                  <Button
-                    onClick={() => {
-                      cartContext?.events?.updateCount({ itemId: vendor?.foodId, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) + 1 });
-                    }}
-                  >
-                    +
-                  </Button>
-                </div>
-              </div>
-            ))}
         </div>
       </DialogContent>
     </Dialog>

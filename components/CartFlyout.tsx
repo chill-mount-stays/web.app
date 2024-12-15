@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
-import { AlertCircle, Car, Edit3, Home, Minus, PhoneCall, Plus, ShoppingBagIcon, ShoppingCart, Trash2Icon, Utensils } from "lucide-react";
+import { AlertCircle, Car, Circle, Edit3, Home, Minus, PhoneCall, Plus, ShoppingBagIcon, ShoppingCart, Trash2Icon, Utensils } from "lucide-react";
 import { CartContext } from "@/context/CartContext";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { ScrollArea } from "./ui/scroll-area";
@@ -79,7 +79,8 @@ export function CartFlyout() {
         }}
         asChild
       >
-        <div className="p-5 bg-cms text-white rounded-full shadow-lg cursor-pointer">
+        <div className="p-5 bg-cms text-white rounded-full shadow-lg cursor-pointer relative">
+          {foodItems.length + stayItem.length + travelItem.length > 0 && <div className="absolute bg-red-800 px-2  rounded-full left-2 top-2 ">{foodItems.length + stayItem.length + travelItem.length}</div>}
           <ShoppingCart height={25} width={25} />
         </div>
       </DrawerTrigger>
