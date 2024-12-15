@@ -10,7 +10,7 @@ export function FoodEnquiry() {
     // Handle stays search logic here
   };
   return (
-    <EnquiryForm buttonText="Pre Order" onSubmit={handleSubmit}>
+    <EnquiryForm onSubmit={handleSubmit}>
       <EnquiryForm.Field name="phone" label="Phone" placeholder="Phone Number" icon={<PhoneCall className="h-5 w-5" />} />
       <EnquiryForm.Field name="foodDate" label="Date" type="date" placeholder="Pick a date" icon={<CalendarIcon className="h-5 w-5" />} />
     </EnquiryForm>

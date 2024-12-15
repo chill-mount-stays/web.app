@@ -4,11 +4,13 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
-import { AlertCircle, Car, Edit, Edit2, Edit2Icon, Edit3, Edit3Icon, EditIcon, Home, LucideEdit2, Minus, PhoneCall, Plus, ShoppingBagIcon, Utensils } from "lucide-react";
+import { AlertCircle, BookCheck, BookImageIcon, Car, Edit3, Home, Minus, PhoneCall, Plus, ShoppingBagIcon, ShoppingCart, Utensils } from "lucide-react";
 import { CartContext } from "@/context/CartContext";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { ScrollArea } from "./ui/scroll-area";
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons/faWhatsapp";
 
 export function CartFlyout() {
   const cartContext = React.useContext(CartContext);
@@ -38,9 +40,9 @@ export function CartFlyout() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button className="pad-5">
-          <ShoppingBagIcon className="pad-5" height={25} width={25} />
-        </Button>
+        <div className="p-5 bg-cms text-white rounded-full shadow-lg">
+          <ShoppingCart height={25} width={25} />
+        </div>
       </DrawerTrigger>
       <DrawerContent>
         <div className="lg:p-10 p-5 flex flex-col">
@@ -251,9 +253,10 @@ export function CartFlyout() {
               <DrawerClose asChild>
                 <Button variant="outline">Close</Button>
               </DrawerClose>
-              <Button disabled={alert.showAlert} className="bg-cms">
-                Submit
-              </Button>
+              <Link className="bg-green-500 space-x-2 py-2 px-4 lg:px-6 flex items-center rounded-full max-w-fit" href={`${process.env.NEXT_PUBLIC_WHATSAPP_LINK}`}>
+                <FontAwesomeIcon icon={faWhatsapp} className="text-white lg:w-8 w-6 h-full" />
+                <p className=" text-white font-semibold">Enquire Now</p>
+              </Link>
             </div>
           </DrawerFooter>
         </div>

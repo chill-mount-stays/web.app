@@ -10,32 +10,11 @@ export function TravelsEnquiry() {
     // Handle stays search logic here
   };
   return (
-    <EnquiryForm buttonText="Pre Book" onSubmit={handleSubmit}>
-      <EnquiryForm.Field
-        name="phone"
-        label="Phone"
-        placeholder="Phone Number"
-        icon={<PhoneCall className="h-5 w-5" />}
-      />
-      <EnquiryForm.Field
-        name="pickUp"
-        label="Pick-up Date"
-        type="date"
-        icon={<CalendarIcon className="h-5 w-5" />}
-      />
-      <EnquiryForm.Field
-        name="dropDown"
-        label="Drop-down Date"
-        type="date"
-        icon={<CalendarIcon className="h-5 w-5" />}
-      />
-      <EnquiryForm.Field
-        name="destination"
-        label="Destination"
-        type="text"
-        placeholder="Destination"
-        icon={<MapPinIcon className="h-5 w-5" />}
-      />
+    <EnquiryForm onSubmit={handleSubmit}>
+      <EnquiryForm.Field name="phone" label="Phone" placeholder="Phone Number" icon={<PhoneCall className="h-5 w-5" />} />
+      <EnquiryForm.Field name="pickUp" label="Pick-up Date" type="date" icon={<CalendarIcon className="h-5 w-5" />} />
+      <EnquiryForm.Field name="dropDown" label="Drop-down Date" type="date" icon={<CalendarIcon className="h-5 w-5" />} />
+      <EnquiryForm.Field name="destination" label="Destination" type="text" placeholder="Destination" icon={<MapPinIcon className="h-5 w-5" />} />
     </EnquiryForm>
   );
 }
