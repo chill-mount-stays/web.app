@@ -67,6 +67,7 @@ export interface CartContextInterface {
     updateCount: ({ itemId, count }: { itemId: string; count: number }) => void;
     updateCustomerInfo: ({ field, value }: { field: string; value: string }) => void;
     addItemsToCart: ({ catergory, items }: { catergory: keyof CartContextInterface; items: CartItem[] }) => void;
+    emptyContext: () => void;
     removeItemsFromCart: ({
       removeItemPayload,
     }: {
@@ -92,4 +93,4 @@ export type CartItem = {
     }
 );
 
-export type cartContextAction = { itemType: keyof CartContextInterface } & ({ items: CartItem[]; type: "ADD" } | { type: "REMOVE"; itemIds: string[] } | { type: "PHONE_UPDATE"; field: string; value: string } | { type: "UPDATE_COUNT"; itemId: string; count: number });
+export type cartContextAction = { itemType: keyof CartContextInterface } & ({ items: CartItem[]; type: "ADD" } | { type: "REMOVE"; itemIds: string[] } | { type: "PHONE_UPDATE"; field: string; value: string } | { type: "UPDATE_COUNT"; itemId: string; count: number } | { type: "CLEAR_CART" });

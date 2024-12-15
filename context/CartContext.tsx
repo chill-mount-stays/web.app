@@ -37,6 +37,9 @@ const initalCartContext: CartContextInterface = {
     updateCount: function ({ itemId, count }: { itemId: string; count: number }): void {
       throw new Error("Function not implemented.");
     },
+    emptyContext: function (): void {
+      throw new Error("Function not implemented.");
+    },
   },
   staysTotal: 0,
   travelsTotal: 0,
@@ -98,6 +101,8 @@ export const CartContextProvider: React.FC<{ children?: ReactNode }> = (props) =
         }
         return state;
       }
+    } else if (action.type === "CLEAR_CART") {
+      return initalCartContext;
     }
     return state;
   };
@@ -111,6 +116,9 @@ export const CartContextProvider: React.FC<{ children?: ReactNode }> = (props) =
   };
   const updateCount = ({ itemId, count }: { itemId: string; count: number }) => {
     dispatch({ type: "UPDATE_COUNT", itemId: itemId, count: count, itemType: "customerInfo" });
+  };
+  const emptyContext = () => {
+    dispatch({ type: "CLEAR_CART", itemType: "events" });
   };
   const removeItemsFromCart = ({
     removeItemPayload,
@@ -131,6 +139,7 @@ export const CartContextProvider: React.FC<{ children?: ReactNode }> = (props) =
       removeItemsFromCart,
       updateCustomerInfo,
       updateCount,
+      emptyContext,
     },
   };
 
