@@ -4,9 +4,11 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
-import { AlertCircle, Car, Home, ShoppingBagIcon, Utensils } from "lucide-react";
+import { AlertCircle, Car, Edit, Edit2, Edit2Icon, Edit3, Edit3Icon, EditIcon, Home, LucideEdit2, Minus, PhoneCall, Plus, ShoppingBagIcon, Utensils } from "lucide-react";
 import { CartContext } from "@/context/CartContext";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
+import { ScrollArea } from "./ui/scroll-area";
+import Link from "next/link";
 
 export function CartFlyout() {
   const cartContext = React.useContext(CartContext);
@@ -14,6 +16,11 @@ export function CartFlyout() {
   const stayItem = cartContext.stayItem;
   const travelItem = cartContext.travelItem;
   const customerInfo = cartContext.customerInfo;
+
+  let isStayFilled = !customerInfo.checkIn || !customerInfo.checkOut || !customerInfo.guests;
+  let isTravelFilled = !customerInfo.destination || !customerInfo.pickUp || !customerInfo.dropDown;
+  let isFoodFilled = !customerInfo.foodDate;
+  let isPhoneFilled = !customerInfo.phone;
   const showAlert = () => {
     const notCompleted = [];
     let showAlert = false;
@@ -27,6 +34,7 @@ export function CartFlyout() {
   React.useEffect(() => {
     alert = showAlert();
   }, [cartContext]);
+  console.log(customerInfo);
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -35,9 +43,9 @@ export function CartFlyout() {
         </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="p-10 flex flex-col lg:gap-5">
+        <div className="lg:p-10 p-5 flex flex-col">
           {alert.showAlert ? (
-            <Alert variant="destructive">
+            <Alert variant="destructive" className="max-w-sm  self-end">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>You have some missing details</AlertTitle>
               <AlertDescription>{`${alert.notCompleted.join(", ")} details are missing`}</AlertDescription>
@@ -45,111 +53,199 @@ export function CartFlyout() {
           ) : (
             <></>
           )}
-          {/* <div>
-            <p>{`Phone No : ${customerInfo.phone}`}</p>
-            {stayItem.length ? (
-              <div>
-                <p>Hotel details</p>
-                <p>{`Check In : ${customerInfo.checkIn}`}</p>
-                <p>{`Check Out : ${customerInfo.checkOut}`}</p>
-                <p>{`No. of Gustes : ${customerInfo.guests}`}</p>
-              </div>
-            ) : (
-              <></>
-            )}
-            {travelItem.length ? (
-              <div>
-                <p>Travel details</p>
-                <p>{`Pick up time : ${customerInfo.pickUp}`}</p>
-                <p>{`Destination : ${customerInfo.destination}`}</p>
-              </div>
-            ) : (
-              <></>
-            )}
-            {foodItems.length ? (
-              <div>
-                <p>Food details</p>
-                <p>{`Food date : ${customerInfo.foodDate}`}</p>
-              </div>
-            ) : (
-              <></>
-            )}
-          </div> */}
-          <div>
-            <div className="mx-auto w-full max-w-xl min-h-96 flex flex-col justify-start gap-10">
+          <ScrollArea className="mx-auto w-full max-w-xl h-[520px] lg:h-[624px]">
+            <div className="flex flex-col space-y-5 lg:space-y-8">
               <DrawerHeader>
-                <DrawerTitle className="text-center">Your Bookings</DrawerTitle>
+                <DrawerTitle className="text-center">Your Details & Bookings</DrawerTitle>
                 <DrawerDescription className="hidden">Food items in cart</DrawerDescription>
               </DrawerHeader>
-              <div>
-                {stayItem.length ? (
-                  <>
-                    {stayItem.map((item) => (
-                      <div key={item.id} className="border border-green-100 flex items-center p-5 rounded-lg space-x-4">
-                        <div className="w-12 h-12 flex items-center justify-center bg-green-100 rounded-full text-green-600">
-                          <Home />
-                        </div>
-                        <div>
-                          <p className="text-center">{item.name}</p>
-                          <p className="text-xs text-muted-foreground">{item.category}</p>
-                          <p className="text-xs text-muted-foreground">{item.price}</p>
-                        </div>
-                        {/* <span className="text-center">{item.category === "stay" && item.} Qty</span> */}
+              <div className="flex items-center lg:px-5 space-x-4">
+                <div className="w-12 h-12 flex items-center justify-center bg-purple-100 rounded-full text-purple-600">
+                  <PhoneCall />
+                </div>
+                <div className="flex justify-between space-x-4 items-center w-4/5">
+                  <p className="">Phone Number</p>
+                  {!isPhoneFilled && <p className="text-muted-foreground">{customerInfo.phone}</p>}
+                  {isPhoneFilled && (
+                    <DrawerClose asChild>
+                      <div className="text-gray-500 p-3 rounded-full hover:bg-gray-100">
+                        <Edit3 />
                       </div>
-                    ))}
-                  </>
-                ) : (
-                  <div className="text-center">No Stays selected</div>
+                    </DrawerClose>
+                  )}
+                </div>
+              </div>
+              <div>
+                {stayItem.length && (
+                  <div className="lg:px-5">
+                    <div className="flex items-center space-x-4 mb-3">
+                      <div className="w-12 h-12 flex items-center justify-center bg-green-100 rounded-full text-green-600">
+                        <Home />
+                      </div>
+                      <div className="w-4/5 flex justify-between items-center">
+                        <div>
+                          <p className="">Stay</p>
+                          {!isStayFilled && (
+                            <div className="text-xs flex space-x-4">
+                              <p className="">
+                                Check in: <span className="text-muted-foreground">{customerInfo.checkIn}</span>
+                              </p>
+                              <p>
+                                Check out: <span className="text-muted-foreground">{customerInfo.checkOut}</span>
+                              </p>
+                              <p>
+                                Guests: <span className="text-muted-foreground">{customerInfo.guests}</span>
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                        {isStayFilled && (
+                          <DrawerClose asChild>
+                            <Link href={"/stays"} className="text-gray-500 p-3 rounded-full hover:bg-gray-100">
+                              <Edit3 />
+                            </Link>
+                          </DrawerClose>
+                        )}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="py-5 lg:px-10 pl-5">
+                      {stayItem.map((item, idx) => (
+                        <div key={item.id} className="flex items-center space-x-4">
+                          <div>
+                            <p className="text-xs text-muted-foreground">{idx + 1}.</p>
+                          </div>
+                          <div className="flex justify-between space-x-4 items-center w-11/12 ">
+                            <p className="">{item.name}</p>
+                            <p className="text-[14px]">₹{item.price} per night</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 )}
               </div>
               <div>
                 {travelItem.length ? (
-                  <>
-                    {travelItem.map((item) => (
-                      <div key={item.id} className="border border-green-100 flex items-center p-5 rounded-lg space-x-4">
-                        <div className="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full text-blue-600">
-                          <Car />
-                        </div>
-                        <div>
-                          <p className="text-center">{item.name}</p>
-                          <p className="text-xs text-muted-foreground">{item.category}</p>
-                          <p className="text-xs text-muted-foreground">{item.price}</p>
-                        </div>
-                        {/* <span className="text-center">{item.category === "stay" && item.} Qty</span> */}
+                  <div className="lg:px-5">
+                    <div className="flex items-center space-x-4 mb-3">
+                      <div className="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full text-blue-600">
+                        <Car />
                       </div>
-                    ))}
-                  </>
+                      <div className="w-4/5 flex justify-between items-center">
+                        <div>
+                          <p className="">Travel</p>
+                          {!isTravelFilled && (
+                            <div className="text-xs flex space-x-4">
+                              <p className="">
+                                Pick up: <span className="text-muted-foreground">{customerInfo.pickUp}</span>
+                              </p>
+                              <p>
+                                Drop down: <span className="text-muted-foreground">{customerInfo.dropDown}</span>
+                              </p>
+                              <p>
+                                Destination: <span className="text-muted-foreground">{customerInfo.destination}</span>
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                        {isTravelFilled && (
+                          <DrawerClose asChild>
+                            <Link href={"/travels"} className="text-gray-500 p-3 rounded-full hover:bg-gray-100">
+                              <Edit3 />
+                            </Link>
+                          </DrawerClose>
+                        )}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="py-5 lg:px-10 pl-5">
+                      {travelItem.map((item, idx) => (
+                        <div key={item.id} className="flex items-center space-x-4">
+                          <div>
+                            <p className="text-xs text-muted-foreground">{idx + 1}.</p>
+                          </div>
+                          <div className="flex justify-between space-x-4 items-center w-11/12 ">
+                            <p className="">{item.name}</p>
+                            <p className="text-[14px]">₹{item.price} per day</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 ) : (
-                  <div className="text-center">No Travels selected</div>
+                  <div className="text-center p-5">No Travels selected</div>
                 )}
               </div>
               <div>
                 {foodItems.length ? (
-                  <>
-                    {foodItems.map((item) => (
-                      <div key={item.id} className="border border-green-100 flex items-center p-5 rounded-lg space-x-4">
-                        <div className="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full text-yellow-600">
-                          <Utensils />
-                        </div>
-                        <div className="flex justify-between space-x-4 items-center w-4/5 ">
-                          <div>
-                            <p className="text-center">{item.name}</p>
-                            <p className="text-xs text-muted-foreground">{item.category}</p>
-                            <p className="text-xs text-muted-foreground">{item.price}</p>
-                          </div>
-                          <div>
-                            <p className="text-center">{item.category === "food" && item.itemCount} Qty</p>
-                          </div>
-                        </div>
+                  <div className="lg:px-5">
+                    <div className="flex items-center space-x-4 mb-3">
+                      <div className="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full text-yellow-600">
+                        <Utensils />
                       </div>
-                    ))}
-                  </>
+                      <div className="w-4/5 flex justify-between items-center">
+                        <div>
+                          <p className="">Food</p>
+                          {!isFoodFilled && (
+                            <div className="text-xs flex space-x-4">
+                              <p className="">
+                                Order Date: <span className="text-muted-foreground">{customerInfo.foodDate}</span>
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                        {isFoodFilled && (
+                          <DrawerClose asChild>
+                            <Link href={"/food"} className="text-gray-500 p-3 rounded-full hover:bg-gray-100">
+                              <Edit3 />
+                            </Link>
+                          </DrawerClose>
+                        )}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="py-5 lg:px-10 pl-5">
+                      {foodItems.map((item, idx) => (
+                        <div key={item.id} className="flex items-center space-x-4">
+                          <div>
+                            <p className="text-xs text-muted-foreground">{idx + 1}.</p>
+                          </div>
+                          <div className="flex justify-between space-x-4 items-center w-11/12 ">
+                            <div className="flex space-x-4 items-center">
+                              <p className="">{item.name}</p>
+                              <div className="flex gap-3 items-center justify-center">
+                                <div
+                                  className="p-1 bg-gray-100 rounded-md"
+                                  onClick={() => {
+                                    item?.category === "food" && item?.itemCount - 1 ? cartContext?.events?.updateCount({ itemId: item?.id, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) - 1 }) : cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [item.id] }] });
+                                  }}
+                                >
+                                  <Minus className="w-4 h-4" />
+                                </div>
+                                <p className="w-full text-center text-sm">{`${item?.category === "food" && item?.itemCount}`}</p>
+                                <div
+                                  className="p-1 bg-gray-100 rounded-md"
+                                  onClick={() => {
+                                    cartContext?.events?.updateCount({ itemId: item?.id, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) + 1 });
+                                  }}
+                                >
+                                  <Plus className="w-4 h-4" />
+                                </div>
+                              </div>
+                            </div>
+                            <p className="text-[14px]">₹{item.category === "food" && item.itemCount * item.price}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 ) : (
-                  <div className="text-center">No food items in cart</div>
+                  <div className="text-center p-5">No Foods selected</div>
                 )}
               </div>
             </div>
-          </div>
+          </ScrollArea>
           <DrawerFooter>
             <div className="w-full flex justify-between">
               <DrawerClose asChild>
