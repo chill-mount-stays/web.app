@@ -73,6 +73,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
               <Button
                 className="w-full"
                 onClick={() => {
+                  onClose();
                   cartContext.events.addItemsToCart({ catergory: "stayItem", items: [{ category: "stay", id: vendor.vendorId, name: vendor.name, price: vendor.price }] });
                 }}
               >
@@ -83,6 +84,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
                 className="w-full"
                 variant={"destructive"}
                 onClick={() => {
+                  onClose();
                   cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "stayItem", itemIds: [vendor.vendorId] }] });
                 }}
               >
@@ -94,6 +96,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
               <Button
                 className="w-full"
                 onClick={() => {
+                  onClose();
                   cartContext.events.addItemsToCart({ catergory: "travelItem", items: [{ category: "travel", id: vendor.vendorId, name: vendor.name, price: vendor.costPerDay }] });
                 }}
               >

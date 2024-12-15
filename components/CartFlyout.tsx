@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
-import { AlertCircle, Car, Circle, Edit3, Home, Minus, PhoneCall, Plus, ShoppingBagIcon, ShoppingCart, Trash2Icon, Utensils } from "lucide-react";
+import { AlertCircle, Car, Edit3, Home, Minus, PhoneCall, Plus, ShoppingBagIcon, ShoppingCart, Trash2Icon, Utensils } from "lucide-react";
 import { CartContext } from "@/context/CartContext";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { ScrollArea } from "./ui/scroll-area";
@@ -47,6 +47,7 @@ export function CartFlyout() {
     const formattedMessage = formatDetailsForWhatsApp(customerInfo, stayItem, travelItem, foodItems);
     const whatsappUrl = `https://api.whatsapp.com/send/?phone=%2B919842083815&text=${formattedMessage}&app_absent=0&lang=en`;
     window.open(whatsappUrl, "_blank");
+    sessionStorage.removeItem("CMS_CartItems");
   };
   useEffect(() => {
     if (isFlyoutOpen) {
