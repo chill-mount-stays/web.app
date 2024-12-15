@@ -12,10 +12,11 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons/faWhatsapp";
 import { formatDetailsForWhatsApp } from "@/app/actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export function CartFlyout() {
+  const [isFlyoutOpen, setIsFlyoutOpen] = useState(false);
   const [noItemsInCart, setNoItemsInCart] = useState(true);
   const cartContext = React.useContext(CartContext);
   const foodItems = cartContext.foodItems;
@@ -49,10 +50,37 @@ export function CartFlyout() {
     const whatsappUrl = `https://api.whatsapp.com/send/?phone=%2B919842083815&text=${formattedMessage}&app_absent=0&lang=en`;
     window.open(whatsappUrl, "_blank");
   };
+  useEffect(() => {
+    if (isFlyoutOpen) {
+      window.history.pushState({ isModalOpen: true }, "Modal Open");
+    }
+    const handlePopState = (event: any) => {
+      if (event.state && event.state.isModalOpen) {
+        setIsFlyoutOpen(false);
+      } else {
+        setIsFlyoutOpen(false);
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isFlyoutOpen]);
 
   return (
-    <Drawer>
-      <DrawerTrigger asChild>
+    <Drawer
+      open={isFlyoutOpen}
+      onClose={() => {
+        setIsFlyoutOpen(false);
+      }}
+    >
+      <DrawerTrigger
+        onClick={() => {
+          setIsFlyoutOpen(true);
+        }}
+        asChild
+      >
         <div className="p-5 bg-cms text-white rounded-full shadow-lg cursor-pointer">
           <ShoppingCart height={25} width={25} />
         </div>
