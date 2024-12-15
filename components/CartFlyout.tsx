@@ -53,7 +53,7 @@ export function CartFlyout() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <div className="p-5 bg-cms text-white rounded-full shadow-lg">
+        <div className="p-5 bg-cms text-white rounded-full shadow-lg cursor-pointer">
           <ShoppingCart height={25} width={25} />
         </div>
       </DrawerTrigger>
