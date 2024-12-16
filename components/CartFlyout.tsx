@@ -15,7 +15,7 @@ import { formatDetailsForWhatsApp } from "@/app/actions";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-
+import { format } from "date-fns";
 export function CartFlyout() {
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   const [isFlyoutOpen, setIsFlyoutOpen] = useState(false);
@@ -31,6 +31,7 @@ export function CartFlyout() {
   let isTravelFilled = !customerInfo.destination || !customerInfo.pickUp || !customerInfo.dropDown;
   let isFoodFilled = !customerInfo.foodDate;
   let isPhoneFilled = !customerInfo.phone;
+
   const showAlert = () => {
     const notCompleted = [];
     let showAlert = false;
@@ -97,7 +98,6 @@ export function CartFlyout() {
           <ShoppingCart height={25} width={25} />
         </div>
       </DrawerTrigger>
-
       <DrawerContent>
         {orderSubmitted ? (
           <div className="h-[520px] lg:h-[624px] flex items-center justify-center flex-col gap-5">
@@ -169,10 +169,10 @@ export function CartFlyout() {
                                 {!isStayFilled && (
                                   <div className="text-xs flex space-x-4">
                                     <p className="">
-                                      Check in: <span className="text-muted-foreground">{customerInfo.checkIn}</span>
+                                      Check in: <span className="text-muted-foreground">{customerInfo.checkIn ? format(customerInfo.checkIn, "dd-MM-yyyy") : `-`}</span>
                                     </p>
                                     <p>
-                                      Check out: <span className="text-muted-foreground">{customerInfo.checkOut}</span>
+                                      Check out: <span className="text-muted-foreground">{customerInfo.checkOut ? format(customerInfo.checkOut, "dd-MM-yyyy") : `-`}</span>
                                     </p>
                                     <p>
                                       Guests: <span className="text-muted-foreground">{customerInfo.guests}</span>
@@ -232,10 +232,10 @@ export function CartFlyout() {
                                 {!isTravelFilled && (
                                   <div className="text-xs flex space-x-4">
                                     <p className="">
-                                      Pick up: <span className="text-muted-foreground">{customerInfo.pickUp}</span>
+                                      Pick up: <span className="text-muted-foreground">{customerInfo.pickUp ? format(customerInfo.pickUp, "dd-MM-yyyy") : `-`}</span>
                                     </p>
                                     <p>
-                                      Drop down: <span className="text-muted-foreground">{customerInfo.dropDown}</span>
+                                      Drop down: <span className="text-muted-foreground">{customerInfo.dropDown ? format(customerInfo.dropDown, "dd-MM-yyyy") : `-`}</span>
                                     </p>
                                     <p>
                                       Destination: <span className="text-muted-foreground">{customerInfo.destination}</span>
@@ -295,7 +295,7 @@ export function CartFlyout() {
                                 {!isFoodFilled && (
                                   <div className="text-xs flex space-x-4">
                                     <p className="">
-                                      Order Date: <span className="text-muted-foreground">{customerInfo.foodDate}</span>
+                                      Order Date: <span className="text-muted-foreground">{customerInfo.dropDown ? format(customerInfo.dropDown, "dd-MM-yyyy") : `-`}</span>
                                     </p>
                                   </div>
                                 )}

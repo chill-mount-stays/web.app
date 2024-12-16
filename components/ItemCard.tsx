@@ -33,12 +33,12 @@ export function ItemCard({ item, type }: { item: Stay | Travel | Food; type: str
               <div>
                 <h3 className="text-lg font-semibold mb-2">{item.name}</h3>
                 <p className="text-sm text-gray-600 mb-2 line-clamp-2">{item.description}</p>
-                {item.rating && (
+                {/* {item.rating && (
                   <div className="flex items-center mb-2">
                     <StarIcon className="w-4 h-4 text-yellow-400 mr-1" />
                     <span>{item.rating}</span>
                   </div>
-                )}
+                )} */}
               </div>
               <div className="flex justify-between items-center mt-4">
                 {isStayVendor(item) && (

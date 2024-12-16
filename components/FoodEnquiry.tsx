@@ -5,13 +5,10 @@ import React from "react";
 import { EnquiryForm } from "./EnquiryForm";
 
 export function FoodEnquiry() {
-  const handleSubmit = (data: Record<string, string>) => {
-    // Handle stays search logic here
-  };
   return (
-    <EnquiryForm onSubmit={handleSubmit}>
+    <EnquiryForm>
       <EnquiryForm.Field name="phone" label="Phone" placeholder="Phone Number" icon={<PhoneCall className="h-5 w-5" />} />
-      <EnquiryForm.Field name="foodDate" label="Date" type="date" placeholder="Pick a date" icon={<CalendarIcon className="h-5 w-5" />} />
+      <EnquiryForm.Field name="foodDate" label="Delivery Date" type="date" placeholder="When do you want?" />
     </EnquiryForm>
   );
 }
