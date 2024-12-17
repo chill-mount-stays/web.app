@@ -2,12 +2,13 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { StarIcon } from "lucide-react";
+import { Divide, StarIcon } from "lucide-react";
 import { CartItem, Food, Stay, Travel } from "@/types";
 import { ImageCarousel } from "./ImageCarousel";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "@/context/CartContext";
 import ItemModalForm from "./ItemModalForm";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 interface ItemCardModalProps {
   type: "stay" | "travel" | "food";
@@ -71,68 +72,87 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
         window.history.back();
       }}
     >
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="max-w-2xl">
         {!showForm ? (
           <div>
             <DialogHeader>
               <DialogTitle>{vendor.name}</DialogTitle>
+
+              <DialogDescription className="text-start text-sm">{vendor.description}</DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4">
+            <div className="grid gap-4 mt-4">
               <ImageCarousel images={vendor.imgUrls} />
-              <div className="grid gap-2">
-                {isStayVendor(vendor) && <p className="text-lg font-semibold">${vendor.price} per night</p>}
-                {isTravelVendor(vendor) && <p className="text-lg font-semibold">${vendor.costPerDay} per day</p>}
-                {isFood(vendor) && <p className="text-lg font-semibold">${vendor.price} per quantity</p>}
-                <p className="text-gray-600">{vendor.description}</p>
-                {isStayVendor(vendor) && <p className="text-sm text-gray-600">{vendor.availability ? `${vendor.roomsAvailable} rooms available` : `Next available: ${vendor.nextAvailability}`}</p>}
-              </div>
-              <div>
-                {isStayVendor(vendor) &&
-                  (((item = cartContext.stayItem.find((item) => item.id === vendor.vendorId)) || true) && !item ? (
-                    <Button
-                      className="w-full"
-                      onClick={() => {
-                        handleAddItem(vendor);
-                        // onClose();
-                      }}
-                    >
-                      Add
-                    </Button>
-                  ) : (
-                    <Button
-                      className="w-full"
-                      variant={"destructive"}
-                      onClick={() => {
-                        onClose();
-                        cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "stayItem", itemIds: [vendor.vendorId] }] });
-                      }}
-                    >
-                      Remove
-                    </Button>
-                  ))}
-              </div>
-              {isTravelVendor(vendor) &&
-                (((item = cartContext.travelItem.find((item) => item.id === vendor.vendorId)) || true) && !item ? (
-                  <Button
-                    className="w-full"
-                    onClick={() => {
-                      // onClose();
-                      handleAddItem(vendor);
-                    }}
-                  >
-                    Add
+              <div className="flex items-center w-full max-w-xl mx-auto justify-between">
+                <div className="flex items-center space-x-2">
+                  {isStayVendor(vendor) && (
+                    <p className="text-lg font-semibold">
+                      ₹{vendor.price} <span className="text-sm text-muted-foreground font-normal">per night</span>
+                    </p>
+                  )}
+                  {isTravelVendor(vendor) && (
+                    <p className="text-lg font-semibold">
+                      ₹{vendor.costPerDay} <span className="text-sm text-muted-foreground font-normal"> per day</span>
+                    </p>
+                  )}
+                  <Button size={"sm"} className="bg-green-100 h-6">
+                    {isStayVendor(vendor) && <p className="text-xs text-cms">{vendor.availability ? `Available` : `Next available: ${vendor.nextAvailability}`}</p>}
+                    {isTravelVendor(vendor) && <p className="text-xs text-cms">{vendor.availability ? `Available` : `Next available: ${vendor.nextAvailability}`}</p>}
                   </Button>
-                ) : (
-                  <Button
-                    className="w-full"
-                    variant={"destructive"}
-                    onClick={() => {
-                      cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "travelItem", itemIds: [vendor.vendorId] }] });
-                    }}
-                  >
-                    Remove
-                  </Button>
-                ))}
+                </div>
+                <div>
+                  <div>
+                    {isStayVendor(vendor) &&
+                      (((item = cartContext.stayItem.find((item) => item.id === vendor.vendorId)) || true) && !item ? (
+                        <Button
+                          className="w-full bg-cms hover:bg-green-600"
+                          disabled={!vendor.availability}
+                          onClick={() => {
+                            handleAddItem(vendor);
+                            // onClose();
+                          }}
+                        >
+                          Add to cart
+                        </Button>
+                      ) : (
+                        <Button
+                          className="w-full"
+                          variant={"destructive"}
+                          onClick={() => {
+                            onClose();
+                            cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "stayItem", itemIds: [vendor.vendorId] }] });
+                          }}
+                        >
+                          Remove
+                        </Button>
+                      ))}
+                  </div>
+                  <div>
+                    {isTravelVendor(vendor) &&
+                      (((item = cartContext.travelItem.find((item) => item.id === vendor.vendorId)) || true) && !item ? (
+                        <Button
+                          className="w-full bg-cms hover:bg-green-600"
+                          disabled={!vendor.availability}
+                          onClick={() => {
+                            // onClose();
+                            handleAddItem(vendor);
+                          }}
+                        >
+                          Add to cart
+                        </Button>
+                      ) : (
+                        <Button
+                          className="w-full"
+                          variant={"destructive"}
+                          onClick={() => {
+                            cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "travelItem", itemIds: [vendor.vendorId] }] });
+                          }}
+                        >
+                          Remove
+                        </Button>
+                      ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         ) : (
