@@ -16,12 +16,15 @@ interface DatePickerProps {
   //   isFormReset: boolean;
 }
 export function DatePicker({ onChange, placeholder, value }: DatePickerProps) {
+  // const [date, setDate] = React.useState<Date | undefined>(() => {
+  //   if (value instanceof Date) {
+  //     return value;
+  //   }
+  //   const parsedDate = new Date(value);
+  //   return isNaN(parsedDate.getTime()) ? undefined : parsedDate;
+  // });
   const [date, setDate] = React.useState<Date | undefined>(() => {
-    if (value instanceof Date) {
-      return value;
-    }
-    const parsedDate = new Date(value);
-    return isNaN(parsedDate.getTime()) ? undefined : parsedDate;
+    if (value) return new Date(value);
   });
 
   return (

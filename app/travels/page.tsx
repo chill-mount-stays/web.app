@@ -13,7 +13,7 @@ const TravelsPage = async () => {
       <div className="lg:mx-32">
         <PageHeader service="travels" />
       </div>
-      <div className="my-20">
+      <div className="lg:my-20 my-10 lg:px-0 px-4">
         <SubHeading page="travels" />
       </div>
       <div className="container mx-auto">

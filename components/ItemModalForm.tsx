@@ -18,7 +18,7 @@ type FormData = Record<string, string | Date>;
 const ItemModalForm = ({ vendorType, item }: ItemModalCardProp) => {
   const context = useContext(CartContext);
   const [formData, setFormData] = useState<FormData>({ ...context.customerInfo });
-  const updateFormData = (field: string, value: string | Date) => {
+  const updateFormData = (field: string, value: string) => {
     context.events.updateCustomerInfo({ field: field, value: value });
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -51,11 +51,11 @@ const ItemModalForm = ({ vendorType, item }: ItemModalCardProp) => {
             <div className="flex lg:flex-row lg:space-x-6 flex-col space-y-4 lg:space-y-0">
               <div className="grid w-full max-w-sm  items-center gap-1.5">
                 <Label htmlFor="checkIn">Check In</Label>
-                <DatePicker value={customerInfo.checkIn} onChange={(date) => updateFormData("checkIn", date)} placeholder="Pick Check In Date" />
+                <DatePicker value={customerInfo.checkIn} onChange={(date) => updateFormData("checkIn", date.toISOString())} placeholder="Pick Check In Date" />
               </div>
               <div className="grid w-full max-w-sm  items-center gap-1.5">
                 <Label htmlFor="checkOut">Check Out</Label>
-                <DatePicker value={customerInfo.checkOut} onChange={(date) => updateFormData("checkOut", date)} placeholder="Pick Check Out Date" />
+                <DatePicker value={customerInfo.checkOut} onChange={(date) => updateFormData("checkOut", date.toISOString())} placeholder="Pick Check Out Date" />
               </div>
             </div>
           </div>
@@ -75,11 +75,11 @@ const ItemModalForm = ({ vendorType, item }: ItemModalCardProp) => {
             <div className="flex lg:flex-row lg:space-x-6 flex-col space-y-4 lg:space-y-0">
               <div className="grid w-full max-w-sm  items-center gap-1.5">
                 <Label htmlFor="pickUp">Pick up</Label>
-                <DatePicker value={customerInfo.pickUp} onChange={(date: Date) => updateFormData("pickUp", date)} placeholder="Pick Check In Date" />
+                <DatePicker value={customerInfo.pickUp} onChange={(date: Date) => updateFormData("pickUp", date.toISOString())} placeholder="Pick Check In Date" />
               </div>
               <div className="grid w-full max-w-sm  items-center gap-1.5">
                 <Label htmlFor="dropDown">Drop down</Label>
-                <DatePicker value={customerInfo.dropDown} onChange={(date: Date) => updateFormData("dropDown", date)} placeholder="Pick Check Out Date" />
+                <DatePicker value={customerInfo.dropDown} onChange={(date: Date) => updateFormData("dropDown", date.toISOString())} placeholder="Pick Check Out Date" />
               </div>
             </div>
           </div>

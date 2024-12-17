@@ -14,7 +14,7 @@ const FoodPage = async () => {
       <div className="lg:mx-32">
         <PageHeader service="food" />
       </div>
-      <div className="my-20">
+      <div className="lg:my-20 my-10 lg:px-0 px-4">
         <SubHeading page="food" />
       </div>
       <div className="container mx-auto">

@@ -9,7 +9,7 @@ type FormData = Record<string, string | Date>;
 
 interface FormContextType {
   formData: FormData;
-  updateFormData: (field: string, value: string | Date) => void;
+  updateFormData: (field: string, value: string) => void;
 }
 
 const FormContext = createContext<FormContextType | undefined>(undefined);
@@ -23,7 +23,7 @@ export function EnquiryForm({ children }: EnquiryFormProps) {
   const context = useContext(CartContext);
   const [formData, setFormData] = useState<FormData>({ ...context.customerInfo });
   console.log(formData);
-  const updateFormData = (field: string, value: string | Date) => {
+  const updateFormData = (field: string, value: string) => {
     context.events.updateCustomerInfo({ field: field, value: value });
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -65,7 +65,7 @@ export function Field({ name, label, type = "text", placeholder, icon }: FieldPr
       <div className="relative">
         {icon && <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">{icon}</div>}
         {type === "date" ? (
-          <DatePicker value={formData[name]} onChange={(date) => updateFormData(name, date)} placeholder={placeholder} />
+          <DatePicker value={formData[name]} onChange={(date) => updateFormData(name, date.toISOString())} placeholder={placeholder} />
         ) : (
           <Input
             type={type}

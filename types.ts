@@ -46,13 +46,13 @@ export interface FoodItem {
 
 export type customerInfo = {
   phone: string;
-  checkIn: string | Date;
-  checkOut: string | Date;
+  checkIn: string;
+  checkOut: string;
   guests: string;
   foodDate: string;
   destination: string;
-  pickUp: string | Date;
-  dropDown: string | Date;
+  pickUp: string;
+  dropDown: string;
 };
 export interface CartContextInterface {
   customerInfo: customerInfo;
@@ -65,7 +65,7 @@ export interface CartContextInterface {
   foodTotal: 0;
   events: {
     updateCount: ({ itemId, count }: { itemId: string; count: number }) => void;
-    updateCustomerInfo: ({ field, value }: { field: string; value: string | Date }) => void;
+    updateCustomerInfo: ({ field, value }: { field: string; value: string }) => void;
     addItemsToCart: ({ catergory, items }: { catergory: keyof CartContextInterface; items: CartItem[] }) => void;
     emptyContext: () => void;
     removeItemsFromCart: ({
