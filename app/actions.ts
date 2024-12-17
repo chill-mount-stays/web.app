@@ -1,5 +1,22 @@
 import { db } from "@/lib/firebase";
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, addDoc, doc, DocumentReference, setDoc } from "firebase/firestore";
+
+// Add a new document with a generated id.
+export const generateDocRef = (colletionName: string): DocumentReference => {
+  const newDocRef = doc(collection(db, colletionName));
+  return newDocRef;
+};
+
+export const addCustomerInfoBooking = async (data: any, bookingRef: DocumentReference) => {
+  try {
+    await setDoc(bookingRef, data);
+    console.log("Document written with ID: ", bookingRef.id);
+    return 1;
+  } catch (e) {
+    console.error(e);
+    return 0;
+  }
+};
 
 export const getData = async (collectionName: string) => {
   const querySnapshot = await getDocs(collection(db, collectionName));
@@ -12,7 +29,8 @@ export const getData = async (collectionName: string) => {
 
 export const formatDetailsForWhatsApp = (customerInfo: any, stayItem: any, travelItem: any, foodItems: any) => {
   const noItemsSelected = !(!!foodItems.length || !!stayItem.length || !!travelItem.length);
-  if (noItemsSelected) {
+
+  if (!noItemsSelected) {
     let message = `Hi Chill Mount Stay,\n\nHere are my details and bookings:\n`;
 
     // Add phone details

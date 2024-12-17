@@ -15,7 +15,7 @@ interface DatePickerProps {
   //   checkIn: Date | undefined;
   //   isFormReset: boolean;
 }
-export function DatePicker({ onChange, placeholder, value }: DatePickerProps) {
+export const DatePicker = React.forwardRef(({ onChange, placeholder, value }: DatePickerProps, ref: React.Ref<HTMLButtonElement>) => {
   // const [date, setDate] = React.useState<Date | undefined>(() => {
   //   if (value instanceof Date) {
   //     return value;
@@ -30,7 +30,7 @@ export function DatePicker({ onChange, placeholder, value }: DatePickerProps) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant={"outline"} className={cn("max-w-sm w-full justify-start text-left font-normal", !date && "text-muted-foreground")}>
+        <Button ref={ref} variant={"outline"} className={cn("max-w-sm w-full justify-start text-left font-normal", !date && "text-muted-foreground")}>
           <CalendarIcon />
           {date ? format(date, "PPP") : <span>{placeholder}</span>}
         </Button>
@@ -48,4 +48,4 @@ export function DatePicker({ onChange, placeholder, value }: DatePickerProps) {
       </PopoverContent>
     </Popover>
   );
-}
+});

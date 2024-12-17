@@ -11,7 +11,7 @@ import { ScrollArea } from "./ui/scroll-area";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons/faWhatsapp";
-import { formatDetailsForWhatsApp } from "@/app/actions";
+import { addCustomerInfoBooking, formatDetailsForWhatsApp, generateDocRef } from "@/app/actions";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
@@ -47,7 +47,7 @@ export function CartFlyout() {
     setNoItemsInCart(!(!!foodItems.length || !!stayItem.length || !!travelItem.length));
   }, [cartContext]);
 
-  const handleEnquireNow = () => {
+  const handleEnquireNow = async () => {
     // use api for this
     setOrderSubmitted(true);
     const formattedMessage = formatDetailsForWhatsApp(customerInfo, stayItem, travelItem, foodItems);
@@ -55,7 +55,19 @@ export function CartFlyout() {
     window.open(whatsappUrl, "_blank");
     sessionStorage.removeItem("CMS_CartItems");
     cartContext.events.emptyContext();
+    const bookingRef = generateDocRef(`${process.env.NEXT_PUBLIC_FIREBASE_COLLECTION_NAME}`);
+    const response = addCustomerInfoBooking(
+      {
+        customerInfo: customerInfo,
+        stayItem: stayItem,
+        travelItem: travelItem,
+        foodItems: foodItems,
+      },
+      bookingRef
+    );
+    console.log(response);
   };
+
   useEffect(() => {
     if (isFlyoutOpen) {
       window.history.pushState({ isModalOpen: true }, "Modal Open");

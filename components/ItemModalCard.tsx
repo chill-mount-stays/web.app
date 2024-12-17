@@ -10,7 +10,7 @@ import { CartContext } from "@/context/CartContext";
 import ItemModalForm from "./ItemModalForm";
 
 interface ItemCardModalProps {
-  type: string;
+  type: "stay" | "travel" | "food";
   vendor: Stay | Travel | Food;
   isOpen: boolean;
   onClose: () => void;
@@ -21,17 +21,14 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
   const isStayVendor = (vendor: any): vendor is Stay => type === "stay";
   const isTravelVendor = (vendor: any): vendor is Travel => type === "travel";
   const isFood = (vendor: any): vendor is Food => type === "food";
-  const [isStayFilled, setIsStayFilled] = useState<boolean>(true);
-  const [isTravelFilled, setIsTravelFilled] = useState<boolean>(true);
-  const [isFoodFilled, setIsFoodFilled] = useState<boolean>(true);
+  const [showForm, setShowForm] = useState<boolean>(false);
   const cartContext = useContext(CartContext);
   let item: CartItem | undefined;
   const customerInfo = cartContext.customerInfo;
   useEffect(() => {
     if (isOpen) {
       window.history.pushState({ isModalOpen: true }, "Modal Open");
-      setIsStayFilled(true);
-      setIsTravelFilled(true);
+      setShowForm(false);
     }
     const handlePopState = (event: any) => {
       if (event.state && event.state.isModalOpen) {
@@ -47,18 +44,18 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
     };
   }, [isOpen]);
 
-  const handleAddStay = (vendor: Stay | Travel | Food) => {
+  const handleAddItem = (vendor: Stay | Travel | Food) => {
     if (isStayVendor(vendor)) {
       if (!customerInfo.checkIn || !customerInfo.checkOut || !customerInfo.phone || !customerInfo.guests) {
         setCartItem(vendor);
-        setIsStayFilled(false);
+        setShowForm(true);
       } else {
         cartContext.events.addItemsToCart({ catergory: "stayItem", items: [{ category: "stay", id: vendor.vendorId, name: vendor.name, price: vendor.price }] });
       }
     } else if (isTravelVendor(vendor)) {
       if (!customerInfo.pickUp || !customerInfo.dropDown || !customerInfo.destination || !customerInfo.phone) {
         setCartItem(vendor);
-        setIsTravelFilled(false);
+        setShowForm(true);
         console.log("hello");
       } else {
         cartContext.events.addItemsToCart({ catergory: "travelItem", items: [{ category: "travel", id: vendor.vendorId, name: vendor.name, price: vendor.costPerDay }] });
@@ -75,7 +72,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
       }}
     >
       <DialogContent className="max-w-3xl">
-        {isStayFilled && isTravelFilled ? (
+        {!showForm ? (
           <div>
             <DialogHeader>
               <DialogTitle>{vendor.name}</DialogTitle>
@@ -95,7 +92,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
                     <Button
                       className="w-full"
                       onClick={() => {
-                        handleAddStay(vendor);
+                        handleAddItem(vendor);
                         // onClose();
                       }}
                     >
@@ -120,7 +117,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
                     className="w-full"
                     onClick={() => {
                       // onClose();
-                      handleAddStay(vendor);
+                      handleAddItem(vendor);
                     }}
                   >
                     Add
@@ -140,9 +137,9 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
           </div>
         ) : (
           <div>
-            {!isStayFilled && <ItemModalForm vendorType="stay" item={cartItem} />}
-            {!isTravelFilled && <ItemModalForm vendorType="travel" item={cartItem} />}
-            {!isFoodFilled && <ItemModalForm vendorType="food" item={cartItem} />}
+            {setShowForm && <ItemModalForm vendorType={type} item={cartItem} onClose={onClose} setShowForm={setShowForm} />}
+            {/* {!setShowForm && <ItemModalForm vendorType="travel" item={cartItem} onClose={onClose} setShowForm={setShowForm} />}
+            {!setShowForm && <ItemModalForm vendorType="food" item={cartItem} onClose={onClose} setShowForm={setShowForm} />} */}
           </div>
         )}
       </DialogContent>
