@@ -16,10 +16,14 @@ interface DatePickerProps {
   //   isFormReset: boolean;
 }
 export function DatePicker({ onChange, placeholder, value }: DatePickerProps) {
-  const [date, setDate] = React.useState<Date | undefined>(value instanceof Date ? value : new Date(value));
-  const formatDate = (date: any): string => {
-    return date.toISOString().split("T")[0];
-  };
+  const [date, setDate] = React.useState<Date | undefined>(() => {
+    if (value instanceof Date) {
+      return value;
+    }
+    const parsedDate = new Date(value);
+    return isNaN(parsedDate.getTime()) ? undefined : parsedDate;
+  });
+
   return (
     <Popover>
       <PopoverTrigger asChild>

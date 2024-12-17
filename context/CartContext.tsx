@@ -17,7 +17,7 @@ const initalCartContext: CartContextInterface = {
   stayItem: [],
   travelItem: [],
   events: {
-    updateCustomerInfo: function ({ field, value }: { field: string; value: string }): void {
+    updateCustomerInfo: function ({ field, value }: { field: string; value: string | Date }): void {
       throw new Error("Function not implemented.");
     },
     addItemsToCart: function ({ catergory, items }: { catergory: keyof CartContextInterface; items: CartItem[] }): void {
@@ -111,8 +111,8 @@ export const CartContextProvider: React.FC<{ children?: ReactNode }> = (props) =
   const addItemsToCart = ({ catergory, items }: { catergory: keyof CartContextInterface; items: CartItem[] }) => {
     dispatch({ type: "ADD", items: items, itemType: catergory });
   };
-  const updateCustomerInfo = ({ field, value }: { field: string; value: string }) => {
-    dispatch({ type: "PHONE_UPDATE", field: field, value: value, itemType: "customerInfo" });
+  const updateCustomerInfo = ({ field, value }: { field: string; value: string | Date }) => {
+    dispatch({ type: "PHONE_UPDATE", field: field, value: value instanceof Date ? value.toISOString() : value, itemType: "customerInfo" });
   };
   const updateCount = ({ itemId, count }: { itemId: string; count: number }) => {
     dispatch({ type: "UPDATE_COUNT", itemId: itemId, count: count, itemType: "customerInfo" });
