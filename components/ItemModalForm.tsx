@@ -9,15 +9,17 @@ import { Food, Stay, Travel } from "@/types";
 import { Car, Home } from "lucide-react";
 import { DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
 interface ItemModalCardProp {
   vendorType: "stay" | "travel" | "food";
   item: Stay | Travel | Food | undefined;
   onClose: () => void;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
-type FormData = Record<string, string | Date>;
+type FormData = Record<string, string>;
 
 const ItemModalForm = ({ vendorType, item, onClose, setShowForm }: ItemModalCardProp) => {
+  const { toast } = useToast();
   const context = useContext(CartContext);
   const [formData, setFormData] = useState<FormData>({ ...context.customerInfo });
   const updateFormData = (field: string, value: string) => {
@@ -28,16 +30,25 @@ const ItemModalForm = ({ vendorType, item, onClose, setShowForm }: ItemModalCard
   const isStayVendor = (vendor: any): vendor is Stay => vendorType === "stay";
   const isTravelVendor = (vendor: any): vendor is Travel => vendorType === "travel";
   const isFood = (vendor: any): vendor is Food => vendorType === "food";
-
+  const [isInDateFilled, setIsInDateFilled] = useState<boolean>(true);
+  const [isOutDateFilled, setIsOutDateFilled] = useState<boolean>(true);
+  const [isUpDateFilled, setIsUpDateFilled] = useState<boolean>(true);
+  const [isOffDateFilled, setIsOffDateFilled] = useState<boolean>(true);
   const phoneRef = useRef<HTMLInputElement | null>(null);
-  const checkInRef = useRef<HTMLButtonElement>(null);
-  const checkOutRef = useRef<HTMLButtonElement>(null);
-  const pickUpRef = useRef<HTMLButtonElement>(null);
-  const dropDownRef = useRef<HTMLButtonElement>(null);
   const guestsRef = useRef<HTMLInputElement | null>(null);
   const destinationRef = useRef<HTMLInputElement | null>(null);
 
   const handleAddToCart = () => {
+    const phoneRegex = /^\d{10}$/;
+    if (!customerInfo.phone || !phoneRegex.test(customerInfo.phone)) {
+      toast({
+        variant: "destructive",
+        description: "Phone number is either invalid/missing",
+      });
+      phoneRef.current?.focus();
+      return;
+    }
+
     if (isStayVendor(item)) {
       if (!customerInfo.checkIn || !customerInfo.checkOut || !customerInfo.phone || !customerInfo.guests) {
         if (!customerInfo.phone) {
@@ -49,16 +60,18 @@ const ItemModalForm = ({ vendorType, item, onClose, setShowForm }: ItemModalCard
           return;
         }
         if (!customerInfo.checkIn) {
-          checkInRef.current?.focus();
+          setIsInDateFilled(false);
           return;
         }
 
         if (!customerInfo.checkOut) {
-          checkOutRef.current?.focus();
+          setIsOutDateFilled(false);
           return;
         }
       } else {
         context.events.addItemsToCart({ catergory: "stayItem", items: [{ category: "stay", id: item.vendorId, name: item.name, price: item.price }] });
+        setIsInDateFilled(true);
+        setIsOutDateFilled(true);
         onClose();
       }
     } else if (isTravelVendor(item)) {
@@ -72,17 +85,19 @@ const ItemModalForm = ({ vendorType, item, onClose, setShowForm }: ItemModalCard
           return;
         }
         if (!customerInfo.pickUp) {
-          pickUpRef.current?.focus();
+          setIsUpDateFilled(false);
           console.log("pickup ref");
           return;
         }
 
         if (!customerInfo.dropDown) {
-          dropDownRef.current?.focus();
+          setIsOffDateFilled(false);
           return;
         }
       } else {
         context.events.addItemsToCart({ catergory: "travelItem", items: [{ category: "travel", id: item.vendorId, name: item.name, price: item.costPerDay }] });
+        setIsUpDateFilled(true);
+        setIsOffDateFilled(true);
         onClose();
       }
     }
@@ -109,11 +124,25 @@ const ItemModalForm = ({ vendorType, item, onClose, setShowForm }: ItemModalCard
             <div className="flex lg:flex-row lg:space-x-6 flex-col space-y-4 lg:space-y-0">
               <div className="grid w-full max-w-sm  items-center gap-1.5">
                 <Label htmlFor="checkIn">Check In</Label>
-                <DatePicker ref={checkInRef} value={customerInfo.checkIn} onChange={(date) => updateFormData("checkIn", date.toISOString())} placeholder="Pick Check In Date" />
+                <DatePicker
+                  isDateFilled={isInDateFilled}
+                  value={customerInfo.checkIn}
+                  onChange={(date, bool) => {
+                    updateFormData("checkIn", date.toISOString()), setIsInDateFilled(bool);
+                  }}
+                  placeholder="Pick Check In Date"
+                />
               </div>
               <div className="grid w-full max-w-sm  items-center gap-1.5">
                 <Label htmlFor="checkOut">Check Out</Label>
-                <DatePicker ref={checkOutRef} value={customerInfo.checkOut} onChange={(date) => updateFormData("checkOut", date.toISOString())} placeholder="Pick Check Out Date" />
+                <DatePicker
+                  isDateFilled={isOutDateFilled}
+                  value={customerInfo.checkOut}
+                  onChange={(date, bool) => {
+                    updateFormData("checkOut", date.toISOString()), setIsOutDateFilled(bool);
+                  }}
+                  placeholder="Pick Check Out Date"
+                />
               </div>
             </div>
           </div>
@@ -133,11 +162,25 @@ const ItemModalForm = ({ vendorType, item, onClose, setShowForm }: ItemModalCard
             <div className="flex lg:flex-row lg:space-x-6 flex-col space-y-4 lg:space-y-0">
               <div className="grid w-full max-w-sm  items-center gap-1.5">
                 <Label htmlFor="pickUp">Pick up</Label>
-                <DatePicker ref={pickUpRef} value={customerInfo.pickUp} onChange={(date: Date) => updateFormData("pickUp", date.toISOString())} placeholder="Select Pick Up Date" />
+                <DatePicker
+                  isDateFilled={isUpDateFilled}
+                  value={customerInfo.pickUp}
+                  onChange={(date, bool) => {
+                    updateFormData("pickUp", date.toISOString()), setIsUpDateFilled(bool);
+                  }}
+                  placeholder="Select Pick Up Date"
+                />
               </div>
               <div className="grid w-full max-w-sm  items-center gap-1.5">
-                <Label htmlFor="dropDown">Drop down</Label>
-                <DatePicker ref={dropDownRef} value={customerInfo.dropDown} onChange={(date: Date) => updateFormData("dropDown", date.toISOString())} placeholder="Select Drop Down Date" />
+                <Label htmlFor="dropDown">Drop off</Label>
+                <DatePicker
+                  isDateFilled={isOffDateFilled}
+                  value={customerInfo.dropDown}
+                  onChange={(date, bool) => {
+                    updateFormData("dropDown", date.toISOString()), setIsOffDateFilled(bool);
+                  }}
+                  placeholder="Select Drop Down Date"
+                />
               </div>
             </div>
           </div>

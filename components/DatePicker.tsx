@@ -9,39 +9,44 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 interface DatePickerProps {
-  onChange: (date: Date) => void;
+  onChange: (date: Date, bool: boolean) => void;
   value?: string | Date;
   placeholder?: string | undefined;
+  isDateFilled?: boolean;
+  onDateSelect?: () => void;
 }
-export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(({ onChange, placeholder = "Select date", value }, ref) => {
+export const DatePicker = ({ onChange, placeholder = "Select date", value, isDateFilled = true, onDateSelect }: DatePickerProps) => {
   const [date, setDate] = React.useState<Date | undefined>(() => {
     if (value) return new Date(value);
     return undefined;
   });
-  const [open, setOpen] = React.useState(false);
-  const handleFocus = () => {
-    setOpen(true);
-  };
+  const [openDP, setOpenDP] = React.useState(true);
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button ref={ref} variant={"outline"} onFocus={handleFocus} className={cn("max-w-sm w-full justify-start text-left font-normal", !date && "text-muted-foreground")}>
-          <CalendarIcon />
-          {date ? format(date, "PPP") : <span>{placeholder}</span>}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={(date) => {
-            setDate(date);
-            if (date) onChange(date);
-            setOpen(false);
-          }}
-          initialFocus
-        />
-      </PopoverContent>
-    </Popover>
+    <div>
+      <Popover open={openDP} onOpenChange={setOpenDP}>
+        <PopoverTrigger asChild>
+          <Button variant={"outline"} className={cn("max-w-sm w-full justify-start text-left font-normal", !date && "text-muted-foreground")}>
+            <CalendarIcon />
+
+            {date ? format(date, "PPP") : <span>{placeholder}</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={(date) => {
+              setDate(date);
+              setOpenDP(false);
+              if (date) onChange(date, true);
+              if (onDateSelect) onDateSelect();
+            }}
+            initialFocus
+          />
+        </PopoverContent>
+      </Popover>
+      {!isDateFilled && <p className="text-xs text-red-500">please fill the date</p>}
+    </div>
   );
-});
+};

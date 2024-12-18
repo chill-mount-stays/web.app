@@ -4,7 +4,7 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
-import { AlertCircle, Car, Check, Edit3, Home, Minus, PhoneCall, Plus, ShoppingBagIcon, ShoppingCart, Trash2Icon, Utensils } from "lucide-react";
+import { AlertCircle, Car, Check, Edit, Edit3, Home, MapPin, Minus, PhoneCall, Plus, ShoppingBagIcon, ShoppingCart, Trash2, Trash2Icon, Utensils } from "lucide-react";
 import { CartContext } from "@/context/CartContext";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { ScrollArea } from "./ui/scroll-area";
@@ -16,6 +16,11 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
+import { Input } from "./ui/input";
+import { DatePicker } from "./DatePicker";
+import { useToast } from "@/hooks/use-toast";
+type FormData = Record<string, string>;
+
 export function CartFlyout() {
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   const [isFlyoutOpen, setIsFlyoutOpen] = useState(false);
@@ -26,11 +31,33 @@ export function CartFlyout() {
   const travelItem = cartContext.travelItem;
   const customerInfo = cartContext.customerInfo;
   const router = useRouter();
+  const phoneRef = React.useRef<HTMLInputElement | null>(null);
+  const foodDeliveryRef = React.useRef<HTMLButtonElement>(null);
+  const { toast } = useToast();
+  const [formData, setFormData] = useState<FormData>({ ...cartContext.customerInfo });
 
-  let isStayFilled = !customerInfo.checkIn || !customerInfo.checkOut || !customerInfo.guests;
-  let isTravelFilled = !customerInfo.destination || !customerInfo.pickUp || !customerInfo.dropDown;
-  let isFoodFilled = !customerInfo.foodDate;
-  let isPhoneFilled = !customerInfo.phone;
+  const updateFormData = (field: string, value: string) => {
+    cartContext.events.updateCustomerInfo({ field: field, value: value });
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const [isStayFilled, setIsStayFilled] = useState<boolean>(!customerInfo.checkIn && !customerInfo.checkOut && !customerInfo.guests);
+  const [isTravelFilled, setIsTravelFilled] = useState<boolean>(!customerInfo.destination && !customerInfo.pickUp && !customerInfo.dropDown);
+  const [isPhoneFilled, setIsPhoneFilled] = useState<boolean>(!customerInfo.phone);
+  const [isFoodFilled, setIsFoodFilled] = useState<boolean>(!customerInfo.foodDate);
+
+  let differenceInMilliseconds1 = customerInfo.checkIn && customerInfo.checkOut ? new Date(customerInfo.checkOut).getTime() - new Date(customerInfo.checkIn).getTime() : null;
+  let differenceInMilliseconds2 = customerInfo.dropDown && customerInfo.pickUp ? new Date(customerInfo.dropDown).getTime() - new Date(customerInfo.pickUp).getTime() : null;
+
+  let stayDaysCnt = 0;
+  if (differenceInMilliseconds1) {
+    stayDaysCnt = differenceInMilliseconds1 / (1000 * 60 * 60 * 24);
+  }
+
+  let travelDaysCnt = 0;
+  if (differenceInMilliseconds2) {
+    travelDaysCnt = differenceInMilliseconds2 / (1000 * 60 * 60 * 24);
+  }
 
   const showAlert = () => {
     const notCompleted = [];
@@ -47,15 +74,38 @@ export function CartFlyout() {
     setNoItemsInCart(!(!!foodItems.length || !!stayItem.length || !!travelItem.length));
   }, [cartContext]);
 
+  const handleEdit = (field: string): void => {
+    if (field == "phone") setIsPhoneFilled(true);
+    if (field == "food") setIsFoodFilled(true);
+  };
+
   const handleEnquireNow = async () => {
+    const phoneRegex = /^\d{10}$/;
+    if (!customerInfo.phone || !phoneRegex.test(customerInfo.phone)) {
+      toast({
+        variant: "destructive",
+        description: "Phone number is either invalid/missing",
+      });
+      setIsPhoneFilled(true);
+      phoneRef.current?.focus();
+      return;
+    }
+    if (!customerInfo.foodDate) {
+      foodDeliveryRef.current?.focus();
+      return;
+    }
+
     // use api for this
     setOrderSubmitted(true);
+
     const formattedMessage = formatDetailsForWhatsApp(customerInfo, stayItem, travelItem, foodItems);
     const whatsappUrl = `https://api.whatsapp.com/send/?phone=%2B919842083815&text=${formattedMessage}&app_absent=0&lang=en`;
     window.open(whatsappUrl, "_blank");
     sessionStorage.removeItem("CMS_CartItems");
     cartContext.events.emptyContext();
     const bookingRef = generateDocRef(`${process.env.NEXT_PUBLIC_FIREBASE_COLLECTION_NAME}`);
+
+    //Storing data in Firestore
     const response = addCustomerInfoBooking(
       {
         customerInfo: customerInfo,
@@ -119,6 +169,7 @@ export function CartFlyout() {
             <p>Order succesfully received</p>
             <p>If you faced any difficulties in placing order, Don't worry our exective will be in touch with you</p>
             <Button
+              className="bg-cms bg-green-600"
               onClick={() => {
                 setIsFlyoutOpen(false);
                 router.push("/");
@@ -151,20 +202,27 @@ export function CartFlyout() {
                   </div>
                   <div className="flex justify-between space-x-4 items-center w-4/5">
                     <p className="">Phone Number</p>
-                    {!isPhoneFilled && <p className="text-muted-foreground">{customerInfo.phone}</p>}
+                    {!isPhoneFilled && (
+                      <div className="flex gap-2">
+                        <p className="text-muted-foreground">{customerInfo.phone}</p>
+                        <Edit className="h-4 w-4 mt-0.5 hover:text-gray-800 hover:cursor-pointer text-muted-foreground" onClick={() => handleEdit("phone")} />
+                      </div>
+                    )}
+
                     {isPhoneFilled && (
-                      <DrawerClose asChild>
-                        <div className="text-gray-500 p-3 rounded-full hover:bg-gray-100">
-                          <Edit3 />
-                        </div>
-                      </DrawerClose>
+                      <div className="flex">
+                        <Input ref={phoneRef} type="tel" id="phone" name="phone" pattern="^\d{10}$" onChange={(e) => updateFormData("phone", e.target.value)} className="max-w-fit" placeholder="Enter your number" />
+                        <Button className="bg-purple-600 text-purple-100 hover:bg-purple-500 rounded-full ml-2" onClick={() => setIsPhoneFilled(false)}>
+                          <Check />
+                        </Button>
+                      </div>
                     )}
                   </div>
                 </div>
                 {noItemsInCart ? (
-                  <div className="flex flex-col items-center gap-5">
-                    <ShoppingBagIcon height={100} width={100} />
-                    <p className="px-5">Your cart is empty</p>
+                  <div className="flex flex-col items-center gap-5 text-muted-foreground py-10">
+                    <ShoppingCart height={100} width={100} />
+                    <p className="px-5 ml-2">Your cart is empty</p>
                   </div>
                 ) : (
                   <div>
@@ -179,37 +237,22 @@ export function CartFlyout() {
                               <div>
                                 <p className="">Stay</p>
                                 {!isStayFilled && (
-                                  <div className="text-xs flex space-x-4">
-                                    <p className="">
-                                      Check in: <span className="text-muted-foreground">{customerInfo.checkIn ? format(customerInfo.checkIn, "dd-MM-yyyy") : `-`}</span>
-                                    </p>
-                                    <p>
-                                      Check out: <span className="text-muted-foreground">{customerInfo.checkOut ? format(customerInfo.checkOut, "dd-MM-yyyy") : `-`}</span>
-                                    </p>
-                                    <p>
-                                      Guests: <span className="text-muted-foreground">{customerInfo.guests}</span>
-                                    </p>
+                                  <div className="text-xs flex items-center">
+                                    <div className="flex lg:space-x-4 space-x-1">
+                                      <p>
+                                        In: <span className="text-muted-foreground">{customerInfo.checkIn ? format(customerInfo.checkIn, "dd-MM-yyyy") : `-`}</span>
+                                      </p>
+                                      <p>
+                                        Out: <span className="text-muted-foreground">{customerInfo.checkOut ? format(customerInfo.checkOut, "dd-MM-yyyy") : `-`}</span>
+                                      </p>
+                                      <p>
+                                        Guest: <span className="text-muted-foreground">{customerInfo.guests}</span>
+                                      </p>
+                                    </div>
+                                    <Edit className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2" onClick={() => handleEdit("stay")} />
                                   </div>
                                 )}
                               </div>
-                              {isStayFilled ? (
-                                <DrawerClose asChild>
-                                  <Link href={"/stays"} className="text-gray-500 p-3 rounded-full hover:bg-gray-100">
-                                    <Edit3 />
-                                  </Link>
-                                </DrawerClose>
-                              ) : (
-                                <DrawerClose asChild>
-                                  <Button
-                                    onClick={() => {
-                                      cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "travelItem", itemIds: [stayItem[0].id] }] });
-                                    }}
-                                    className="text-gray-500 p-3 rounded-full hover:bg-gray-100"
-                                  >
-                                    <Trash2Icon />
-                                  </Button>
-                                </DrawerClose>
-                              )}
                             </div>
                           </div>
                           <hr />
@@ -219,9 +262,21 @@ export function CartFlyout() {
                                 <div>
                                   <p className="text-xs text-muted-foreground">{idx + 1}.</p>
                                 </div>
-                                <div className="flex justify-between space-x-4 items-center w-11/12 ">
+                                <div className="flex justify-between space-x-4 items-center w-full">
                                   <p className="">{item.name}</p>
-                                  <p className="text-[14px]">₹{item.price} per night</p>
+                                  <div className="flex items-center space-x-4">
+                                    <p className="text-[14px]">₹{item.price * stayDaysCnt}</p>
+                                    <Button
+                                      size={"sm"}
+                                      variant={"destructive"}
+                                      onClick={() => {
+                                        cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "stayItem", itemIds: [item.id] }] });
+                                      }}
+                                      className="rounded-full"
+                                    >
+                                      <Trash2 />
+                                    </Button>
+                                  </div>
                                 </div>
                               </div>
                             ))}
@@ -242,49 +297,44 @@ export function CartFlyout() {
                               <div>
                                 <p className="">Travel</p>
                                 {!isTravelFilled && (
-                                  <div className="text-xs flex space-x-4">
-                                    <p className="">
-                                      Pick up: <span className="text-muted-foreground">{customerInfo.pickUp ? format(customerInfo.pickUp, "dd-MM-yyyy") : `-`}</span>
-                                    </p>
-                                    <p>
-                                      Drop down: <span className="text-muted-foreground">{customerInfo.dropDown ? format(customerInfo.dropDown, "dd-MM-yyyy") : `-`}</span>
-                                    </p>
-                                    <p>
-                                      Destination: <span className="text-muted-foreground">{customerInfo.destination}</span>
-                                    </p>
+                                  <div className="flex items-center ">
+                                    <div className="text-xs flex items-center lg:space-x-4 space-x-1">
+                                      <p>
+                                        Up: <span className="text-muted-foreground">{customerInfo.pickUp ? format(customerInfo.pickUp, "dd-MM-yyyy") : `-`}</span>
+                                      </p>
+                                      <p>
+                                        Off: <span className="text-muted-foreground">{customerInfo.dropDown ? format(customerInfo.dropDown, "dd-MM-yyyy") : `-`}</span>
+                                      </p>
+                                      <p>
+                                        Dest: <span className="text-muted-foreground">{customerInfo.destination}</span>
+                                      </p>
+                                    </div>
+                                    <Edit className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2" onClick={() => handleEdit("stay")} />
                                   </div>
                                 )}
                               </div>
-                              {isTravelFilled ? (
-                                <DrawerClose asChild>
-                                  <Link href={"/travels"} className="text-gray-500 p-3 rounded-full hover:bg-gray-100">
-                                    <Edit3 />
-                                  </Link>
-                                </DrawerClose>
-                              ) : (
-                                <DrawerClose asChild>
-                                  <Button
-                                    onClick={() => {
-                                      cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "travelItem", itemIds: [travelItem[0].id] }] });
-                                    }}
-                                    className="text-gray-500 p-3 rounded-full hover:bg-gray-100"
-                                  >
-                                    <Trash2Icon />
-                                  </Button>
-                                </DrawerClose>
-                              )}
                             </div>
                           </div>
                           <hr />
                           <div className="py-5 lg:px-10 pl-5">
                             {travelItem.map((item, idx) => (
-                              <div key={item.id} className="flex items-center space-x-4">
-                                <div>
+                              <div key={item.id} className="flex items-center space-x-4 justify-between w-full">
+                                <div className="flex items-center space-x-4">
                                   <p className="text-xs text-muted-foreground">{idx + 1}.</p>
-                                </div>
-                                <div className="flex justify-between space-x-4 items-center w-11/12 ">
                                   <p className="">{item.name}</p>
-                                  <p className="text-[14px]">₹{item.price} per day</p>
+                                </div>
+                                <div className="flex justify-between space-x-4 items-center">
+                                  <p className="text-[14px]">₹{item.price * travelDaysCnt}</p>
+                                  <Button
+                                    size={"sm"}
+                                    variant={"destructive"}
+                                    onClick={() => {
+                                      cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "travelItem", itemIds: [travelItem[0].id] }] });
+                                    }}
+                                    className="rounded-full"
+                                  >
+                                    <Trash2Icon />
+                                  </Button>
                                 </div>
                               </div>
                             ))}
@@ -305,19 +355,18 @@ export function CartFlyout() {
                               <div>
                                 <p className="">Food</p>
                                 {!isFoodFilled && (
-                                  <div className="text-xs flex space-x-4">
+                                  <div className="text-xs flex">
                                     <p className="">
-                                      Order Date: <span className="text-muted-foreground">{customerInfo.dropDown ? format(customerInfo.dropDown, "dd-MM-yyyy") : `-`}</span>
+                                      Order Date: <span className="text-muted-foreground">{customerInfo.foodDate ? format(customerInfo.foodDate, "dd-MM-yyyy") : `-`}</span>
                                     </p>
+                                    <Edit className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2" onClick={() => handleEdit("food")} />
                                   </div>
                                 )}
                               </div>
                               {isFoodFilled && (
-                                <DrawerClose asChild>
-                                  <Link href={"/food"} className="text-gray-500 p-3 rounded-full hover:bg-gray-100">
-                                    <Edit3 />
-                                  </Link>
-                                </DrawerClose>
+                                <div className="max-w-sm">
+                                  <DatePicker value={customerInfo.foodDate} onChange={(date, bool) => updateFormData("foodDate", date.toISOString())} onDateSelect={() => setIsFoodFilled(false)} placeholder="When do you want?" />
+                                </div>
                               )}
                             </div>
                           </div>
@@ -328,7 +377,7 @@ export function CartFlyout() {
                                 <div>
                                   <p className="text-xs text-muted-foreground">{idx + 1}.</p>
                                 </div>
-                                <div className="flex justify-between space-x-4 items-center w-11/12 ">
+                                <div className="flex justify-between space-x-4 items-center w-full">
                                   <div className="flex space-x-4 items-center">
                                     <p className="">{item.name}</p>
                                     <div className="flex gap-3 items-center justify-center">
@@ -351,7 +400,19 @@ export function CartFlyout() {
                                       </div>
                                     </div>
                                   </div>
-                                  <p className="text-[14px]">₹{item.category === "food" && item.itemCount * item.price}</p>
+                                  <div className="flex space-x-4 items-center">
+                                    <p className="text-[14px]">₹{item.category === "food" && item.itemCount * item.price}</p>
+                                    <Button
+                                      size={"sm"}
+                                      variant={"destructive"}
+                                      onClick={() => {
+                                        cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [item.id] }] });
+                                      }}
+                                      className="rounded-full"
+                                    >
+                                      <Trash2 />
+                                    </Button>
+                                  </div>
                                 </div>
                               </div>
                             ))}
