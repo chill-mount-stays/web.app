@@ -28,7 +28,6 @@ export const DatePicker = ({ onChange, placeholder = "Select date", value, isDat
         <PopoverTrigger asChild>
           <Button variant={"outline"} className={cn("max-w-sm w-full justify-start text-left font-normal", !date && "text-muted-foreground")}>
             <CalendarIcon />
-
             {date ? format(date, "PPP") : <span>{placeholder}</span>}
           </Button>
         </PopoverTrigger>

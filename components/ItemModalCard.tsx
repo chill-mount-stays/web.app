@@ -94,7 +94,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
                       ₹{vendor.costPerDay} <span className="text-sm text-muted-foreground font-normal"> per day</span>
                     </p>
                   )}
-                  <Button size={"sm"} className="bg-green-100 h-6">
+                  <Button size={"sm"} className="bg-green-100 h-6 pointer-events-none">
                     {isStayVendor(vendor) && <p className="text-xs text-cms">{vendor.availability ? `Available` : `Next available: ${vendor.nextAvailability}`}</p>}
                     {isTravelVendor(vendor) && <p className="text-xs text-cms">{vendor.availability ? `Available` : `Next available: ${vendor.nextAvailability}`}</p>}
                   </Button>

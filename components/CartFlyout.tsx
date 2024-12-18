@@ -41,10 +41,15 @@ export function CartFlyout() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const [isStayFilled, setIsStayFilled] = useState<boolean>(!customerInfo.checkIn && !customerInfo.checkOut && !customerInfo.guests);
-  const [isTravelFilled, setIsTravelFilled] = useState<boolean>(!customerInfo.destination && !customerInfo.pickUp && !customerInfo.dropDown);
-  const [isPhoneFilled, setIsPhoneFilled] = useState<boolean>(!customerInfo.phone);
-  const [isFoodFilled, setIsFoodFilled] = useState<boolean>(!customerInfo.foodDate);
+  // const [isStayFilled, setIsStayFilled] = useState<boolean>(!!customerInfo.checkIn && !!customerInfo.checkOut && !!customerInfo.guests);
+  // const [isTravelFilled, setIsTravelFilled] = useState<boolean>(!!customerInfo.destination && !!customerInfo.pickUp && !!customerInfo.dropDown);
+  // const [isPhoneFilled, setIsPhoneFilled] = useState<boolean>(!!customerInfo.phone);
+  // const [isFoodFilled, setIsFoodFilled] = useState<boolean>(!!customerInfo.foodDate);
+
+  let isStayFilled = !!customerInfo.checkIn && !!customerInfo.checkOut && !!customerInfo.guests;
+  let isTravelFilled = !!customerInfo.destination && !!customerInfo.pickUp && !!customerInfo.dropDown;
+  let isPhoneFilled = !!customerInfo.phone;
+  let isFoodFilled = !!customerInfo.foodDate;
 
   let differenceInMilliseconds1 = customerInfo.checkIn && customerInfo.checkOut ? new Date(customerInfo.checkOut).getTime() - new Date(customerInfo.checkIn).getTime() : null;
   let differenceInMilliseconds2 = customerInfo.dropDown && customerInfo.pickUp ? new Date(customerInfo.dropDown).getTime() - new Date(customerInfo.pickUp).getTime() : null;
@@ -74,10 +79,10 @@ export function CartFlyout() {
     setNoItemsInCart(!(!!foodItems.length || !!stayItem.length || !!travelItem.length));
   }, [cartContext]);
 
-  const handleEdit = (field: string): void => {
-    if (field == "phone") setIsPhoneFilled(true);
-    if (field == "food") setIsFoodFilled(true);
-  };
+  // const handleEdit = (field: string): void => {
+  //   if (field == "phone") setIsPhoneFilled(true);
+  //   if (field == "food") setIsFoodFilled(true);
+  // };
 
   const handleEnquireNow = async () => {
     const phoneRegex = /^\d{10}$/;
@@ -86,7 +91,7 @@ export function CartFlyout() {
         variant: "destructive",
         description: "Phone number is either invalid/missing",
       });
-      setIsPhoneFilled(true);
+      // setIsPhoneFilled(true);
       phoneRef.current?.focus();
       return;
     }
@@ -156,7 +161,7 @@ export function CartFlyout() {
         asChild
       >
         <div className="p-5 bg-cms text-white rounded-full shadow-lg cursor-pointer relative">
-          {foodItems.length + stayItem.length + travelItem.length > 0 && <div className="absolute bg-red-800 px-2  rounded-full left-2 top-2 ">{foodItems.length + stayItem.length + travelItem.length}</div>}
+          <div className={cn(foodItems.length + stayItem.length + travelItem.length > 0 ? "" : "hidden", "absolute bg-red-800 px-2  rounded-full left-2 top-2 ")}>{foodItems.length + stayItem.length + travelItem.length}</div>
           <ShoppingCart height={25} width={25} />
         </div>
       </DrawerTrigger>
@@ -202,17 +207,17 @@ export function CartFlyout() {
                   </div>
                   <div className="flex justify-between space-x-4 items-center w-4/5">
                     <p className="">Phone Number</p>
-                    {!isPhoneFilled && (
+                    {isPhoneFilled && (
                       <div className="flex gap-2">
                         <p className="text-muted-foreground">{customerInfo.phone}</p>
-                        <Edit className="h-4 w-4 mt-0.5 hover:text-gray-800 hover:cursor-pointer text-muted-foreground" onClick={() => handleEdit("phone")} />
+                        <Edit className="h-4 w-4 mt-0.5 hover:text-gray-800 hover:cursor-pointer text-muted-foreground" />
                       </div>
                     )}
 
-                    {isPhoneFilled && (
+                    {!isPhoneFilled && (
                       <div className="flex">
                         <Input ref={phoneRef} type="tel" id="phone" name="phone" pattern="^\d{10}$" onChange={(e) => updateFormData("phone", e.target.value)} className="max-w-fit" placeholder="Enter your number" />
-                        <Button className="bg-purple-600 text-purple-100 hover:bg-purple-500 rounded-full ml-2" onClick={() => setIsPhoneFilled(false)}>
+                        <Button className="bg-purple-600 text-purple-100 hover:bg-purple-500 rounded-full ml-2">
                           <Check />
                         </Button>
                       </div>
@@ -236,7 +241,7 @@ export function CartFlyout() {
                             <div className="w-4/5 flex justify-between items-center">
                               <div>
                                 <p className="">Stay</p>
-                                {!isStayFilled && (
+                                {isStayFilled && (
                                   <div className="text-xs flex items-center">
                                     <div className="flex lg:space-x-4 space-x-1">
                                       <p>
@@ -249,7 +254,7 @@ export function CartFlyout() {
                                         Guest: <span className="text-muted-foreground">{customerInfo.guests}</span>
                                       </p>
                                     </div>
-                                    <Edit className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2" onClick={() => handleEdit("stay")} />
+                                    <Edit className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2" />
                                   </div>
                                 )}
                               </div>
@@ -296,7 +301,7 @@ export function CartFlyout() {
                             <div className="w-4/5 flex justify-between items-center">
                               <div>
                                 <p className="">Travel</p>
-                                {!isTravelFilled && (
+                                {isTravelFilled && (
                                   <div className="flex items-center ">
                                     <div className="text-xs flex items-center lg:space-x-4 space-x-1">
                                       <p>
@@ -309,7 +314,7 @@ export function CartFlyout() {
                                         Dest: <span className="text-muted-foreground">{customerInfo.destination}</span>
                                       </p>
                                     </div>
-                                    <Edit className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2" onClick={() => handleEdit("stay")} />
+                                    <Edit className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2" />
                                   </div>
                                 )}
                               </div>
@@ -354,18 +359,18 @@ export function CartFlyout() {
                             <div className="w-4/5 flex justify-between items-center">
                               <div>
                                 <p className="">Food</p>
-                                {!isFoodFilled && (
+                                {isFoodFilled && (
                                   <div className="text-xs flex">
                                     <p className="">
                                       Order Date: <span className="text-muted-foreground">{customerInfo.foodDate ? format(customerInfo.foodDate, "dd-MM-yyyy") : `-`}</span>
                                     </p>
-                                    <Edit className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2" onClick={() => handleEdit("food")} />
+                                    <Edit className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2" />
                                   </div>
                                 )}
                               </div>
-                              {isFoodFilled && (
+                              {!isFoodFilled && (
                                 <div className="max-w-sm">
-                                  <DatePicker value={customerInfo.foodDate} onChange={(date, bool) => updateFormData("foodDate", date.toISOString())} onDateSelect={() => setIsFoodFilled(false)} placeholder="When do you want?" />
+                                  <DatePicker value={customerInfo.foodDate} onChange={(date, bool) => updateFormData("foodDate", date.toISOString())} placeholder="When do you want?" />
                                 </div>
                               )}
                             </div>
