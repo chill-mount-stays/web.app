@@ -10,15 +10,17 @@ import { Car, Home } from "lucide-react";
 import { DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter, useSearchParams } from "next/navigation";
 interface ItemModalCardProp {
   vendorType: "stay" | "travel" | "food";
   item: Stay | Travel | Food | undefined;
-  onClose: () => void;
+  onFormClose: () => void;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
 }
 type FormData = Record<string, string>;
 
-const ItemModalForm = ({ vendorType, item, onClose, setShowForm }: ItemModalCardProp) => {
+const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModalCardProp) => {
+  const router = useRouter();
   const { toast } = useToast();
   const context = useContext(CartContext);
   const [formData, setFormData] = useState<FormData>({ ...context.customerInfo });
@@ -72,7 +74,7 @@ const ItemModalForm = ({ vendorType, item, onClose, setShowForm }: ItemModalCard
         context.events.addItemsToCart({ catergory: "stayItem", items: [{ category: "stay", id: item.vendorId, name: item.name, price: item.price }] });
         setIsInDateFilled(true);
         setIsOutDateFilled(true);
-        onClose();
+        onFormClose();
       }
     } else if (isTravelVendor(item)) {
       if (!customerInfo.pickUp || !customerInfo.dropDown || !customerInfo.destination || !customerInfo.phone) {
@@ -98,10 +100,11 @@ const ItemModalForm = ({ vendorType, item, onClose, setShowForm }: ItemModalCard
         context.events.addItemsToCart({ catergory: "travelItem", items: [{ category: "travel", id: item.vendorId, name: item.name, price: item.costPerDay }] });
         setIsUpDateFilled(true);
         setIsOffDateFilled(true);
-        onClose();
+        onFormClose();
       }
     }
   };
+  const searchParams = useSearchParams();
   return (
     <div>
       <DialogHeader>
@@ -185,32 +188,50 @@ const ItemModalForm = ({ vendorType, item, onClose, setShowForm }: ItemModalCard
             </div>
           </div>
         )}
-        <Card className="mt-6">
-          <CardHeader>
-            <CardTitle>Selected Item</CardTitle>
-            <CardDescription>Review your booking details</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center space-x-4">
-              <div className={`h-12 w-12 flex items-center justify-center rounded-full  ${vendorType === "stay" ? "bg-green-100 text-green-600" : vendorType === "travel" ? "bg-blue-100 text-blue-600" : "bg-gray-100"}`}>
-                {vendorType === "stay" && <Home className="h-6 w-6" />}
-                {vendorType === "travel" && <Car className="h-6 w-6" />}
-              </div>
-              <div>
-                <p className="font-medium">{item?.name}</p>
-                <p className="text-sm text-muted-foreground">{isStayVendor(item) || isFood(item) ? `₹${item?.price} per night` : `₹${item?.costPerDay} per day`}</p>
-              </div>
+        {!searchParams.has("edit") ? (
+          <>
+            <Card className="mt-6">
+              <CardHeader>
+                <CardTitle>Selected Item</CardTitle>
+                <CardDescription>Review your booking details</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center space-x-4">
+                  <div className={`h-12 w-12 flex items-center justify-center rounded-full  ${vendorType === "stay" ? "bg-green-100 text-green-600" : vendorType === "travel" ? "bg-blue-100 text-blue-600" : "bg-gray-100"}`}>
+                    {vendorType === "stay" && <Home className="h-6 w-6" />}
+                    {vendorType === "travel" && <Car className="h-6 w-6" />}
+                  </div>
+                  <div>
+                    <p className="font-medium">{item?.name}</p>
+                    <p className="text-sm text-muted-foreground">{isStayVendor(item) || isFood(item) ? `₹${item?.price} per night` : `₹${item?.costPerDay} per day`}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="flex justify-between mt-6">
+              <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-green-600 hover:bg-green-700" onClick={handleAddToCart}>
+                Add to Cart
+              </Button>
             </div>
-          </CardContent>
-        </Card>
-        <div className="flex justify-between mt-6">
-          <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
-            Cancel
-          </Button>
-          <Button type="submit" className="bg-green-600 hover:bg-green-700" onClick={handleAddToCart}>
-            Add to Cart
-          </Button>
-        </div>
+          </>
+        ) : (
+          <div className="flex justify-between mt-6">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setShowForm(false);
+                router.back();
+              }}
+            >
+              Done
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

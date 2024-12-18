@@ -43,13 +43,13 @@ export function CartFlyout() {
 
   // const [isStayFilled, setIsStayFilled] = useState<boolean>(!!customerInfo.checkIn && !!customerInfo.checkOut && !!customerInfo.guests);
   // const [isTravelFilled, setIsTravelFilled] = useState<boolean>(!!customerInfo.destination && !!customerInfo.pickUp && !!customerInfo.dropDown);
-  // const [isPhoneFilled, setIsPhoneFilled] = useState<boolean>(!!customerInfo.phone);
   // const [isFoodFilled, setIsFoodFilled] = useState<boolean>(!!customerInfo.foodDate);
+  const [showEdit, setShowEdit] = useState(customerInfo.phone.length < 10);
 
-  let isStayFilled = !!customerInfo.checkIn && !!customerInfo.checkOut && !!customerInfo.guests;
-  let isTravelFilled = !!customerInfo.destination && !!customerInfo.pickUp && !!customerInfo.dropDown;
-  let isPhoneFilled = !!customerInfo.phone;
-  let isFoodFilled = !!customerInfo.foodDate;
+  // let isStayFilled = !!customerInfo.checkIn && !!customerInfo.checkOut && !!customerInfo.guests;
+  // let isTravelFilled = !!customerInfo.destination && !!customerInfo.pickUp && !!customerInfo.dropDown;
+  // let isPhoneFilled = !!(customerInfo.phone.length == 10);
+  // let isFoodFilled = !!customerInfo.foodDate;
 
   let differenceInMilliseconds1 = customerInfo.checkIn && customerInfo.checkOut ? new Date(customerInfo.checkOut).getTime() - new Date(customerInfo.checkIn).getTime() : null;
   let differenceInMilliseconds2 = customerInfo.dropDown && customerInfo.pickUp ? new Date(customerInfo.dropDown).getTime() - new Date(customerInfo.pickUp).getTime() : null;
@@ -67,7 +67,7 @@ export function CartFlyout() {
   const showAlert = () => {
     const notCompleted = [];
     let showAlert = false;
-    if (!customerInfo.phone && notCompleted.push("Phone Number")) showAlert = true;
+    if ((!customerInfo.phone || customerInfo.phone.length !== 10) && notCompleted.push("Phone Number")) showAlert = true;
     if (foodItems.length && !customerInfo.foodDate && notCompleted.push("Food")) showAlert = true;
     if (stayItem.length && !customerInfo.checkIn && !customerInfo.checkOut && !customerInfo.guests && notCompleted.push("Stay")) showAlert = true;
     if (travelItem.length && !customerInfo.destination && !customerInfo.pickUp && !customerInfo.dropDown && notCompleted.push("Travel")) showAlert = true;
@@ -95,23 +95,12 @@ export function CartFlyout() {
       phoneRef.current?.focus();
       return;
     }
-    if (!customerInfo.foodDate) {
+    if (foodItems.length && !customerInfo.foodDate) {
       foodDeliveryRef.current?.focus();
       return;
     }
-
-    // use api for this
-    setOrderSubmitted(true);
-
-    const formattedMessage = formatDetailsForWhatsApp(customerInfo, stayItem, travelItem, foodItems);
-    const whatsappUrl = `https://api.whatsapp.com/send/?phone=%2B919842083815&text=${formattedMessage}&app_absent=0&lang=en`;
-    window.open(whatsappUrl, "_blank");
-    sessionStorage.removeItem("CMS_CartItems");
-    cartContext.events.emptyContext();
     const bookingRef = generateDocRef(`${process.env.NEXT_PUBLIC_FIREBASE_COLLECTION_NAME}`);
-
-    //Storing data in Firestore
-    const response = addCustomerInfoBooking(
+    const response = await addCustomerInfoBooking(
       {
         customerInfo: customerInfo,
         stayItem: stayItem,
@@ -120,7 +109,24 @@ export function CartFlyout() {
       },
       bookingRef
     );
-    console.log(response);
+
+    // use api for this
+    if (response) {
+      setOrderSubmitted(true);
+
+      const formattedMessage = formatDetailsForWhatsApp(customerInfo, stayItem, travelItem, foodItems);
+      const whatsappUrl = `https://api.whatsapp.com/send/?phone=%2B919842083815&text=${formattedMessage}&app_absent=0&lang=en`;
+      window.open(whatsappUrl, "_blank");
+      sessionStorage.removeItem("CMS_CartItems");
+      cartContext.events.emptyContext();
+    } else {
+      toast({
+        variant: "destructive",
+        description: "Some error occured please try again",
+      });
+    }
+
+    //Storing data in Firestore
   };
 
   useEffect(() => {
@@ -207,17 +213,31 @@ export function CartFlyout() {
                   </div>
                   <div className="flex justify-between space-x-4 items-center w-4/5">
                     <p className="">Phone Number</p>
-                    {isPhoneFilled && (
+                    {!showEdit && (
                       <div className="flex gap-2">
                         <p className="text-muted-foreground">{customerInfo.phone}</p>
-                        <Edit className="h-4 w-4 mt-0.5 hover:text-gray-800 hover:cursor-pointer text-muted-foreground" />
+                        <Edit
+                          className="h-4 w-4 mt-0.5 hover:text-gray-800 hover:cursor-pointer text-muted-foreground"
+                          onClick={() => {
+                            setShowEdit(true);
+                          }}
+                        />
                       </div>
                     )}
 
-                    {!isPhoneFilled && (
+                    {showEdit && (
                       <div className="flex">
-                        <Input ref={phoneRef} type="tel" id="phone" name="phone" pattern="^\d{10}$" onChange={(e) => updateFormData("phone", e.target.value)} className="max-w-fit" placeholder="Enter your number" />
-                        <Button className="bg-purple-600 text-purple-100 hover:bg-purple-500 rounded-full ml-2">
+                        <Input maxLength={10} value={customerInfo.phone} ref={phoneRef} type="tel" id="phone" name="phone" pattern="^\d{10}$" onChange={(e) => updateFormData("phone", e.target.value.replace(/\D+/g, ""))} className="max-w-fit" placeholder="Enter your number" />
+                        <Button
+                          className="bg-purple-600 text-purple-100 hover:bg-purple-500 rounded-full ml-2"
+                          onClick={() => {
+                            if (customerInfo.phone.length === 10) {
+                              setShowEdit(false);
+                            } else {
+                              phoneRef.current?.focus();
+                            }
+                          }}
+                        >
                           <Check />
                         </Button>
                       </div>
@@ -241,7 +261,7 @@ export function CartFlyout() {
                             <div className="w-4/5 flex justify-between items-center">
                               <div>
                                 <p className="">Stay</p>
-                                {isStayFilled && (
+                                {
                                   <div className="text-xs flex items-center">
                                     <div className="flex lg:space-x-4 space-x-1">
                                       <p>
@@ -254,9 +274,15 @@ export function CartFlyout() {
                                         Guest: <span className="text-muted-foreground">{customerInfo.guests}</span>
                                       </p>
                                     </div>
-                                    <Edit className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2" />
+                                    <Edit
+                                      onClick={() => {
+                                        router.push("/stays?edit=1");
+                                        setIsFlyoutOpen(false);
+                                      }}
+                                      className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2"
+                                    />
                                   </div>
-                                )}
+                                }
                               </div>
                             </div>
                           </div>
@@ -301,7 +327,7 @@ export function CartFlyout() {
                             <div className="w-4/5 flex justify-between items-center">
                               <div>
                                 <p className="">Travel</p>
-                                {isTravelFilled && (
+                                {
                                   <div className="flex items-center ">
                                     <div className="text-xs flex items-center lg:space-x-4 space-x-1">
                                       <p>
@@ -314,9 +340,15 @@ export function CartFlyout() {
                                         Dest: <span className="text-muted-foreground">{customerInfo.destination}</span>
                                       </p>
                                     </div>
-                                    <Edit className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2" />
+                                    <Edit
+                                      onClick={() => {
+                                        router.push("/travels?edit=1");
+                                        setIsFlyoutOpen(false);
+                                      }}
+                                      className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2"
+                                    />
                                   </div>
-                                )}
+                                }
                               </div>
                             </div>
                           </div>
@@ -359,20 +391,26 @@ export function CartFlyout() {
                             <div className="w-4/5 flex justify-between items-center">
                               <div>
                                 <p className="">Food</p>
-                                {isFoodFilled && (
+                                {
                                   <div className="text-xs flex">
                                     <p className="">
                                       Order Date: <span className="text-muted-foreground">{customerInfo.foodDate ? format(customerInfo.foodDate, "dd-MM-yyyy") : `-`}</span>
                                     </p>
-                                    <Edit className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2" />
+                                    <Edit
+                                      onClick={() => {
+                                        router.push("/food");
+                                        setIsFlyoutOpen(false);
+                                      }}
+                                      className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2"
+                                    />
                                   </div>
-                                )}
+                                }
                               </div>
-                              {!isFoodFilled && (
+                              {
                                 <div className="max-w-sm">
                                   <DatePicker value={customerInfo.foodDate} onChange={(date, bool) => updateFormData("foodDate", date.toISOString())} placeholder="When do you want?" />
                                 </div>
-                              )}
+                              }
                             </div>
                           </div>
                           <hr />

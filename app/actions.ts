@@ -69,7 +69,7 @@ export const formatDetailsForWhatsApp = (customerInfo: any, stayItem: any, trave
 
     return encodeURIComponent(message.trim());
   } else {
-    let message = `Hi Chill Mount Stay,\n\nI would like to know more about your services:\n`;
+    let message = `Hi Chill Mount Stay,\n\nI would like to know more about your services\n`;
 
     return encodeURIComponent(message.trim());
   }

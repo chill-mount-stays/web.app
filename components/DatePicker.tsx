@@ -20,7 +20,7 @@ export const DatePicker = ({ onChange, placeholder = "Select date", value, isDat
     if (value) return new Date(value);
     return undefined;
   });
-  const [openDP, setOpenDP] = React.useState(true);
+  const [openDP, setOpenDP] = React.useState(!value);
 
   return (
     <div>
@@ -41,7 +41,7 @@ export const DatePicker = ({ onChange, placeholder = "Select date", value, isDat
               if (date) onChange(date, true);
               if (onDateSelect) onDateSelect();
             }}
-            initialFocus
+            initialFocus={!value}
           />
         </PopoverContent>
       </Popover>
