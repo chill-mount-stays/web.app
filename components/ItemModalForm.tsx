@@ -6,7 +6,7 @@ import { DatePicker } from "./DatePicker";
 import { CartContext } from "@/context/CartContext";
 import { Button } from "./ui/button";
 import { Food, Stay, Travel } from "@/types";
-import { Home } from "lucide-react";
+import { Car, Home } from "lucide-react";
 import { DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 interface ItemModalCardProp {
@@ -73,6 +73,7 @@ const ItemModalForm = ({ vendorType, item, onClose, setShowForm }: ItemModalCard
         }
         if (!customerInfo.pickUp) {
           pickUpRef.current?.focus();
+          console.log("pickup ref");
           return;
         }
 
@@ -148,12 +149,13 @@ const ItemModalForm = ({ vendorType, item, onClose, setShowForm }: ItemModalCard
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-4">
-              <div className="h-12 w-12 flex items-center justify-center bg-green-100 rounded-full text-green-600">
-                <Home className="h-6 w-6" />
+              <div className={`h-12 w-12 flex items-center justify-center rounded-full  ${vendorType === "stay" ? "bg-green-100 text-green-600" : vendorType === "travel" ? "bg-blue-100 text-blue-600" : "bg-gray-100"}`}>
+                {vendorType === "stay" && <Home className="h-6 w-6" />}
+                {vendorType === "travel" && <Car className="h-6 w-6" />}
               </div>
               <div>
                 <p className="font-medium">{item?.name}</p>
-                <p className="text-sm text-muted-foreground">{isStayVendor(item) || isFood(item) ? `₹${item?.price} per night` : `${item?.costPerDay}`}</p>
+                <p className="text-sm text-muted-foreground">{isStayVendor(item) || isFood(item) ? `₹${item?.price} per night` : `₹${item?.costPerDay} per day`}</p>
               </div>
             </div>
           </CardContent>

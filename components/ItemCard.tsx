@@ -26,8 +26,8 @@ export function ItemCard({ item, type }: { item: Stay | Travel | Food; type: "st
       >
         <CardContent className="p-0">
           <div className="flex flex-col md:flex-row h-full">
-            <div className="relative w-full md:w-2/5 h-48 md:h-auto">
-              <Image src={item.imgUrls[0]?.firebaseUrl || "/placeholder.svg"} alt={item.name} layout="fill" objectFit="cover" priority />
+            <div className="relative w-full md:w-2/5 min-h-48 md:h-auto">
+              <Image src={item.imgUrls[0]?.firebaseUrl || "/placeholder.svg"} alt={item.name || "Placeholder image"} layout="fill" sizes="100%" objectFit="cover" priority />
             </div>
             <div className="flex flex-col justify-between p-4 md:w-3/5">
               <div>

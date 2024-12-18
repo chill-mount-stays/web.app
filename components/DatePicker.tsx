@@ -10,27 +10,22 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 interface DatePickerProps {
   onChange: (date: Date) => void;
-  value: string | Date;
-  placeholder: string | undefined;
-  //   checkIn: Date | undefined;
-  //   isFormReset: boolean;
+  value?: string | Date;
+  placeholder?: string | undefined;
 }
-export const DatePicker = React.forwardRef(({ onChange, placeholder, value }: DatePickerProps, ref: React.Ref<HTMLButtonElement>) => {
-  // const [date, setDate] = React.useState<Date | undefined>(() => {
-  //   if (value instanceof Date) {
-  //     return value;
-  //   }
-  //   const parsedDate = new Date(value);
-  //   return isNaN(parsedDate.getTime()) ? undefined : parsedDate;
-  // });
+export const DatePicker = React.forwardRef<HTMLButtonElement, DatePickerProps>(({ onChange, placeholder = "Select date", value }, ref) => {
   const [date, setDate] = React.useState<Date | undefined>(() => {
     if (value) return new Date(value);
+    return undefined;
   });
-
+  const [open, setOpen] = React.useState(false);
+  const handleFocus = () => {
+    setOpen(true);
+  };
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button ref={ref} variant={"outline"} className={cn("max-w-sm w-full justify-start text-left font-normal", !date && "text-muted-foreground")}>
+        <Button ref={ref} variant={"outline"} onFocus={handleFocus} className={cn("max-w-sm w-full justify-start text-left font-normal", !date && "text-muted-foreground")}>
           <CalendarIcon />
           {date ? format(date, "PPP") : <span>{placeholder}</span>}
         </Button>
@@ -42,6 +37,7 @@ export const DatePicker = React.forwardRef(({ onChange, placeholder, value }: Da
           onSelect={(date) => {
             setDate(date);
             if (date) onChange(date);
+            setOpen(false);
           }}
           initialFocus
         />
