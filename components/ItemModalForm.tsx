@@ -40,7 +40,7 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
   const guestsRef = useRef<HTMLInputElement | null>(null);
   const destinationRef = useRef<HTMLInputElement | null>(null);
 
-  const handleAddToCart = () => {
+  const validatePhoneNumbe = () => {
     const phoneRegex = /^\d{10}$/;
     if (!customerInfo.phone || !phoneRegex.test(customerInfo.phone)) {
       toast({
@@ -50,60 +50,80 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
       phoneRef.current?.focus();
       return;
     }
+    return 1;
+  };
 
+  const stayFormInputFocus = () => {
+    if (!customerInfo.phone) {
+      phoneRef.current?.focus();
+      return;
+    }
+    if (!customerInfo.guests) {
+      guestsRef.current?.focus();
+      return;
+    }
+    if (!customerInfo.checkIn) {
+      setIsInDateFilled(false);
+      return;
+    }
+
+    if (!customerInfo.checkOut) {
+      setIsOutDateFilled(false);
+      return;
+    }
+    return 1;
+  };
+
+  const travelFormInputFocus = () => {
+    if (!customerInfo.phone) {
+      phoneRef.current?.focus();
+      return;
+    }
+    if (!customerInfo.destination) {
+      destinationRef.current?.focus();
+      return;
+    }
+    if (!customerInfo.pickUp) {
+      setIsUpDateFilled(false);
+      console.log("pickup ref");
+      return;
+    }
+
+    if (!customerInfo.dropDown) {
+      setIsOffDateFilled(false);
+      return;
+    }
+    return 1;
+  };
+
+  const handleAddToCart = () => {
+    if (!validatePhoneNumbe()) return;
     if (isStayVendor(item)) {
-      if (!customerInfo.checkIn || !customerInfo.checkOut || !customerInfo.phone || !customerInfo.guests) {
-        if (!customerInfo.phone) {
-          phoneRef.current?.focus();
-          return;
-        }
-        if (!customerInfo.guests) {
-          guestsRef.current?.focus();
-          return;
-        }
-        if (!customerInfo.checkIn) {
-          setIsInDateFilled(false);
-          return;
-        }
-
-        if (!customerInfo.checkOut) {
-          setIsOutDateFilled(false);
-          return;
-        }
-      } else {
-        context.events.addItemsToCart({ catergory: "stayItem", items: [{ category: "stay", id: item.vendorId, name: item.name, price: item.price }] });
-        setIsInDateFilled(true);
-        setIsOutDateFilled(true);
-        onFormClose();
-      }
+      if (!stayFormInputFocus()) return;
+      context.events.addItemsToCart({ catergory: "stayItem", items: [{ category: "stay", id: item.vendorId, name: item.name, price: item.price }] });
+      setIsInDateFilled(true);
+      setIsOutDateFilled(true);
+      onFormClose();
     } else if (isTravelVendor(item)) {
-      if (!customerInfo.pickUp || !customerInfo.dropDown || !customerInfo.destination || !customerInfo.phone) {
-        if (!customerInfo.phone) {
-          phoneRef.current?.focus();
-          return;
-        }
-        if (!customerInfo.destination) {
-          destinationRef.current?.focus();
-          return;
-        }
-        if (!customerInfo.pickUp) {
-          setIsUpDateFilled(false);
-          console.log("pickup ref");
-          return;
-        }
-
-        if (!customerInfo.dropDown) {
-          setIsOffDateFilled(false);
-          return;
-        }
-      } else {
-        context.events.addItemsToCart({ catergory: "travelItem", items: [{ category: "travel", id: item.vendorId, name: item.name, price: item.costPerDay }] });
-        setIsUpDateFilled(true);
-        setIsOffDateFilled(true);
-        onFormClose();
-      }
+      if (!travelFormInputFocus()) return;
+      context.events.addItemsToCart({ catergory: "travelItem", items: [{ category: "travel", id: item.vendorId, name: item.name, price: item.costPerDay }] });
+      setIsUpDateFilled(true);
+      setIsOffDateFilled(true);
+      onFormClose();
     }
   };
+
+  const handleSaveForm = () => {
+    if (!validatePhoneNumbe()) return;
+    if (isStayVendor(item)) {
+      if (!stayFormInputFocus()) return;
+    } else if (isTravelVendor(item)) {
+      if (!travelFormInputFocus()) return;
+    }
+    setShowForm(false);
+    router.back();
+  };
+
   const searchParams = useSearchParams();
   return (
     <div>
@@ -141,6 +161,7 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
                 <DatePicker
                   isDateFilled={isOutDateFilled}
                   value={customerInfo.checkOut}
+                  minDate={customerInfo.checkIn}
                   onChange={(date, bool) => {
                     updateFormData("checkOut", date.toISOString()), setIsOutDateFilled(bool);
                   }}
@@ -179,6 +200,7 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
                 <DatePicker
                   isDateFilled={isOffDateFilled}
                   value={customerInfo.dropDown}
+                  minDate={customerInfo.pickUp}
                   onChange={(date, bool) => {
                     updateFormData("dropDown", date.toISOString()), setIsOffDateFilled(bool);
                   }}
@@ -219,16 +241,15 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
             </div>
           </>
         ) : (
-          <div className="flex justify-between mt-6">
+          <div className="flex mt-6 w-full">
             <Button
               type="button"
-              variant="outline"
+              className="bg-cms hover:bg-green-600 justify-end"
               onClick={() => {
-                setShowForm(false);
-                router.back();
+                handleSaveForm();
               }}
             >
-              Done
+              Save
             </Button>
           </div>
         )}
