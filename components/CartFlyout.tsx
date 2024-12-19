@@ -35,7 +35,7 @@ export function CartFlyout() {
   const foodDeliveryRef = React.useRef<HTMLButtonElement>(null);
   const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>({ ...cartContext.customerInfo });
-
+  const [cartCount, setCartCount] = useState(0);
   const updateFormData = (field: string, value: string) => {
     cartContext.events.updateCustomerInfo({ field: field, value: value });
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -77,6 +77,7 @@ export function CartFlyout() {
   React.useEffect(() => {
     alert = showAlert();
     setNoItemsInCart(!(!!foodItems.length || !!stayItem.length || !!travelItem.length));
+    setCartCount(foodItems.length + stayItem.length + travelItem.length);
   }, [cartContext]);
 
   // const handleEdit = (field: string): void => {
@@ -167,7 +168,7 @@ export function CartFlyout() {
         asChild
       >
         <div className="p-5 bg-cms text-white rounded-full shadow-lg cursor-pointer relative">
-          <div className={cn(foodItems.length + stayItem.length + travelItem.length > 0 ? "" : "hidden", "absolute bg-red-800 px-2  rounded-full left-2 top-2 ")}>{foodItems.length + stayItem.length + travelItem.length}</div>
+          {<div className={cn(cartCount > 0 ? "" : "hidden", "absolute bg-red-800 px-2  rounded-full left-2 top-2 ")}>{cartCount}</div>}
           <ShoppingCart height={25} width={25} />
         </div>
       </DrawerTrigger>
