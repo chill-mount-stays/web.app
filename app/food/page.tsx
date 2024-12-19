@@ -6,7 +6,7 @@ import { Food, Stay } from "@/types";
 import { getData } from "../actions";
 import PageHeader from "@/components/PageHeader";
 import { CartFlyout } from "@/components/CartFlyout";
-
+export const dynamic = "force-dynamic";
 const FoodPage = async () => {
   const vendorsData: any = await getData("Foods");
   return (

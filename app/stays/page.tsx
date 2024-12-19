@@ -4,7 +4,7 @@ import { ItemCard } from "@/components/ItemCard";
 import NoResultFound from "@/components/NoResultFound";
 import SubHeading from "@/components/SubHeading";
 import PageHeader from "@/components/PageHeader";
-
+export const dynamic = "force-dynamic";
 const StaysPage = async () => {
   const vendorsData: any = await getData("Stays");
   return (

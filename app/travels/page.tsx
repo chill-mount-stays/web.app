@@ -5,7 +5,7 @@ import SubHeading from "@/components/SubHeading";
 import { Stay, Travel } from "@/types";
 import { getData } from "../actions";
 import PageHeader from "@/components/PageHeader";
-
+export const dynamic = "force-dynamic";
 const TravelsPage = async () => {
   const vendorsData: any = await getData("Travels");
   return (
