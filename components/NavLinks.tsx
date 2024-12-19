@@ -21,14 +21,7 @@ export const NavLinks = ({ onLinkClick }: NavLinksProps) => {
   return (
     <div className="flex gap-5 lg:gap-9 md:flex-row items-end flex-col">
       {navLinks.map((link, idx) => (
-        <Link
-          key={"link__" + idx}
-          className={`text-lg lg:text-base md:text-sm hover:underline hover:text-cms underline-offset-4  ${
-            pathname === link.url ? "text-cms font-bold" : "text-black"
-          }`}
-          onClick={handleClick}
-          href={link.url}
-        >
+        <Link key={"link__" + idx} className={`text-lg lg:text-base md:text-sm hover:underline hover:text-cms underline-offset-4 cursor-pointer ${pathname === link.url ? "text-cms font-bold" : "text-black"}`} onClick={handleClick} href={link.url}>
           <span>{link.text}</span>
         </Link>
       ))}
