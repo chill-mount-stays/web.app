@@ -2,6 +2,63 @@ import { FoodSvg } from "@/components/SVGIcons/food";
 import { StaysSVG } from "@/components/SVGIcons/stays";
 import { TravelSVG } from "@/components/SVGIcons/travel";
 
+export const bestPlaces = [
+  {
+    imageUrl: "/assets/travels-header-bg.webp",
+    altText: "Ooty",
+    title: "Ooty",
+    description: "Enjoy the breathtaking view of nature's beauty.",
+  },
+  {
+    imageUrl: "/assets/travels-header-bg.webp",
+    altText: "Ooty",
+    title: "Ooty",
+    description: "Enjoy the breathtaking view of nature's beauty.",
+  },
+  {
+    imageUrl: "/assets/travels-header-bg.webp",
+    altText: "Ooty",
+    title: "Ooty",
+    description: "Enjoy the breathtaking view of nature's beauty.",
+  },
+  {
+    imageUrl: "/assets/travels-header-bg.webp",
+    altText: "Ooty",
+    title: "Ooty",
+    description: "Enjoy the breathtaking view of nature's beauty.",
+  },
+  {
+    imageUrl: "/assets/travels-header-bg.webp",
+    altText: "Ooty",
+    title: "Ooty",
+    description: "Enjoy the breathtaking view of nature's beauty.",
+  },
+  {
+    imageUrl: "/assets/travels-header-bg.webp",
+    altText: "Ooty",
+    title: "Ooty",
+    description: "Enjoy the breathtaking view of nature's beauty.",
+  },
+  {
+    imageUrl: "/assets/travels-header-bg.webp",
+    altText: "Ooty",
+    title: "Ooty",
+    description: "Enjoy the breathtaking view of nature's beauty.",
+  },
+  {
+    imageUrl: "/assets/travels-header-bg.webp",
+    altText: "Ooty",
+    title: "Ooty",
+    description: "Enjoy the breathtaking view of nature's beauty.",
+  },
+  {
+    imageUrl: "/assets/travels-header-bg.webp",
+    altText: "Ooty",
+    title: "Ooty",
+    description: "Enjoy the breathtaking view of nature's beauty.",
+  },
+];
+
 export const Sections = [
   {
     page: "stays",

@@ -101,12 +101,22 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
     if (isStayVendor(item)) {
       if (!stayFormInputFocus()) return;
       context.events.addItemsToCart({ catergory: "stayItem", items: [{ category: "stay", id: item.vendorId, name: item.name, price: item.price }] });
+      toast({
+        variant: "default",
+        description: "Stay booking successfully added to Cart.",
+        className: "text-cms",
+      });
       setIsInDateFilled(true);
       setIsOutDateFilled(true);
       onFormClose();
     } else if (isTravelVendor(item)) {
       if (!travelFormInputFocus()) return;
       context.events.addItemsToCart({ catergory: "travelItem", items: [{ category: "travel", id: item.vendorId, name: item.name, price: item.costPerDay }] });
+      toast({
+        variant: "default",
+        description: "Travel booking successfully added to Cart.",
+        className: "text-cms",
+      });
       setIsUpDateFilled(true);
       setIsOffDateFilled(true);
       onFormClose();
@@ -137,11 +147,11 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
             <div className="flex lg:flex-row lg:space-x-6 flex-col space-y-4 lg:space-y-0">
               <div className="grid w-full max-w-sm  items-center gap-1.5">
                 <Label htmlFor="phone">Phone</Label>
-                <Input ref={phoneRef} id="phone" type="text" name="phone" value={customerInfo.phone} placeholder="Phone number" onChange={(e) => updateFormData("phone", e.target.value)} />
+                <Input maxLength={10} ref={phoneRef} id="phone" type="text" name="phone" value={customerInfo.phone} placeholder="Phone number" onChange={(e) => updateFormData("phone", e.target.value.replace(/\D+/g, ""))} />
               </div>
               <div className="grid w-full max-w-sm  items-center gap-1.5 ">
                 <Label htmlFor="guests">Guests</Label>
-                <Input ref={guestsRef} id="guests" type="number" name="guests" value={customerInfo.guests} placeholder="No of Guests" onChange={(e) => updateFormData("guests", e.target.value)} />
+                <Input maxLength={2} ref={guestsRef} id="guests" type="number" name="guests" value={customerInfo.guests} placeholder="No of Guests" onChange={(e) => updateFormData("guests", e.target.value)} />
               </div>
             </div>
             <div className="flex lg:flex-row lg:space-x-6 flex-col space-y-4 lg:space-y-0">
@@ -176,7 +186,7 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
             <div className="flex lg:flex-row lg:space-x-6 flex-col space-y-4 lg:space-y-0">
               <div className="grid w-full max-w-sm  items-center gap-1.5">
                 <Label htmlFor="phone">Phone</Label>
-                <Input ref={phoneRef} id="phone" type="text" name="phone" value={customerInfo.phone} placeholder="Phone number" onChange={(e) => updateFormData("phone", e.target.value)} />
+                <Input maxLength={10} ref={phoneRef} id="phone" type="text" name="phone" value={customerInfo.phone} placeholder="Phone number" onChange={(e) => updateFormData("phone", e.target.value.replace(/\D+/g, ""))} />
               </div>
               <div className="grid w-full max-w-sm  items-center gap-1.5 ">
                 <Label htmlFor="destination">Destination</Label>

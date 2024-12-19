@@ -397,21 +397,26 @@ export function CartFlyout() {
                                     <p className="">
                                       Order Date: <span className="text-muted-foreground">{customerInfo.foodDate ? format(customerInfo.foodDate, "dd-MM-yyyy") : `-`}</span>
                                     </p>
-                                    <Edit
+                                    {/* <Edit
                                       onClick={() => {
                                         router.push("/food");
                                         setIsFlyoutOpen(false);
                                       }}
                                       className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2"
-                                    />
+                                    /> */}
                                   </div>
                                 }
                               </div>
-                              {
-                                <div className="max-w-sm">
-                                  <DatePicker value={customerInfo.foodDate} onChange={(date, bool) => updateFormData("foodDate", date.toISOString())} placeholder="When do you want?" />
-                                </div>
-                              }
+
+                              <div className="max-w-sm">
+                                <DatePicker
+                                  value={customerInfo.foodDate}
+                                  onChange={(date, bool) => {
+                                    updateFormData("foodDate", date.toISOString());
+                                  }}
+                                  placeholder="When do you want?"
+                                />
+                              </div>
                             </div>
                           </div>
                           <hr />
@@ -473,9 +478,7 @@ export function CartFlyout() {
             <DrawerFooter>
               <div className="w-full flex justify-between mx-auto max-w-xl items-center">
                 <DrawerClose asChild>
-                  <Button>
-                    <p className=" text-white">Close</p>
-                  </Button>
+                  <Button>Continue Booking</Button>
                 </DrawerClose>
                 <button disabled={alert.showAlert} className={cn(`${!alert.showAlert ? "bg-green-500 cursor-pointer" : "bg-green-300 cursor-not-allowed"} hover:bg-green-300 space-x-2 py-2 px-4 lg:px-6 flex items-center rounded-full max-w-fit`)} onClick={handleEnquireNow}>
                   <FontAwesomeIcon icon={faWhatsapp} className="text-white lg:w-8 w-6 h-full" />
