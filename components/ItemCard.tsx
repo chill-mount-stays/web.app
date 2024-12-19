@@ -104,6 +104,7 @@ export function ItemCard({ item, type }: { item: Stay | Travel | Food; type: "st
                       </div>
                     ))}
                 </div>
+                {!isFood(item) && <Button variant="outline">View Details</Button>}
               </div>
             </div>
           </div>
