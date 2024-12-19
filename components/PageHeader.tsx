@@ -1,8 +1,5 @@
 import { Headers } from "@/lib/content";
-import { StaysEnquiry } from "./StaysEnquiry";
 import Image from "next/image";
-import { FoodEnquiry } from "./FoodEnquiry";
-import { TravelsEnquiry } from "./TravelsEnquiry";
 
 interface PageHeaderProps {
   service: "stays" | "travels" | "food";

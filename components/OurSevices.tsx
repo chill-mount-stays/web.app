@@ -1,6 +1,6 @@
 "use client";
 import { OurServicesContent, OurSevicesIcons } from "@/lib/content";
-import { color, motion } from "motion/react";
+import { motion } from "motion/react";
 import { useRouter } from "next/navigation";
 
 export const OurServices = () => {
@@ -30,9 +30,7 @@ export const OurServices = () => {
             }}
           >
             {services.svg}
-            <span className="font-poppins text-xl font-semibold">
-              {services.heading}
-            </span>
+            <span className="font-poppins text-xl font-semibold">{services.heading}</span>
           </motion.div>
         ))}
       </div>

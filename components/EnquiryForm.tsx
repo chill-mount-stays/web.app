@@ -1,6 +1,5 @@
 "use client";
 import React, { createContext, useContext, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CartContext } from "@/context/CartContext";
 import { DatePicker } from "./DatePicker";
@@ -27,11 +26,6 @@ export function EnquiryForm({ children }: EnquiryFormProps) {
     context.events.updateCustomerInfo({ field: field, value: value });
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
-
-  // const handleSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   onSubmit(formData);
-  // };
 
   return (
     <FormContext.Provider value={{ formData, updateFormData }}>

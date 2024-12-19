@@ -4,11 +4,10 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
-import { AlertCircle, Car, Check, Edit, Edit3, Home, MapPin, Minus, PhoneCall, Plus, ShoppingBagIcon, ShoppingCart, Trash2, Trash2Icon, Utensils } from "lucide-react";
+import { AlertCircle, Car, Check, Edit, Home, Minus, PhoneCall, Plus, ShoppingCart, Trash2, Trash2Icon, Utensils } from "lucide-react";
 import { CartContext } from "@/context/CartContext";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { ScrollArea } from "./ui/scroll-area";
-import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons/faWhatsapp";
 import { addCustomerInfoBooking, formatDetailsForWhatsApp, generateDocRef } from "@/app/actions";
@@ -41,15 +40,7 @@ export function CartFlyout() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // const [isStayFilled, setIsStayFilled] = useState<boolean>(!!customerInfo.checkIn && !!customerInfo.checkOut && !!customerInfo.guests);
-  // const [isTravelFilled, setIsTravelFilled] = useState<boolean>(!!customerInfo.destination && !!customerInfo.pickUp && !!customerInfo.dropDown);
-  // const [isFoodFilled, setIsFoodFilled] = useState<boolean>(!!customerInfo.foodDate);
   const [showEdit, setShowEdit] = useState(customerInfo.phone.length < 10);
-
-  // let isStayFilled = !!customerInfo.checkIn && !!customerInfo.checkOut && !!customerInfo.guests;
-  // let isTravelFilled = !!customerInfo.destination && !!customerInfo.pickUp && !!customerInfo.dropDown;
-  // let isPhoneFilled = !!(customerInfo.phone.length == 10);
-  // let isFoodFilled = !!customerInfo.foodDate;
 
   let differenceInMilliseconds1 = customerInfo.checkIn && customerInfo.checkOut ? new Date(customerInfo.checkOut).getTime() - new Date(customerInfo.checkIn).getTime() : null;
   let differenceInMilliseconds2 = customerInfo.dropDown && customerInfo.pickUp ? new Date(customerInfo.dropDown).getTime() - new Date(customerInfo.pickUp).getTime() : null;
@@ -80,11 +71,6 @@ export function CartFlyout() {
     setCartCount(foodItems.length + stayItem.length + travelItem.length);
   }, [cartContext]);
 
-  // const handleEdit = (field: string): void => {
-  //   if (field == "phone") setIsPhoneFilled(true);
-  //   if (field == "food") setIsFoodFilled(true);
-  // };
-
   const handleEnquireNow = async () => {
     const phoneRegex = /^\d{10}$/;
     if (!customerInfo.phone || !phoneRegex.test(customerInfo.phone)) {
@@ -92,7 +78,6 @@ export function CartFlyout() {
         variant: "destructive",
         description: "Phone number is either invalid/missing",
       });
-      // setIsPhoneFilled(true);
       phoneRef.current?.focus();
       return;
     }

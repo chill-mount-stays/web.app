@@ -2,14 +2,13 @@
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Divide, StarIcon } from "lucide-react";
 import { CartItem, Food, Stay, Travel } from "@/types";
 import { ImageCarousel } from "./ImageCarousel";
 import { Suspense, useContext, useEffect, useState } from "react";
 import { CartContext } from "@/context/CartContext";
 import ItemModalForm from "./ItemModalForm";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 interface ItemCardModalProps {
   type: "stay" | "travel" | "food";
@@ -114,7 +113,6 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
                           disabled={!vendor.availability}
                           onClick={() => {
                             handleAddItem(vendor);
-                            // onClose();
                           }}
                         >
                           Add to cart
@@ -139,7 +137,6 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
                           className="w-full bg-cms hover:bg-green-600"
                           disabled={!vendor.availability}
                           onClick={() => {
-                            // onClose();
                             handleAddItem(vendor);
                           }}
                         >
@@ -164,8 +161,6 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
         ) : (
           <div>
             <Suspense fallback={<></>}>{showForm && <ItemModalForm vendorType={type} item={cartItem} onFormClose={onClose} setShowForm={setShowForm} />}</Suspense>
-            {/* {!setShowForm && <ItemModalForm vendorType="travel" item={cartItem} onClose={onClose} setShowForm={setShowForm} />}
-            {!setShowForm && <ItemModalForm vendorType="food" item={cartItem} onClose={onClose} setShowForm={setShowForm} />} */}
           </div>
         )}
       </DialogContent>

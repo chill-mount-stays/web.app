@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 
 interface ResponsiveImageCardProps {
   imageUrl: string;

@@ -1,13 +1,9 @@
 "use client";
 import React from "react";
 import { EnquiryForm } from "./EnquiryForm";
-import { CalendarIcon, MapPinIcon, UsersIcon, PhoneCall } from "lucide-react";
+import { UsersIcon, PhoneCall } from "lucide-react";
 
 export function StaysEnquiry() {
-  const handleSubmit = (data: Record<string, string>) => {
-    // Handle stays search logic here
-  };
-
   return (
     <EnquiryForm>
       <EnquiryForm.Field name="phone" label="Phone" placeholder="Phone Number" icon={<PhoneCall className="h-5 w-5" />} />

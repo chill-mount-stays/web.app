@@ -4,7 +4,7 @@ import { Suspense, useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { StarIcon, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import { ItemCardModal } from "./ItemModalCard";
 import { CartItem, Food, Stay, Travel } from "@/types";
 import { CartContext } from "@/context/CartContext";

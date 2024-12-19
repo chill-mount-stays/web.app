@@ -1,13 +1,6 @@
 import { Menu } from "lucide-react";
 import { NavLinks } from "./NavLinks";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "./ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { useState } from "react";
 
 export const Navigation = () => {
@@ -25,7 +18,6 @@ export const Navigation = () => {
           <SheetContent className="w-64 pt-10">
             <SheetHeader>
               <SheetTitle className="sr-only">Navigation</SheetTitle>
-              {/* <SheetDescription></SheetDescription> */}
             </SheetHeader>
             <NavLinks onLinkClick={() => setIsOpen(false)} />
           </SheetContent>
