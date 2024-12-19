@@ -1,12 +1,12 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StarIcon, Trash } from "lucide-react";
 import { ItemCardModal } from "./ItemModalCard";
-import { Food, Stay, Travel } from "@/types";
+import { CartItem, Food, Stay, Travel } from "@/types";
 import { CartContext } from "@/context/CartContext";
 
 export function ItemCard({ item, type }: { item: Stay | Travel | Food; type: "stay" | "travel" | "food" }) {
@@ -15,7 +15,12 @@ export function ItemCard({ item, type }: { item: Stay | Travel | Food; type: "st
   const isStayVendor = (vendor: any): vendor is Stay => type === "stay";
   const isTravelVendor = (vendor: any): vendor is Travel => type === "travel";
   const isFood = (vendor: any): vendor is Food => type === "food";
-  let foodItem;
+  const [foodItem, setFoodItem] = useState<CartItem>();
+  useEffect(() => {
+    if (isFood(item)) {
+      setFoodItem(cartContext.foodItems.find((food) => food.id === item.foodId));
+    }
+  }, [cartContext]);
   return (
     <>
       <Card
@@ -55,7 +60,7 @@ export function ItemCard({ item, type }: { item: Stay | Travel | Food; type: "st
                 )}
                 <div>
                   {isFood(item) &&
-                    (((foodItem = cartContext.foodItems.find((food) => food.id === item.foodId)) || true) && !foodItem ? (
+                    (!foodItem ? (
                       <Button
                         className="w-sm bg-cms hover:bg-green-600"
                         onClick={() => {
