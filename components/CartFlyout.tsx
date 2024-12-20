@@ -86,7 +86,7 @@ export function CartFlyout() {
       foodDeliveryRef.current?.focus();
       return;
     }
-    const bookingRef = generateDocRef("Users");
+    const bookingRef = generateDocRef("Orders");
     const response = await addCustomerInfoBooking(
       {
         customerInfo: customerInfo,
