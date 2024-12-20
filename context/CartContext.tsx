@@ -92,14 +92,15 @@ export const CartContextProvider: React.FC<{ children?: ReactNode }> = (props) =
         setContextData(cartData);
         return cartData;
       } else if (action.type === "UPDATE_COUNT") {
-        const updateItem = state["foodItems"].find((item) => item.id === action.itemId);
-        if (updateItem) {
-          const remainingItems = state["foodItems"].filter((item) => item.id !== action.itemId);
-          updateItem?.category === "food" && updateItem?.itemCount && (updateItem.itemCount = action.count);
-          const cartData = { ...state, foodItems: [...remainingItems, updateItem] };
-          return cartData;
-        }
-        return state;
+        const updatedFoodItems = state["foodItems"].map((item) => {
+          if (item.id !== action.itemId) return item;
+          item?.category === "food" && item?.itemCount && (item.itemCount = action.count);
+          return item;
+        });
+        const cartData = { ...state, foodItems: updatedFoodItems };
+        setContextData(cartData);
+
+        return cartData;
       }
     } else if (action.type === "CLEAR_CART") {
       return initalCartContext;

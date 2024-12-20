@@ -157,3 +157,8 @@ export const OurSevicesIcons = [
   { svg: <TravelSVG height="100" />, heading: "Travels", url: "/travels" },
   { svg: <FoodSvg height="100" />, heading: "Food", url: "/food" },
 ];
+
+export const cartFlyoutBtns = {
+  primaryBtn: "Confirm Order",
+  secondaryBtn: "Go Back",
+};
