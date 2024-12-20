@@ -9,9 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CartContext } from "@/context/CartContext";
+import { localStringToDateObject } from "@/app/actions";
 interface DatePickerProps {
   onChange: (date: Date, bool: boolean) => void;
-  value?: string | Date;
+  value?: string;
   placeholder?: string | undefined;
   isDateFilled?: boolean;
   onDateSelect?: () => void;
@@ -20,11 +21,10 @@ interface DatePickerProps {
 export const DatePicker = ({ onChange, placeholder = "Select date", value, isDateFilled = true, onDateSelect, minDate }: DatePickerProps) => {
   const context = React.useContext(CartContext);
   const [date, setDate] = React.useState<Date | undefined>(() => {
-    if (value) return new Date(value);
+    if (value) return localStringToDateObject(value);
     return undefined;
   });
   const [openDP, setOpenDP] = React.useState(!value);
-
   const dateRange = (date: Date): boolean => {
     const onlyTodayDate = new Date();
     onlyTodayDate.setHours(0, 0, 0, 0);
@@ -33,7 +33,7 @@ export const DatePicker = ({ onChange, placeholder = "Select date", value, isDat
 
     //CheckIn < CheckOut && PickUp < DropOff
     if (minDate) {
-      const onlyMinDate = new Date(minDate);
+      const onlyMinDate = localStringToDateObject(minDate);
       onlyMinDate.setHours(0, 0, 0, 0);
       if (onlyDate <= onlyMinDate) {
         return true;

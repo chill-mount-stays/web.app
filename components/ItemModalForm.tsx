@@ -161,7 +161,7 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
                   isDateFilled={isInDateFilled}
                   value={customerInfo.checkIn}
                   onChange={(date, bool) => {
-                    updateFormData("checkIn", date.toISOString()), setIsInDateFilled(bool);
+                    updateFormData("checkIn", date.toLocaleString("en-IN")), setIsInDateFilled(bool);
                   }}
                   placeholder="Pick Check In Date"
                 />
@@ -173,7 +173,7 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
                   value={customerInfo.checkOut}
                   minDate={customerInfo.checkIn}
                   onChange={(date, bool) => {
-                    updateFormData("checkOut", date.toISOString()), setIsOutDateFilled(bool);
+                    updateFormData("checkOut", date.toLocaleString("en-IN")), setIsOutDateFilled(bool);
                   }}
                   placeholder="Pick Check Out Date"
                 />
@@ -200,7 +200,7 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
                   isDateFilled={isUpDateFilled}
                   value={customerInfo.pickUp}
                   onChange={(date, bool) => {
-                    updateFormData("pickUp", date.toISOString()), setIsUpDateFilled(bool);
+                    updateFormData("pickUp", date.toLocaleString("en-IN")), setIsUpDateFilled(bool);
                   }}
                   placeholder="Select Pick Up Date"
                 />
@@ -212,7 +212,7 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
                   value={customerInfo.dropDown}
                   minDate={customerInfo.pickUp}
                   onChange={(date, bool) => {
-                    updateFormData("dropDown", date.toISOString()), setIsOffDateFilled(bool);
+                    updateFormData("dropDown", date.toLocaleString("en-IN")), setIsOffDateFilled(bool);
                   }}
                   placeholder="Select Drop Down Date"
                 />

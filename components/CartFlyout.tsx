@@ -10,11 +10,10 @@ import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { ScrollArea } from "./ui/scroll-area";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons/faWhatsapp";
-import { addCustomerInfoBooking, formatDetailsForWhatsApp, generateDocRef } from "@/app/actions";
+import { addCustomerInfoBooking, formatDate, formatDetailsForWhatsApp, generateDocRef, localStringToDateObject } from "@/app/actions";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
 import { Input } from "./ui/input";
 import { DatePicker } from "./DatePicker";
 import { useToast } from "@/hooks/use-toast";
@@ -43,8 +42,8 @@ export function CartFlyout() {
 
   const [showEdit, setShowEdit] = useState(customerInfo.phone.length < 10);
 
-  let differenceInMilliseconds1 = customerInfo.checkIn && customerInfo.checkOut ? new Date(customerInfo.checkOut).getTime() - new Date(customerInfo.checkIn).getTime() : null;
-  let differenceInMilliseconds2 = customerInfo.dropDown && customerInfo.pickUp ? new Date(customerInfo.dropDown).getTime() - new Date(customerInfo.pickUp).getTime() : null;
+  let differenceInMilliseconds1 = customerInfo.checkIn && customerInfo.checkOut ? localStringToDateObject(customerInfo.checkOut).getTime() - localStringToDateObject(customerInfo.checkIn).getTime() : null;
+  let differenceInMilliseconds2 = customerInfo.dropDown && customerInfo.pickUp ? localStringToDateObject(customerInfo.dropDown).getTime() - localStringToDateObject(customerInfo.pickUp).getTime() : null;
 
   let stayDaysCnt = 0;
   if (differenceInMilliseconds1) {
@@ -65,6 +64,7 @@ export function CartFlyout() {
     if (travelItem.length && !customerInfo.destination && !customerInfo.pickUp && !customerInfo.dropDown && notCompleted.push("Travel")) showAlert = true;
     return { showAlert, notCompleted };
   };
+
   let alert = showAlert();
   React.useEffect(() => {
     alert = showAlert();
@@ -86,7 +86,7 @@ export function CartFlyout() {
       foodDeliveryRef.current?.focus();
       return;
     }
-    const bookingRef = generateDocRef(`${process.env.NEXT_PUBLIC_FIREBASE_COLLECTION_NAME}`);
+    const bookingRef = generateDocRef("Users");
     const response = await addCustomerInfoBooking(
       {
         customerInfo: customerInfo,
@@ -177,7 +177,7 @@ export function CartFlyout() {
             </Button>
           </div>
         ) : (
-          <div className="lg:p-10 p-5">
+          <div className="lg:p-10 p-3">
             {alert.showAlert ? (
               <Alert variant="destructive" className="max-w-sm  self-end">
                 <AlertCircle className="h-4 w-4" />
@@ -187,18 +187,19 @@ export function CartFlyout() {
             ) : (
               <></>
             )}
-            <DrawerHeader>
+            <DrawerHeader className="mb-4">
               <DrawerTitle className="text-center">Your Details & Bookings</DrawerTitle>
-              <DrawerDescription className="hidden">Food items in cart</DrawerDescription>
             </DrawerHeader>
             <ScrollArea className="mx-auto w-full max-w-xl h-[520px] lg:h-[450px]">
-              <div className="flex flex-col space-y-5 lg:space-y-8">
-                <div className="flex items-center lg:px-5 md:space-x-4">
-                  <div className="w-12 h-12 flex items-center justify-center bg-purple-100 rounded-full text-purple-600">
-                    <PhoneCall />
+              <div className="flex flex-col space-y-4">
+                <div className="flex items-center lg:px-5 px-2 mb-5">
+                  <div className="lg:mr-4 mr-2">
+                    <div className="w-12 h-12 flex items-center justify-center bg-purple-100 rounded-full text-purple-600">
+                      <PhoneCall className="lg:h-8 lg:w-8 h-5 w-5" />
+                    </div>
                   </div>
-                  <div className="flex justify-between md:space-x-4 items-center w-4/5 flex-col md:flex-row">
-                    <p className="">Phone Number</p>
+                  <div className="flex justify-between items-center flex-row w-full">
+                    <p className="md:mr-4 mr-2">Phone Number</p>
                     {!showEdit && (
                       <div className="flex gap-2">
                         <p className="text-muted-foreground">{customerInfo.phone}</p>
@@ -236,191 +237,174 @@ export function CartFlyout() {
                     <p className="px-5 ml-2">Your cart is empty</p>
                   </div>
                 ) : (
-                  <div>
-                    <hr />
+                  <div className="space-y-4">
                     <div>
-                      {stayItem.length ? (
-                        <div className="lg:px-5">
-                          <div className="flex items-center md:space-x-4 mt-3 gap-2 ">
-                            <div className="w-12 h-12 flex items-center justify-center bg-green-100 rounded-full text-green-600">
-                              <Home />
+                      {stayItem.length && (
+                        <div>
+                          <div className="flex items-center lg:px-5 px-2">
+                            <div className="md:mr-4 mr-2">
+                              <div className="w-12 h-12 flex items-center justify-center bg-green-100 rounded-full text-green-600">
+                                <Home />
+                              </div>
                             </div>
                             <div className="flex items-center w-full">
-                              <div className="flex flex-col md:flex-row items-center justify-between w-full gap-2">
-                                <div className="flex items-center justify-between w-full md:max-w-fit">
-                                  <p className="">Stay</p>
-                                  <Edit
-                                    onClick={() => {
-                                      router.push("/stays?edit=1");
-                                      setIsFlyoutOpen(false);
-                                    }}
-                                    className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2"
-                                  />
-                                </div>
-                                {
-                                  <div className="text-xs items-center">
-                                    <div className="flex lg:md:space-x-4 space-x-1">
+                              <div className="flex flex-row items-center justify-between w-full gap-2">
+                                <div>
+                                  <p>Stay</p>
+                                  <div className="text-sm items-center">
+                                    <div className="flex lg:text-sm lg:md:space-x-4 space-x-3">
                                       <p>
-                                        In: <span className="text-muted-foreground">{customerInfo.checkIn ? format(customerInfo.checkIn, "dd-MM-yyyy") : `-`}</span>
+                                        In: <span className="text-muted-foreground">{customerInfo.checkIn ? formatDate(customerInfo.checkIn) : `-`}</span>
                                       </p>
                                       <p>
-                                        Out: <span className="text-muted-foreground">{customerInfo.checkOut ? format(customerInfo.checkOut, "dd-MM-yyyy") : `-`}</span>
+                                        Out: <span className="text-muted-foreground">{customerInfo.checkOut ? formatDate(customerInfo.checkOut) : `-`}</span>
                                       </p>
                                       <p>
                                         Guest: <span className="text-muted-foreground">{customerInfo.guests}</span>
                                       </p>
                                     </div>
                                   </div>
-                                }
+                                </div>
+                                <Edit
+                                  onClick={() => {
+                                    router.push("/stays?edit=1");
+                                    setIsFlyoutOpen(false);
+                                  }}
+                                  className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2"
+                                />
                               </div>
                             </div>
                           </div>
-                          <div className="py-5 lg:px-10 pl-5">
+                          <div className="py-5 lg:pl-10 pl-5">
                             {stayItem.map((item, idx) => (
-                              <div key={item.id} className="flex items-center md:space-x-4">
+                              <div key={item.id} className="flex items-center md:space-x-4 space-x-2">
                                 <div>
                                   <p className="text-xs text-muted-foreground">{idx + 1}.</p>
                                 </div>
-                                <div className="flex justify-between md:space-x-4 items-center w-full">
+                                <div className="flex justify-between md:space-x-4 items-center w-full pr-5">
                                   <p className="">{item.name}</p>
                                   <div className="flex items-center md:space-x-4 gap-2">
                                     <p className="text-[14px]">₹{item.price * stayDaysCnt}</p>
-                                    <Button
-                                      size={"sm"}
-                                      variant={"destructive"}
+                                    <div
                                       onClick={() => {
                                         cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "stayItem", itemIds: [item.id] }] });
                                       }}
-                                      className="rounded-full"
+                                      className="rounded-full "
                                     >
-                                      <Trash2 />
-                                    </Button>
+                                      <Trash2 className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground" />
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             ))}
                           </div>
                         </div>
-                      ) : (
-                        <></>
                       )}
                     </div>
                     <hr />
                     <div>
-                      {travelItem.length ? (
-                        <div className="lg:px-5">
-                          <div className="flex items-center md:space-x-4 mt-3 gap-2">
-                            <div className="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full text-blue-600">
-                              <Car />
+                      {travelItem.length && (
+                        <div>
+                          <div className="flex items-center lg:px-5 px-2">
+                            <div className="md:mr-4 mr-2">
+                              <div className="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full text-blue-600">
+                                <Car />
+                              </div>
                             </div>
-                            <div className="flex justify-between items-center w-full">
-                              <div className="flex flex-col md:flex-row items-center justify-between w-full">
-                                <div className="flex items-center justify-between w-full md:max-w-fit">
+                            <div className="flex items-center w-full">
+                              <div className="flex flex-row items-center justify-between w-full gap-2">
+                                <div>
                                   <p className="">Travel</p>
-                                  <Edit
-                                    onClick={() => {
-                                      router.push("/travels?edit=1");
-                                      setIsFlyoutOpen(false);
-                                    }}
-                                    className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2"
-                                  />
-                                </div>
-                                {
                                   <div className=" items-center ">
-                                    <div className="text-xs flex items-center lg:md:space-x-4 space-x-1 w-full">
+                                    <div className="text-xs lg:text-sm flex items-center lg:md:space-x-4 space-x-1 w-full">
                                       <p>
-                                        Up: <span className="text-muted-foreground">{customerInfo.pickUp ? format(customerInfo.pickUp, "dd-MM-yyyy") : `-`}</span>
+                                        Up: <span className="text-muted-foreground">{customerInfo.pickUp ? formatDate(customerInfo.pickUp) : `-`}</span>
                                       </p>
                                       <p>
-                                        Off: <span className="text-muted-foreground">{customerInfo.dropDown ? format(customerInfo.dropDown, "dd-MM-yyyy") : `-`}</span>
+                                        Off: <span className="text-muted-foreground">{customerInfo.dropDown ? formatDate(customerInfo.dropDown) : `-`}</span>
                                       </p>
                                       <p>
                                         Dest: <span className="text-muted-foreground">{customerInfo.destination}</span>
                                       </p>
                                     </div>
                                   </div>
-                                }
+                                </div>
+                                <Edit
+                                  onClick={() => {
+                                    router.push("/travels?edit=1");
+                                    setIsFlyoutOpen(false);
+                                  }}
+                                  className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2"
+                                />
                               </div>
                             </div>
                           </div>
-                          <div className="py-5 lg:px-10 pl-5">
+                          <div className="py-5 lg:pl-10 pl-5">
                             {travelItem.map((item, idx) => (
-                              <div key={item.id} className="flex items-center md:space-x-4 justify-between w-full">
-                                <div className="flex items-center md:space-x-4">
-                                  <p className="text-xs text-muted-foreground">{idx + 1}.</p>
+                              <div key={item.id} className="flex items-center md:space-x-4 space-x-2">
+                                <p className="text-xs text-muted-foreground">{idx + 1}.</p>
+                                <div className="flex justify-between md:space-x-4 items-center w-full pr-5">
                                   <p className="">{item.name}</p>
-                                </div>
-                                <div className="flex justify-between md:space-x-4 items-center gap-2">
-                                  <p className="text-[14px]">₹{item.price * travelDaysCnt}</p>
-                                  <Button
-                                    size={"sm"}
-                                    variant={"destructive"}
-                                    onClick={() => {
-                                      cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "travelItem", itemIds: [travelItem[0].id] }] });
-                                    }}
-                                    className="rounded-full"
-                                  >
-                                    <Trash2Icon />
-                                  </Button>
+                                  <div className="flex items-center md:space-x-4 gap-2">
+                                    <p className="text-[14px]">₹{item.price * travelDaysCnt}</p>
+
+                                    <div
+                                      onClick={() => {
+                                        cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "travelItem", itemIds: [travelItem[0].id] }] });
+                                      }}
+                                    >
+                                      <Trash2Icon className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground" />
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             ))}
                           </div>
                         </div>
-                      ) : (
-                        <></>
                       )}
                     </div>
                     <hr />
                     <div>
                       {foodItems.length ? (
-                        <div className="lg:px-5">
-                          <div className="flex items-center md:md:space-x-4 mt-3 justify-between">
-                            <div className="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full text-yellow-600">
-                              <Utensils />
-                            </div>
-                            <div className="w-4/5 flex justify-between items-center flex-col md:flex-row">
-                              <div>
-                                <div className="flex items-center gap-4">
-                                  <p className="">Food</p>
-                                  {
-                                    <div className="text-xs flex">
-                                      <p className="">
-                                        Order Date: <span className="text-muted-foreground">{customerInfo.foodDate ? format(customerInfo.foodDate, "dd-MM-yyyy") : `-`}</span>
-                                      </p>
-                                      {/* <Edit
-                                      onClick={() => {
-                                        router.push("/food");
-                                        setIsFlyoutOpen(false);
-                                      }}
-                                      className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground ml-2"
-                                      /> */}
-                                    </div>
-                                  }
-                                </div>
+                        <div>
+                          <div className="flex items-center lg:px-5 px-2">
+                            <div className="md:mr-4 mr-2">
+                              <div className="w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full text-yellow-600">
+                                <Utensils />
                               </div>
-
-                              <div className="max-w-sm">
-                                <DatePicker
-                                  value={customerInfo.foodDate}
-                                  onChange={(date, bool) => {
-                                    updateFormData("foodDate", date.toISOString());
-                                  }}
-                                  placeholder="When do you want?"
-                                />
+                            </div>
+                            <div className="flex items-center w-full">
+                              <div className="flex flex-row items-center justify-between w-full gap-2">
+                                <div>
+                                  <p className="">Food</p>
+                                  <div className="lg:text-sm text-xs flex">
+                                    <p className="">
+                                      Order: <span className="text-muted-foreground">{customerInfo.foodDate ? formatDate(customerInfo.foodDate) : `-`}</span>
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="max-w-xs">
+                                  <DatePicker
+                                    // value={customerInfo.foodDate}
+                                    onChange={(date, bool) => {
+                                      updateFormData("foodDate", date.toLocaleString("en-IN"));
+                                    }}
+                                    placeholder="Order date"
+                                  />
+                                </div>
                               </div>
                             </div>
                           </div>
-                          <div className="py-5 lg:px-10 pl-1 flex flex-col gap-5">
+                          <div className="py-5 lg:pl-10 pl-5 space-y-4">
                             {foodItems.map((item, idx) => (
-                              <div key={item.id} className="flex items-center md:space-x-4">
-                                <div className="flex justify-between md:space-x-4 items-center w-full">
-                                  <div className="flex gap-3">
+                              <div key={item.id} className="flex items-center md:space-x-4 space-x-2">
+                                <div className="flex md:space-x-4 items-center w-full lg:max-w-full max-w-sm pr-5">
+                                  <div className="flex gap-3 w-1/2">
                                     <p className="text-xs text-muted-foreground pt-1">{idx + 1}.</p>
-                                    <p className="">{item.name}</p>
+                                    <p className="max-w-fit break-words">{item.name}</p>
                                   </div>
-                                  <div className="flex justify-between gap-4">
-                                    <div className="flex md:space-x-4 items-center ">
+                                  <div className="flex justify-between  w-1/2">
+                                    <div className="flex md:space-x-4 items-center w-1/2 justify-end">
                                       <div className="flex gap-3 items-center justify-center">
                                         <div
                                           className="p-1 bg-gray-100 rounded-md"
@@ -441,18 +425,16 @@ export function CartFlyout() {
                                         </div>
                                       </div>
                                     </div>
-                                    <div className="flex md:space-x-4 items-center gap-2">
+                                    <div className="flex md:space-x-4 items-center justify-end gap-2 w-1/2">
                                       <p className="text-[14px]">₹{item.category === "food" && item.itemCount * item.price}</p>
-                                      <Button
-                                        size={"sm"}
-                                        variant={"destructive"}
+                                      <div
                                         onClick={() => {
                                           cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [item.id] }] });
                                         }}
                                         className="rounded-full"
                                       >
-                                        <Trash2 />
-                                      </Button>
+                                        <Trash2 className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground" />
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
@@ -469,12 +451,14 @@ export function CartFlyout() {
               </div>
             </ScrollArea>
             <DrawerFooter>
-              <div className="w-full flex justify-between mx-auto max-w-xl items-center flex-col md:flex-row gap-2">
+              <div className="w-full flex justify-between mx-auto max-w-xl items-center flex-col md:flex-row gap-4">
                 <DrawerClose asChild>
-                  <Button className="w-full md:max-w-fit">{cartFlyoutBtns.secondaryBtn}</Button>
+                  <Button variant={"outline"} className="w-full md:max-w-fit">
+                    {cartFlyoutBtns.secondaryBtn}
+                  </Button>
                 </DrawerClose>
-                <button disabled={alert.showAlert} className={cn(`${!alert.showAlert ? "bg-green-500 cursor-pointer" : "bg-green-300 cursor-not-allowed"} hover:bg-green-300 space-x-2 py-2 px-4 lg:px-6 flex items-center rounded-sm md:rounded-full md:max-w-fit w-full justify-around`)} onClick={handleEnquireNow}>
-                  <FontAwesomeIcon icon={faWhatsapp} className="text-white lg:w-8 w-6 h-full hidden md:block" />
+                <button disabled={alert.showAlert} className={cn(`${!alert.showAlert ? "bg-green-500 cursor-pointer" : "bg-green-300 cursor-not-allowed"} hover:bg-green-300  h-10 px-3 lg:text-base text-sm flex items-center rounded-md w-full md:max-w-fit space-x-2 justify-center `)} onClick={handleEnquireNow}>
+                  <FontAwesomeIcon icon={faWhatsapp} className="text-white w-6 h-6" />
                   <p className=" text-white">{cartFlyoutBtns.primaryBtn}</p>
                 </button>
               </div>

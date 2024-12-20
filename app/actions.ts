@@ -8,8 +8,9 @@ export const generateDocRef = (colletionName: string): DocumentReference => {
 };
 
 export const addCustomerInfoBooking = async (data: any, bookingRef: DocumentReference) => {
+  const currentDate = new Date().toLocaleString("en-IN");
   try {
-    await setDoc(bookingRef, data);
+    await setDoc(bookingRef, { ...data, isNew: true, bookingDate: currentDate });
     console.log("Document written with ID: ", bookingRef.id);
     return 1;
   } catch (e) {
@@ -39,9 +40,10 @@ export const formatDetailsForWhatsApp = (customerInfo: any, stayItem: any, trave
     // Add stay details
     if (stayItem.length > 0) {
       message += `\nStay Details:\n`;
-      message += `Check-in: ${customerInfo.checkIn || "Not provided"}\n`;
-      message += `Check-out: ${customerInfo.checkOut || "Not provided"}\n`;
+      message += `Check-in: ${formatDate(customerInfo.checkIn) || "Not provided"}\n`;
+      message += `Check-out: ${formatDate(customerInfo.checkOut) || "Not provided"}\n`;
       message += `Guests: ${customerInfo.guests || "Not provided"}\n`;
+      message += `I want to book this Stay\n`;
       stayItem.forEach((item: any, idx: any) => {
         message += `${idx + 1}. ${item.name} - ₹${item.price} per night\n`;
       });
@@ -50,9 +52,10 @@ export const formatDetailsForWhatsApp = (customerInfo: any, stayItem: any, trave
     // Add travel details
     if (travelItem.length > 0) {
       message += `\nTravel Details:\n`;
-      message += `Pick-up: ${customerInfo.pickUp || "Not provided"}\n`;
-      message += `Drop-down: ${customerInfo.dropDown || "Not provided"}\n`;
+      message += `Pick-up: ${formatDate(customerInfo.pickUp) || "Not provided"}\n`;
+      message += `Drop-down: ${formatDate(customerInfo.dropDown) || "Not provided"}\n`;
       message += `Destination: ${customerInfo.destination || "Not provided"}\n`;
+      message += `I want to book this Travel\n`;
       travelItem.forEach((item: any, idx: any) => {
         message += `${idx + 1}. ${item.name} - ₹${item.price} per day\n`;
       });
@@ -74,3 +77,20 @@ export const formatDetailsForWhatsApp = (customerInfo: any, stayItem: any, trave
     return encodeURIComponent(message.trim());
   }
 };
+
+export const localStringToDateObject = (dateTimeString: string) => {
+  const [datePart, timePart] = dateTimeString?.split(", ");
+  const [day, month, year] = datePart?.split("/").map(Number);
+  const dateObject = new Date(year, month - 1, day);
+  console.log(dateObject);
+  return dateObject;
+};
+
+export function formatDate(dateTimeString: string): string {
+  const [datePart, timePart] = dateTimeString?.split(", ");
+  const [day, month, year] = datePart?.split("/").map(Number);
+  const dateObject = new Date(year, month - 1, day);
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const formattedDate = `${day}, ${monthNames[dateObject.getMonth()]}`;
+  return formattedDate;
+}

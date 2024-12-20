@@ -110,12 +110,11 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
                       (((item = cartContext.stayItem.find((item) => item.id === vendor.vendorId)) || true) && !item ? (
                         <Button
                           className="w-full bg-cms hover:bg-green-600"
-                          disabled={!vendor.availability}
                           onClick={() => {
                             handleAddItem(vendor);
                           }}
                         >
-                          Add to cart
+                          {!showForm ? "Book Now" : "Add to Cart"}
                         </Button>
                       ) : (
                         <Button
@@ -135,12 +134,11 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
                       (((item = cartContext.travelItem.find((item) => item.id === vendor.vendorId)) || true) && !item ? (
                         <Button
                           className="w-full bg-cms hover:bg-green-600"
-                          disabled={!vendor.availability}
                           onClick={() => {
                             handleAddItem(vendor);
                           }}
                         >
-                          {!showForm ? "Add to cart" : "Book now"}
+                          {!showForm ? "Book Now" : "Add to Cart"}
                         </Button>
                       ) : (
                         <Button

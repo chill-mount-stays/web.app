@@ -160,14 +160,14 @@ export const OurSevicesIcons = [
 
 export const cartFlyoutBtns = {
   primaryBtn: "Confirm Order",
-  secondaryBtn: "Go Back",
+  secondaryBtn: "Add More Item",
 };
 
 export const ConfirmationModalContent = () => {
   return (
-    <div className="flex flex-col items-center text-center px-3 gap-5">
-      <p className="font-semibold ">Order succesfully received</p>
-      <p>If you faced any difficulties in placing order, Don't worry our exective will be in touch with you</p>
+    <div className="flex flex-col items-center text-center px-3 gap-2">
+      <p className="font-semibold">Order received successfully!</p>
+      <p className="text-sm">Our team will reach out to you shortly.</p>
     </div>
   );
 };
