@@ -1,5 +1,5 @@
 import { db } from "@/lib/firebase";
-import { getDocs, collection, addDoc, doc, DocumentReference, setDoc } from "firebase/firestore";
+import { getDocs, collection, addDoc, doc, DocumentReference, setDoc, Timestamp } from "firebase/firestore";
 
 // Add a new document with a generated id.
 export const generateDocRef = (colletionName: string): DocumentReference => {
@@ -8,7 +8,7 @@ export const generateDocRef = (colletionName: string): DocumentReference => {
 };
 
 export const addCustomerInfoBooking = async (data: any, bookingRef: DocumentReference) => {
-  const currentDate = new Date().toLocaleString("en-IN");
+  const currentDate = Timestamp.fromDate(new Date());
   try {
     await setDoc(bookingRef, { ...data, isNew: true, bookingDate: currentDate });
     console.log("Document written with ID: ", bookingRef.id);
