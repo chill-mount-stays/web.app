@@ -31,7 +31,7 @@ export const formatDetailsForWhatsApp = (customerInfo: any, stayItem: any, trave
   const noItemsSelected = !(!!foodItems.length || !!stayItem.length || !!travelItem.length);
 
   if (!noItemsSelected) {
-    let message = `Hi Chill Mount Stay,\n\nHere are my details and bookings:\n`;
+    let message = `Hi Chill Mount Stays,\n\nHere are my details and bookings:\n`;
 
     // Add phone details
     message += `Phone Number: ${customerInfo.phone || "Not provided"}\n`;
@@ -69,7 +69,7 @@ export const formatDetailsForWhatsApp = (customerInfo: any, stayItem: any, trave
 
     return encodeURIComponent(message.trim());
   } else {
-    let message = `Hi Chill Mount Stay,\n\nI would like to know more about your services\n`;
+    let message = `Hi Chill Mount Stays,\n\nI would like to know more about your services\n`;
 
     return encodeURIComponent(message.trim());
   }

@@ -140,7 +140,7 @@ export function ItemCardModal({ type, vendor, isOpen, onClose }: ItemCardModalPr
                             handleAddItem(vendor);
                           }}
                         >
-                          Add to cart
+                          {!showForm ? "Add to cart" : "Book now"}
                         </Button>
                       ) : (
                         <Button

@@ -18,7 +18,7 @@ import { format } from "date-fns";
 import { Input } from "./ui/input";
 import { DatePicker } from "./DatePicker";
 import { useToast } from "@/hooks/use-toast";
-import { cartFlyoutBtns } from "@/lib/content";
+import { cartFlyoutBtns, ConfirmationModalContent } from "@/lib/content";
 type FormData = Record<string, string>;
 
 export function CartFlyout() {
@@ -164,8 +164,7 @@ export function CartFlyout() {
             <div className="rounded-full outline outline-1 outline-green-700 p-5">
               <Check height={20} width={20} className="text-green-700" />
             </div>
-            <p>Order succesfully received</p>
-            <p>If you faced any difficulties in placing order, Don't worry our exective will be in touch with you</p>
+            <ConfirmationModalContent />
             <Button
               className="bg-cms bg-green-600"
               onClick={() => {
