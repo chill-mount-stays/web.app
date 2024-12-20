@@ -239,7 +239,7 @@ export function CartFlyout() {
                 ) : (
                   <div className="space-y-4">
                     <div>
-                      {stayItem.length && (
+                      {stayItem.length > 0 && (
                         <div>
                           <div className="flex items-center lg:px-5 px-2">
                             <div className="md:mr-4 mr-2">
@@ -301,9 +301,9 @@ export function CartFlyout() {
                         </div>
                       )}
                     </div>
-                    <hr />
+                    {travelItem.length > 0 && <hr />}
                     <div>
-                      {travelItem.length && (
+                      {travelItem.length > 0 && (
                         <div>
                           <div className="flex items-center lg:px-5 px-2">
                             <div className="md:mr-4 mr-2">
@@ -363,9 +363,9 @@ export function CartFlyout() {
                         </div>
                       )}
                     </div>
-                    <hr />
+                    {foodItems.length > 0 && <hr />}
                     <div>
-                      {foodItems.length ? (
+                      {foodItems.length > 0 && (
                         <div>
                           <div className="flex items-center lg:px-5 px-2">
                             <div className="md:mr-4 mr-2">
@@ -442,8 +442,6 @@ export function CartFlyout() {
                             ))}
                           </div>
                         </div>
-                      ) : (
-                        <></>
                       )}
                     </div>
                   </div>

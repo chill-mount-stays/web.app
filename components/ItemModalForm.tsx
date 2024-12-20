@@ -138,7 +138,7 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
   return (
     <div>
       <DialogHeader>
-        <DialogTitle>Book Your Stay</DialogTitle>
+        <DialogTitle>Book Your {vendorType}</DialogTitle>
         <DialogDescription className="text-sm text-muted-foreground mt-1 mb-1.5">Please fill in the details below to complete your booking.</DialogDescription>
       </DialogHeader>
       <div className="mt-4">
