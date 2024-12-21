@@ -133,6 +133,12 @@ export const CartContextProvider: React.FC<{ children?: ReactNode }> = (props) =
       dispatch({ type: "REMOVE", itemIds: value.itemIds, itemType: value.itemType });
     });
   };
+
+  cartItems.foodTotal = 0;
+  cartItems.foodItems.forEach((item) => {
+    item.category === "food" && (cartItems.foodTotal += item.price * item.itemCount);
+  });
+
   const contextData = {
     ...cartItems,
     events: {
