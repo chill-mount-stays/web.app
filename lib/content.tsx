@@ -129,15 +129,15 @@ export const banners = [
   {
     bannerId: 1,
     title: "Top-Class Rooms for Your Stay",
-    imgUrl: "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
-    description: "Enjoy a memorable stay with exceptional service at Chillmount Stays. Perfect for families and loved ones.",
+    imgUrl: "https://firebasestorage.googleapis.com/v0/b/chill-mount-stays.firebasestorage.app/o/banners%2Fbanner-umg-04.webp?alt=media&token=36c40bc0-892d-49d1-812a-65b139b181c3",
+    description: "Experience a memorable stay amidst the serene beauty of Ooty at Chillmount Stays. Perfect for families and loved ones.",
     buttonText: "Book Now",
     buttonLink: "/stays",
   },
   {
     bannerId: 2,
     title: "Your Custom Travel Experience",
-    imgUrl: "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
+    imgUrl: "https://firebasestorage.googleapis.com/v0/b/chill-mount-stays.firebasestorage.app/o/banners%2Fbanner-img-01.webp?alt=media&token=69163d77-dfdb-4a30-a2f4-5cc31f592678",
     description: "Affordable travel with well-trained drivers and comfortable vehicles. No hidden charges—just a memorable journey.",
     buttonText: "Make Your Trip",
     buttonLink: "/travels",
@@ -145,7 +145,7 @@ export const banners = [
   {
     bannerId: 3,
     title: "Authentic Homemade Meals",
-    imgUrl: "https://www.tamilnadutourism.tn.gov.in/img/pages/large-desktop/ooty-1655457424_bca80f81e8391ebdaaca.webp",
+    imgUrl: "https://firebasestorage.googleapis.com/v0/b/chill-mount-stays.firebasestorage.app/o/banners%2Fbanner-img-03.webp?alt=media&token=0ff35e30-70ad-44d6-932c-91a72300ca96",
     description: "Enjoy fresh, sustainable meals delivered to your doorstep. No waste, just pure homemade goodness.",
     buttonText: "Check Now",
     buttonLink: "/food",

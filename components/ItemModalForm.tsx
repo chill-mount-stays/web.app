@@ -11,6 +11,7 @@ import { DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter, useSearchParams } from "next/navigation";
+import { manageMinDate } from "@/app/actions";
 interface ItemModalCardProp {
   vendorType: "stay" | "travel" | "food";
   item: Stay | Travel | Food | undefined;
@@ -210,7 +211,7 @@ const ItemModalForm = ({ vendorType, item, onFormClose, setShowForm }: ItemModal
                 <DatePicker
                   isDateFilled={isOffDateFilled}
                   value={customerInfo.dropDown}
-                  minDate={customerInfo.pickUp}
+                  minDate={manageMinDate(customerInfo.pickUp)}
                   onChange={(date, bool) => {
                     updateFormData("dropDown", date.toLocaleString("en-IN")), setIsOffDateFilled(bool);
                   }}

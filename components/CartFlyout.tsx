@@ -45,12 +45,12 @@ export function CartFlyout() {
   let differenceInMilliseconds1 = customerInfo.checkIn && customerInfo.checkOut ? localStringToDateObject(customerInfo.checkOut).getTime() - localStringToDateObject(customerInfo.checkIn).getTime() : null;
   let differenceInMilliseconds2 = customerInfo.dropDown && customerInfo.pickUp ? localStringToDateObject(customerInfo.dropDown).getTime() - localStringToDateObject(customerInfo.pickUp).getTime() : null;
 
-  let stayDaysCnt = 0;
+  let stayDaysCnt = 1;
   if (differenceInMilliseconds1) {
     stayDaysCnt = differenceInMilliseconds1 / (1000 * 60 * 60 * 24);
   }
 
-  let travelDaysCnt = 0;
+  let travelDaysCnt = 1;
   if (differenceInMilliseconds2) {
     travelDaysCnt = differenceInMilliseconds2 / (1000 * 60 * 60 * 24);
   }
@@ -86,7 +86,7 @@ export function CartFlyout() {
       foodDeliveryRef.current?.focus();
       return;
     }
-    const bookingRef = generateDocRef("Users");
+    const bookingRef = generateDocRef("Orders");
     const response = await addCustomerInfoBooking(
       {
         customerInfo: customerInfo,
@@ -102,7 +102,7 @@ export function CartFlyout() {
       setOrderSubmitted(true);
 
       const formattedMessage = formatDetailsForWhatsApp(customerInfo, stayItem, travelItem, foodItems);
-      const whatsappUrl = `https://api.whatsapp.com/send/?phone=%2B919842083815&text=${formattedMessage}&app_absent=0&lang=en`;
+      const whatsappUrl = `https://wa.me/919842083815?text=${formattedMessage}`;
       window.open(whatsappUrl, "_blank");
       sessionStorage.removeItem("CMS_CartItems");
       cartContext.events.emptyContext();

@@ -10,7 +10,7 @@ export const generateDocRef = (colletionName: string): DocumentReference => {
 export const addCustomerInfoBooking = async (data: any, bookingRef: DocumentReference) => {
   const currentDate = new Date().toLocaleString("en-IN");
   try {
-    await setDoc(bookingRef, { ...data, isNew: true, bookingDate: currentDate });
+    await setDoc(bookingRef, { ...data, isNew: true, bookingDate: currentDate, orderId: bookingRef.id });
     console.log("Document written with ID: ", bookingRef.id);
     return 1;
   } catch (e) {
@@ -94,3 +94,10 @@ export function formatDate(dateTimeString: string): string {
   const formattedDate = `${day}, ${monthNames[dateObject.getMonth()]}`;
   return formattedDate;
 }
+
+export const manageMinDate = (dateTimeString: string): string => {
+  const currentDate = localStringToDateObject(dateTimeString);
+  currentDate.setDate(currentDate.getDate() - 1);
+  const date = currentDate.toLocaleDateString("en-IN");
+  return date;
+};
