@@ -39,7 +39,7 @@ export function CartFlyout() {
     cartContext.events.updateCustomerInfo({ field: field, value: value });
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
-
+  const [foodTotal, setFoodTotal] = useState(0);
   const [showEdit, setShowEdit] = useState(customerInfo.phone.length < 10);
 
   let differenceInMilliseconds1 = customerInfo.checkIn && customerInfo.checkOut ? localStringToDateObject(customerInfo.checkOut).getTime() - localStringToDateObject(customerInfo.checkIn).getTime() : null;
@@ -395,51 +395,54 @@ export function CartFlyout() {
                               </div>
                             </div>
                           </div>
-                          <div className="py-5 lg:pl-10 pl-5 space-y-4">
-                            {foodItems.map((item, idx) => (
-                              <div key={item.id} className="flex items-center md:space-x-4 space-x-2">
-                                <div className="flex md:space-x-4 items-center w-full lg:max-w-full max-w-sm pr-5">
-                                  <div className="flex gap-3 w-1/2">
-                                    <p className="text-xs text-muted-foreground pt-1">{idx + 1}.</p>
-                                    <p className="max-w-fit break-words">{item.name}</p>
-                                  </div>
-                                  <div className="flex justify-between  w-1/2">
-                                    <div className="flex md:space-x-4 items-center w-1/2 justify-end">
-                                      <div className="flex gap-3 items-center justify-center">
-                                        <div
-                                          className="p-1 bg-gray-100 rounded-md"
-                                          onClick={() => {
-                                            item?.category === "food" && item?.itemCount - 1 ? cartContext?.events?.updateCount({ itemId: item?.id, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) - 1 }) : cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [item.id] }] });
-                                          }}
-                                        >
-                                          <Minus className="w-4 h-4" />
-                                        </div>
-                                        <p className="w-full text-center text-sm">{`${item?.category === "food" && item?.itemCount}`}</p>
-                                        <div
-                                          className="p-1 bg-gray-100 rounded-md"
-                                          onClick={() => {
-                                            cartContext?.events?.updateCount({ itemId: item?.id, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) + 1 });
-                                          }}
-                                        >
-                                          <Plus className="w-4 h-4" />
+                          <div className="py-5 lg:pl-10 pl-5 space-y-4 flex flex-col">
+                            {foodItems.map((item, idx) => {
+                              return (
+                                <div key={item.id} className="flex items-center md:space-x-4 space-x-2">
+                                  <div className="flex md:space-x-4 items-center w-full lg:max-w-full max-w-sm pr-5">
+                                    <div className="flex gap-3 w-1/2">
+                                      <p className="text-xs text-muted-foreground pt-1">{idx + 1}.</p>
+                                      <p className="max-w-fit break-words">{item.name}</p>
+                                    </div>
+                                    <div className="flex justify-between  w-1/2">
+                                      <div className="flex md:space-x-4 items-center w-1/2 justify-end">
+                                        <div className="flex gap-3 items-center justify-center">
+                                          <div
+                                            className="p-1 bg-gray-100 rounded-md"
+                                            onClick={() => {
+                                              item?.category === "food" && item?.itemCount - 1 ? cartContext?.events?.updateCount({ itemId: item?.id, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) - 1 }) : cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [item.id] }] });
+                                            }}
+                                          >
+                                            <Minus className="w-4 h-4" />
+                                          </div>
+                                          <p className="w-full text-center text-sm">{`${item?.category === "food" && item?.itemCount}`}</p>
+                                          <div
+                                            className="p-1 bg-gray-100 rounded-md"
+                                            onClick={() => {
+                                              cartContext?.events?.updateCount({ itemId: item?.id, count: Number(item?.category === "food" ? item?.itemCount ?? 0 : 0) + 1 });
+                                            }}
+                                          >
+                                            <Plus className="w-4 h-4" />
+                                          </div>
                                         </div>
                                       </div>
-                                    </div>
-                                    <div className="flex md:space-x-4 items-center justify-end gap-2 w-1/2">
-                                      <p className="text-[14px]">₹{item.category === "food" && item.itemCount * item.price}</p>
-                                      <div
-                                        onClick={() => {
-                                          cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [item.id] }] });
-                                        }}
-                                        className="rounded-full"
-                                      >
-                                        <Trash2 className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground" />
+                                      <div className="flex md:space-x-4 items-center justify-end gap-2 w-1/2">
+                                        <p className="text-[14px]">₹{item.category === "food" && item.itemCount * item.price}</p>
+                                        <div
+                                          onClick={() => {
+                                            cartContext.events.removeItemsFromCart({ removeItemPayload: [{ itemType: "foodItems", itemIds: [item.id] }] });
+                                          }}
+                                          className="rounded-full"
+                                        >
+                                          <Trash2 className="h-4 w-4 hover:text-gray-800 hover:cursor-pointer text-muted-foreground" />
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            ))}
+                              );
+                            })}
+                            <div className="self-end mr-10">{`Food Total: ₹${cartContext.foodTotal}`}</div>
                           </div>
                         </div>
                       )}

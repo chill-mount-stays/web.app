@@ -9,6 +9,8 @@ import { CartFlyout } from "@/components/CartFlyout";
 export const metadata: Metadata = {
   title: "Chill Mount Stays",
   description: "Discover the ultimate stay, travel, and food experience in Ooty - plan your perfect hill station getaway today!",
+  keywords: ["Ooty", "Ooty foods", "Ooty travel", "Ooty stays", "best food in ooty", "best travels in ooty", "best hotels in ooty"],
+  icons: "favicon.ico",
 };
 
 export default function RootLayout({
