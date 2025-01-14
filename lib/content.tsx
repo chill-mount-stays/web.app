@@ -128,7 +128,7 @@ export const OurServicesContent = () => {
 export const banners = [
   {
     bannerId: 1,
-    title: "Top-Class Rooms for Your Stay",
+    title: "Top-Class Rooms for Your Stay in Ooty",
     imgUrl: "https://firebasestorage.googleapis.com/v0/b/chill-mount-stays.firebasestorage.app/o/banners%2Fbanner-umg-04.webp?alt=media&token=36c40bc0-892d-49d1-812a-65b139b181c3",
     description: "Experience a memorable stay amidst the serene beauty of Ooty at Chillmount Stays. Perfect for families and loved ones.",
     buttonText: "Book Now",
@@ -136,7 +136,7 @@ export const banners = [
   },
   {
     bannerId: 2,
-    title: "Your Custom Travel Experience",
+    title: "Your Custom Travel Experience in Ooty",
     imgUrl: "https://firebasestorage.googleapis.com/v0/b/chill-mount-stays.firebasestorage.app/o/banners%2F2149052436.jpg?alt=media&token=d0c0e43d-dbb9-4273-8a43-1ed5d178a671",
     description: "Affordable travel with well-trained drivers and comfortable vehicles. No hidden charges—just a memorable journey.",
     buttonText: "Make Your Trip",
@@ -144,7 +144,7 @@ export const banners = [
   },
   {
     bannerId: 3,
-    title: "Authentic Homemade Foods",
+    title: "Authentic Homemade Foods in Ooty",
     imgUrl: "https://firebasestorage.googleapis.com/v0/b/chill-mount-stays.firebasestorage.app/o/banners%2F2151205097.jpg?alt=media&token=e7b1bf86-29df-48d8-bdb3-4fb25e799447",
     description: "Chillmountstays delivers authentic homemade food crafted with traditional masalas for the perfect taste, brought straight to your doorstep by our efficient delivery team.",
     buttonText: "Check Now",
