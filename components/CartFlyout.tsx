@@ -102,7 +102,7 @@ export function CartFlyout() {
       setOrderSubmitted(true);
 
       const formattedMessage = formatDetailsForWhatsApp(customerInfo, stayItem, travelItem, foodItems);
-      const whatsappUrl = `https://wa.me/919842083815?text=${formattedMessage}`;
+      const whatsappUrl = `https://wa.me/918838569133?text=${formattedMessage}`;
       window.open(whatsappUrl, "_blank");
       sessionStorage.removeItem("CMS_CartItems");
       cartContext.events.emptyContext();
